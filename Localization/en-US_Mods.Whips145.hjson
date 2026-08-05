@@ -1,0 +1,176 @@
+Buffs: {
+	CobwhipTag: {
+		DisplayName: Cobwhip Tag
+		Description: Mods.Whips145.Buffs.CobwhipTag.Description
+	}
+
+	ConstellationTag: {
+		DisplayName: Constellation Tag
+		Description: Mods.Whips145.Buffs.ConstellationTag.Description
+	}
+
+	ElectricEelTag: {
+		DisplayName: Electric Eel Tag
+		Description: Mods.Whips145.Buffs.ElectricEelTag.Description
+	}
+
+	PossessionTag: {
+		DisplayName: Possession Tag
+		Description: Mods.Whips145.Buffs.PossessionTag.Description
+	}
+
+	SlimeWhipTag: {
+		DisplayName: Slime Whip Tag
+		Description: Mods.Whips145.Buffs.SlimeWhipTag.Description
+	}
+
+	SoulscourgeTag: {
+		DisplayName: Soulscourge Tag
+		Description: Mods.Whips145.Buffs.SoulscourgeTag.Description
+	}
+
+	StarcrashTag: {
+		DisplayName: Starcrash Tag
+		Description: Mods.Whips145.Buffs.StarcrashTag.Description
+	}
+
+	VasculashTag: {
+		DisplayName: Vasculash Tag
+		Description: Mods.Whips145.Buffs.VasculashTag.Description
+	}
+
+	VulgarDisplayTag: {
+		DisplayName: Vulgar Display Tag
+		Description: Mods.Whips145.Buffs.VulgarDisplayTag.Description
+	}
+
+	VulgarDisplayEnergy: {
+		DisplayName: Vulgar Display Energy
+		Description: Mods.Whips145.Buffs.VulgarDisplayEnergy.Description
+	}
+
+	PossessionEnergy: {
+		DisplayName: Possession Energy
+		Description: Mods.Whips145.Buffs.PossessionEnergy.Description
+	}
+}
+
+Items: {
+	Cobwhip: {
+		DisplayName: Cobwhip
+		Tooltip:
+			'''
+			3 summon tag damage
+			Your summons will focus struck enemies
+			Strike enemies to summon a tiny spider
+			'''
+	}
+
+	Constellation: {
+		DisplayName: Constellation
+		Tooltip:
+			'''
+			15 summon tag damage
+			15% summon tag critical strike chance
+			Your summons will focus struck enemies
+			Strike enemies to scatter friendly stars
+			'''
+	}
+
+	ElectricEel: {
+		DisplayName: Electric Eel
+		Tooltip:
+			'''
+			12 summon tag damage
+			5% summon tag critical strike chance
+			Your summons will focus struck enemies
+			Strike enemies with electric energy
+			Electric energy resonates between enemies
+			'''
+	}
+
+	Possession: {
+		DisplayName: Possession
+		Tooltip:
+			'''
+			25 summon tag damage
+			10% summon tag critical strike chance
+			Your summons will focus struck enemies
+			Strike enemies with prophetic energy
+			Visions strike enemies hit by summons
+			'''
+	}
+
+	SlimeWhip: {
+		DisplayName: Slime Whip
+		Tooltip:
+			'''
+			3 summon tag damage
+			Whip crack can ignite enemies
+			'''
+	}
+
+	Soulscourge: {
+		DisplayName: Soulscourge
+		Tooltip:
+			'''
+			5 summon tag damage
+			Your summons will focus struck enemies
+			'Lash your enemies with the remnants of evil incarnate'
+			'''
+	}
+
+	Starcrash: {
+		DisplayName: Starcrash
+		Tooltip:
+			'''
+			2 summon tag damage
+			Your summons will focus struck enemies
+			Strike enemies with primed energy
+			Meteorites fall on primed enemies hit by summons
+			'''
+	}
+
+	Vasculash: {
+		DisplayName: Vasculash
+		Tooltip:
+			'''
+			5 summon tag damage
+			Your summons will focus struck enemies
+			'Arteries, veins, and sinew!'
+			'''
+	}
+
+	VulgarDisplayOfFlower: {
+		DisplayName: Vulgar Display Of Flower
+		Tooltip:
+			'''
+			9 summon tag damage
+			Your summons will focus struck enemies
+			Strike enemies with volatile energy
+			Violent petals bloom from enemies hit by summons
+			'A thorn-barbed whip ripped from the Queen of the Jungle herself? Metal!'
+			'''
+	}
+}
+
+Projectiles: {
+	CobwhipProj.DisplayName: Cobwhip Proj
+	ConstellationProj.DisplayName: Constellation Proj
+	ElectricEelProj.DisplayName: Electric Eel Proj
+	PossessionProj.DisplayName: Possession Proj
+	SlimeWhipProj.DisplayName: Slime Whip Proj
+	SoulscourgeProj.DisplayName: Soulscourge Proj
+	StarcrashProj.DisplayName: Starcrash Proj
+	VasculashProj.DisplayName: Vasculash Proj
+	VulgarDisplayOfFlowerProj.DisplayName: Vulgar Display Of Flower Proj
+	PossessionProj1.DisplayName: Possession Proj1
+	PossessionProj2.DisplayName: Possession Proj2
+	PossessionProjSecondary.DisplayName: Possession Proj Secondary
+	CobwhipProj1.DisplayName: Cobwhip Proj1
+	StarcrashProj1.DisplayName: Starcrash Proj1
+	StarcrashMeteorProj.DisplayName: Starcrash Meteor Proj
+	StarcrashMeteorOverlayProj.DisplayName: Starcrash Meteor Overlay Proj
+	VulgarDisplayOfFlowerProj1.DisplayName: Vulgar Display Of Flower Proj1
+	ConstellationProj1.DisplayName: Constellation Proj1
+}

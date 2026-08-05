@@ -1,0 +1,17 @@
+Añade los 9 nuevos látigos de Terraria 1.4.5 (Bigger & Boulder) a tModLoader 1.4.4.9.
+
+Látigos incluidos:
+Pre-Hardmode:
+- Cobwhip
+- Slime Whip
+- Soulscourge (Corrupción)
+- Vasculash (Carmesí)
+- Starcrash (Meteorito)
+
+Hardmode:
+- Vulgar Display of Flower (Plantera drop)
+- Electric Eel (Duke Fishron drop)
+- Constellation (Stardust Fragments)
+- Possession (Moon Lord drop)
+
+Cada látigo replica fielmente sus stats, recetas y efectos especiales de Terraria 1.4.5.
