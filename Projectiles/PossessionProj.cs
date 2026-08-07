@@ -187,12 +187,63 @@ namespace Whips145.Projectiles
             Projectile.WhipSettings.Segments = (int)(20 * player.whipRangeMultiplier);
         }
 
+        private int hitCount = 0;
+        private HashSet<int> hitEnemiesForLasers = new HashSet<int>();
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            // Calculamos el multiplicador acumulativo del 5% basado en cuántos enemigos ya hemos golpeado.
+            // System.Math.Pow(0.95, hitCount) hace que el 1er golpe sea 100%, el 2do 95%, el 3ro 90.25%, etc.
+            float mult = (float)System.Math.Pow(0.95, hitCount);
+            modifiers.SourceDamage *= mult;
+            hitCount++;
+        }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (target.friendly || target.type == NPCID.TargetDummy || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
+            if (target.friendly || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
                 return;
 
-            Projectile.damage = (int)(Projectile.damage * 0.95f);
+            // Asegurarnos de que este látigo específico solo genere 1 láser por cada enemigo que toque.
+            if (hitEnemiesForLasers.Contains(target.whoAmI))
+                return;
+            
+            hitEnemiesForLasers.Add(target.whoAmI);
+
+            Player player = Main.player[Projectile.owner];
+            Vector2 dir = (target.Center - player.Center).SafeNormalize(Vector2.UnitX);
+            
+            if (Main.rand.Next(1) == 0) // chance = 1 (100%)
+            {
+                int activeCount = 0;
+                int laserType = ModContent.ProjectileType<PossessionLaserProj>();
+                for (int j = 0; j < Main.maxProjectiles; j++)
+                {
+                    if (Main.projectile[j].active && Main.projectile[j].type == laserType)
+                        activeCount++;
+                }
+
+                // Límite seguro para evitar llenar los 1000 slots de Terraria si se golpea a cientos de dummys
+                if (activeCount < 100)
+                {
+                    // Delay chico y escalonado por distancia: como el látigo golpea a casi
+                    // toda la fila casi en el mismo instante (están muy juntos), sin ALGO de
+                    // escalonado la fila entera se ilumina de golpe. Pero dist/24 (el valor
+                    // original) era demasiado fuerte y hacía que los láseres lejanos
+                    // aparecieran recién después de terminado el combo entero. dist/60 es un
+                    // punto medio: para el rango máximo del látigo (~34 tiles ≈ 544px) da
+                    // como mucho ~9 ticks de retraso, dentro de la vida visible de un láser.
+                    float dist = Vector2.Distance(player.Center, target.Center);
+                    float delay = dist / 80f;
+
+                    Vector2 spawnPos = target.Center + Main.rand.NextVector2Circular(10f, 10f);
+                    int p = Projectile.NewProjectile(Projectile.GetSource_OnHit(target), spawnPos, Vector2.Zero, laserType, (int)(damageDone * 0.5f), 0f, player.whoAmI, dir.X, dir.Y);
+                    if (p >= 0 && p < Main.maxProjectiles)
+                    {
+                        Main.projectile[p].localAI[2] = delay;
+                    }
+                }
+            }
         }
 
         private static readonly int[] frameContentHeight = { 18, 14, 14, 14, 24, 26, 28 };

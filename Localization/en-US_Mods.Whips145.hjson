@@ -174,4 +174,6 @@ Projectiles: {
 	VulgarDisplayOfFlowerProj1.DisplayName: Vulgar Display Of Flower Proj1
 	ConstellationProj1.DisplayName: Constellation Proj1
 	PossessionManager.DisplayName: Possession Manager
+	PossessionEyeProj.DisplayName: Possession Eye Proj
+	PossessionLaserProj.DisplayName: Possession Laser Proj
 }
