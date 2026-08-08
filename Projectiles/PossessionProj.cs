@@ -123,39 +123,45 @@ namespace Whips145.Projectiles
             // progreso de vida del látigo, de 0 (recién sale) a 1 (totalmente recogido)
             float progressT = duration > 0 ? MathHelper.Clamp(framesSinceStart / (float)duration, 0f, 1f) : 0f;
 
-            // Partículas a lo largo del cuerpo del látigo (como Snapthorn)
-            // Solo lo aplicamos al látigo principal (roles 0 y 2) para no saturar la pantalla con los 4 látigos.
-            if (Projectile.ai[1] == 0f || Projectile.ai[1] == 2f)
+            // Partículas a lo largo del cuerpo del látigo (alta densidad como látigos mágicos/eléctricos)
+            // Ya no lo limitamos a un par de látigos, y además generamos varias partículas por frame.
+            if (Projectile.ai[1] == 0f || Projectile.ai[1] == 2f || IsChainPairA || IsChainPairB)
             {
-                if (Main.rand.Next(100) < 90) // 90% de probabilidad cada frame (+15% extra respecto al 75% anterior)
+                // Para alta densidad, iteramos varias veces por frame
+                int dustsPerFrame = 3; 
+                for (int i = 0; i < dustsPerFrame; i++)
                 {
-                    // Falsificamos la animación para obtener los puntos del látigo en este frame exacto
-                    int originalMax = player.itemAnimationMax;
-                    int originalAnim = player.itemAnimation;
-                    player.itemAnimationMax = duration;
-                    player.itemAnimation = currentFakeAnimation;
-
-                    List<Vector2> list = new List<Vector2>();
-                    Projectile.FillWhipControlPoints(Projectile, list);
-
-                    player.itemAnimationMax = originalMax;
-                    player.itemAnimation = originalAnim;
-
-                    if (list.Count > 0)
+                    if (Main.rand.Next(100) < 45) // Reducido un 15% adicional (de 72 a 60)
                     {
-                        // Elegimos un punto aleatorio en la mitad exterior del látigo (para alejarlo del jugador)
-                        int index = Main.rand.Next(list.Count / 2, list.Count);
-                        Vector2 dustPos = list[index];
+                        // Falsificamos la animación para obtener los puntos del látigo en este frame exacto
+                        int originalMax = player.itemAnimationMax;
+                        int originalAnim = player.itemAnimation;
+                        player.itemAnimationMax = duration;
+                        player.itemAnimation = currentFakeAnimation;
 
-                        // Asegurarnos de que no aparezcan pegadas al jugador ni cuando el látigo está enrollado
-                        if (Vector2.Distance(dustPos, player.Center) > 80f)
+                        List<Vector2> list = new List<Vector2>();
+                        Projectile.FillWhipControlPoints(Projectile, list);
+
+                        player.itemAnimationMax = originalMax;
+                        player.itemAnimation = originalAnim;
+
+                        if (list.Count > 0)
                         {
-                            // 228 y 229 son los IDs exactos que usa el Phantasmal Eye de Moon Lord en el código original de Terraria
-                            int dustType = Main.rand.NextBool(2) ? 229 : 228;
+                            // Elegimos un punto aleatorio a lo largo del látigo
+                            // (ahora permitimos desde el 20% del látigo en adelante para más densidad visual)
+                            int index = Main.rand.Next(list.Count / 5, list.Count);
+                            Vector2 dustPos = list[index];
 
-                            Dust dust = Dust.NewDustDirect(dustPos - new Vector2(5, 5), 10, 10, dustType, 0f, 0f, 100, default, 1.2f);
-                            dust.noGravity = true;
-                            dust.velocity *= 0.3f; // Que se queden flotando suavemente como una estela
+                            // Asegurarnos de que no aparezcan directamente dentro del cuerpo del jugador
+                            if (Vector2.Distance(dustPos, player.Center) > 40f)
+                            {
+                                // 228 y 229 son los IDs exactos que usa el Phantasmal Eye de Moon Lord
+                                int dustType = Main.rand.NextBool(2) ? 229 : 228;
+
+                                Dust dust = Dust.NewDustDirect(dustPos - new Vector2(5, 5), 10, 10, dustType, 0f, 0f, 100, default, 1.4f);
+                                dust.noGravity = true;
+                                dust.velocity *= 0.8f; // Estela más pronunciada al moverse
+                            }
                         }
                     }
                 }
@@ -234,7 +240,12 @@ namespace Whips145.Projectiles
                     // punto medio: para el rango máximo del látigo (~34 tiles ≈ 544px) da
                     // como mucho ~9 ticks de retraso, dentro de la vida visible de un láser.
                     float dist = Vector2.Distance(player.Center, target.Center);
-                    float delay = dist / 80f;
+                    // Delay casi instantáneo. Solo aplicamos un mini escalonamiento
+                    // por orden de golpe y un pequeño ruido aleatorio para que no aparezcan 
+                    // 100% en el mismo frame si golpea a varios a la vez.
+                    int hitOrder = hitEnemiesForLasers.Count;
+                    float delay = (hitOrder * 0.5f) + Main.rand.NextFloat(0f, 1.0f);
+                    if (delay < 0f) delay = 0f;
 
                     Vector2 spawnPos = target.Center + Main.rand.NextVector2Circular(10f, 10f);
                     int p = Projectile.NewProjectile(Projectile.GetSource_OnHit(target), spawnPos, Vector2.Zero, laserType, (int)(damageDone * 0.5f), 0f, player.whoAmI, dir.X, dir.Y);
@@ -280,7 +291,7 @@ namespace Whips145.Projectiles
         // de mix=0.5.
         private const float DownCurveStrength = 0.5f; // 1 = igual de pronunciada, 0 = totalmente recta hacia abajo
 
-        private void MirrorWhipPointsLerp(List<Vector2> points, float mixFactor)
+        private void MirrorWhipPointsLerp(List<Vector2> points, float mixFactor, float retractProgress = 0f)
         {
             if (points == null || points.Count < 2) return;
 
@@ -298,6 +309,18 @@ namespace Whips145.Projectiles
 
                 Vector2 mirroredPerp = -perp * DownCurveStrength;
                 Vector2 mixedPerp = Vector2.Lerp(perp, mirroredPerp, t);
+                
+                if (retractProgress > 0f)
+                {
+                    float indexFactor = i / (float)(points.Count - 1);
+                    float artificialCurve = (float)System.Math.Sin(indexFactor * System.Math.PI) * 35f; 
+                    
+                    Vector2 artificialPerp = new Vector2(-direction.Y, direction.X) * artificialCurve;
+                    if (t > 0.5f) artificialPerp = -artificialPerp;
+                    
+                    mixedPerp += artificialPerp * retractProgress;
+                }
+                
                 points[i] = origin + proj + mixedPerp;
             }
         }
@@ -334,19 +357,9 @@ namespace Whips145.Projectiles
             if (isChainPair)
             {
                 chainMix = IsChainPairA ? 0f : 1f;
-                // Modificamos el timer falso del látigo
-                // para que esté muy rezagado. Así la Vanilla AI generará los puntos
-                // en una posición totalmente diferente de su rotación.
-                int timeOffset = duration / 3;
-                currentFakeAnimation -= timeOffset;
-                
-                // Si el offset hace que baje de 0, significa que para la Vanilla AI 
-                // ya terminó su golpe. En lugar de dejarlo colgando congelado en el frame 0
-                // (lo que crea la "tira" fea colgando hacia abajo), simplemente dejamos de dibujarlo.
-                if (currentFakeAnimation <= 0) 
-                {
-                    return false;
-                }
+                // NOTA: Se eliminó el timeOffset que cortaba la animación prematuramente.
+                // Ahora los látigos cruzados duran todo su tiempo de vida y se recogen (retract)
+                // visualmente al igual que un látigo normal, en lugar de desaparecer de golpe.
             }
 
             player.itemAnimation = currentFakeAnimation;
@@ -362,7 +375,8 @@ namespace Whips145.Projectiles
             // Pareja de la cadena nueva: mirror continuo durante toda su vida sin deformar
             else if (isChainPair)
             {
-                MirrorWhipPointsLerp(list, chainMix);
+                float retractProgress = isExtending ? 0f : 1f - ((float)currentFakeAnimation / (duration / 2f));
+                MirrorWhipPointsLerp(list, chainMix, retractProgress);
             }
 
             // Restaurar valores reales

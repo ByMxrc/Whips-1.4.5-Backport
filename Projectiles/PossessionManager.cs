@@ -129,7 +129,7 @@ namespace Whips145.Projectiles
                         activeWhips++;
                 }
 
-                if (activeWhips < 30) // Límite seguro
+                if (activeWhips < 30 && finishingCombo == 0f) // Límite seguro y no spawnea si está terminando
                 {
                     if (stepTimer == 0)
                     {
