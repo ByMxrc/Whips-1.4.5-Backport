@@ -13,7 +13,7 @@ namespace Whips145.Projectiles
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; // Longitud del rastro
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20; // Rastro mucho más largo para una hermosa estela mágica
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2; // Rastro con rotación y posición
         }
 
@@ -24,9 +24,10 @@ namespace Whips145.Projectiles
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.SummonMeleeSpeed; // Daño summon del látigo
             Projectile.penetrate = 1; // Non-piercing
-            Projectile.timeLeft = 120; // 2 segundos (120 ticks) de tiempo de vida
+            Projectile.timeLeft = 240; // 2 segundos, pero como extraUpdates es 1, usamos 240 ticks
             Projectile.ignoreWater = true; // No es frenado por líquidos
             Projectile.tileCollide = true; // Rebotan en bloques
+            Projectile.extraUpdates = 1; // Hace que el juego calcule su física 2 veces por frame (suaviza el rastro formando un trazo)
             
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1; // Un golpe por estrella
@@ -54,8 +55,8 @@ namespace Whips145.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            // Evita golpear durante la fase de dispersión (0.5s = 30 ticks)
-            if (Projectile.localAI[0] <= 30)
+            // Evita golpear durante la fase de dispersión (30 ticks lógicos = 60 con extraUpdates)
+            if (Projectile.localAI[0] <= 60)
             {
                 return false;
             }
@@ -64,8 +65,9 @@ namespace Whips145.Projectiles
 
         public override void AI()
         {
-            // Apariencia: rotar hacia la dirección de movimiento
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            // Las estrellas mágicas siempre deben mantenerse derechas (sin rotar hacia donde vuelan), 
+            // así sus puntas y destellos se ven perfectos y no se ven 'chuecos' o inclinados.
+            Projectile.rotation = 0f;
 
             // Rastro de polvo de estrella suave (reducido)
             if (Main.rand.NextBool(4))
@@ -75,10 +77,10 @@ namespace Whips145.Projectiles
                 Main.dust[dust].velocity = Projectile.velocity * 0.1f;
             }
 
-            // localAI[0] maneja el contador del retraso (30 ticks = 0.5 seg)
+            // localAI[0] maneja el contador del retraso
             Projectile.localAI[0]++;
 
-            if (Projectile.localAI[0] <= 30)
+            if (Projectile.localAI[0] <= 60) // 0.5 seg * 60 fps * 2 (extraUpdates)
             {
                 // Primera fase: salen volando y frenan un poco
                 Projectile.velocity *= 0.95f;
@@ -134,9 +136,10 @@ namespace Whips145.Projectiles
                 }
                 else
                 {
-                    // Homing hacia el objetivo mucho más rápido
-                    float speed = 30f; // Aumentado (antes 16f)
-                    float inertia = 15f; // Reducido para giros más rápidos (antes 20f)
+                    // Velocidad reducida un 10% (antes 45f, ahora ~40f). 
+                    // Como tiene extraUpdates = 1, viaja a 20f dos veces por frame (40f).
+                    float speed = 20f; 
+                    float inertia = 15f; 
                     Vector2 direction = targetToTrack.Center - Projectile.Center;
                     direction.Normalize();
                     direction *= speed;
@@ -148,31 +151,71 @@ namespace Whips145.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Type].Value;
-            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+            // Usar la textura original del látigo (ConstellationProj) para que el color sea exactamente idéntico
+            Texture2D texture = ModContent.Request<Texture2D>("Whips145/Projectiles/ConstellationProj").Value;
+            
+            // El sprite del látigo tiene 6 frames. Debemos recortar solo el frame de la estrella grande (Frame 3)
+            int frameHeight = texture.Height / 6;
+            Rectangle frame = new Rectangle(0, frameHeight * 3, texture.Width, frameHeight);
+            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, frameHeight * 0.5f);
 
-            // Dibujar el rastro (trail)
-            for (int i = 0; i < Projectile.oldPos.Length; i++)
-            {
-                Vector2 drawPos = Projectile.oldPos[i] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(Color.Cyan) * ((Projectile.oldPos.Length - i) / (float)Projectile.oldPos.Length);
-                color.A = 0; // Transparencia aditiva
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.oldRot[i], drawOrigin, Projectile.scale * 0.8f, SpriteEffects.None, 0);
-            }
+            Texture2D glowTex = ModContent.Request<Texture2D>("Terraria/Images/Extra_89").Value;
+            Vector2 glowOrigin = glowTex.Size() / 2f;
 
-            // Dibujar la estrella principal con Bloom intenso (Additive Blending)
             float alphaFactor = (255 - Projectile.alpha) / 255f;
-            Color bloomColor = new Color(50, 150, 255, 0) * 0.9f * alphaFactor; // Azul intenso con Alpha 0 para que brille (aditivo)
-            for (int i = 0; i < 4; i++) // Dibujar 4 veces desplazado ligeramente para hacer un halo
+            Color baseColor = new Color(37, 116, 176, 0); 
+            
+            // Reducido un 5% (0.5 * 0.95 = 0.475) para que el bloom no sea tan invasivo
+            float glowScale = Projectile.scale * 0.475f; 
+
+            // 1. Dibujar el rastro (línea continua y difuminada mediante interpolación para rellenar los huecos)
+            for (int i = 1; i < Projectile.oldPos.Length; i++)
             {
-                Vector2 bloomPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY) + (MathHelper.TwoPi * i / 4f).ToRotationVector2() * 2f;
-                Main.EntitySpriteDraw(texture, bloomPos, null, bloomColor, Projectile.rotation, drawOrigin, Projectile.scale * 1.3f, SpriteEffects.None, 0);
+                if (Projectile.oldPos[i] == Vector2.Zero || Projectile.oldPos[i - 1] == Vector2.Zero) continue;
+
+                Vector2 p1 = Projectile.oldPos[i - 1] + (Projectile.Size / 2f) - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+                Vector2 p2 = Projectile.oldPos[i] + (Projectile.Size / 2f) - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+                
+                float fade1 = (Projectile.oldPos.Length - (i - 1)) / (float)Projectile.oldPos.Length;
+                float fade2 = (Projectile.oldPos.Length - i) / (float)Projectile.oldPos.Length;
+                
+                // Rellenamos el espacio entre p1 y p2 dibujando múltiples círculos difuminados
+                int steps = 4;
+                for (int j = 0; j < steps; j++)
+                {
+                    float t = j / (float)steps;
+                    Vector2 drawPos = Vector2.Lerp(p1, p2, t);
+                    float fade = MathHelper.Lerp(fade1, fade2, t);
+                    
+                    // Color azul brillante, con opacidad reducida al 50%
+                    Color trailColor = baseColor * fade * 0.75f * alphaFactor;
+                    
+                    // Escala pequeña que decrece para formar la punta del cometa
+                    float trailScale = Projectile.scale * 0.25f * fade;
+                    
+                    Main.EntitySpriteDraw(glowTex, drawPos, null, trailColor, 0f, glowOrigin, trailScale, SpriteEffects.None, 0);
+                }
             }
 
-            // Dibujar la estrella base (blanco puro en el centro), aplicando el Alpha actual
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), null, Color.White * ((255 - Projectile.alpha) / 255f), Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            // 2. BLOOM PRINCIPAL
+            Color bloomColor = baseColor * alphaFactor; 
+            Vector2 visualCenter = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
 
-            return false; // Desactivar el dibujado normal
+            // Núcleo central (escalado correctamente)
+            Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor * 0.7f, 0f, glowOrigin, glowScale * 1.5f, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(glowTex, visualCenter, null, Color.White * 0.3f * alphaFactor, 0f, glowOrigin, glowScale * 0.5f, SpriteEffects.None, 0);
+
+            // Destello de 4 puntas (Cruz recta +), con las proporciones exactas que usa el látigo (0.12f, 1.3f)
+            Vector2 scaleLong = new Vector2(0.12f, 1.3f) * glowScale; 
+            Vector2 scaleShort = new Vector2(1.3f, 0.12f) * glowScale;
+
+            Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor, Projectile.rotation, glowOrigin, scaleLong, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor, Projectile.rotation, glowOrigin, scaleShort, SpriteEffects.None, 0);
+
+            // 3. Dibujar la estrella base recortada (Usamos Color.White tal como el látigo lo hace para las estrellas)
+            Main.EntitySpriteDraw(texture, visualCenter, frame, Color.White * alphaFactor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+
+            return false;
         }
 
         public override void Kill(int timeLeft)

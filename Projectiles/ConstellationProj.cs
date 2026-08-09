@@ -21,7 +21,7 @@ namespace Whips145.Projectiles
         public override void SetDefaults()
         {
             Projectile.DefaultToWhip();
-            Projectile.WhipSettings.Segments = 14; // Ajustado a 14 segmentos a petición del usuario
+            Projectile.WhipSettings.Segments = 20; // 20 segmentos = ~17 estrellas (igual que la original de stardust con armaduras que aumentan rango)
             Projectile.WhipSettings.RangeMultiplier = 1.18f;
         }
 
@@ -41,41 +41,26 @@ namespace Whips145.Projectiles
             // Efecto: Liberar 6 estrellas fugaces (solo en el primer golpe de cada balanceo)
             if (!spawnedStars && Projectile.owner == Main.myPlayer)
             {
-                if (player.TryGetModPlayer<WhipPlayer>(out var modPlayer))
-                {
-                    // No aparecer si ya hay estrellas activas o si el cooldown está activo
-                    if (player.ownedProjectileCounts[ModContent.ProjectileType<ConstellationProj1>()] > 0 || modPlayer.constellationCooldown > 0)
-                    {
-                        return;
-                    }
-                }
 
                 spawnedStars = true;
 
                 int starDamage = (int)(Projectile.originalDamage * 0.297f);
 
+                List<Vector2> list = new List<Vector2>();
+                Projectile.FillWhipControlPoints(Projectile, list);
+
                 for (int i = 0; i < 6; i++)
                 {
-                    // El usuario pidió que aparezcan a la mitad de camino entre el jugador y la entidad
-                    Vector2 spawnPos = Vector2.Lerp(player.Center, target.Center, 0.5f);
-                    // Un pequeño offset aleatorio para que no estén apiladas en el mismo píxel exacto
-                    spawnPos += Main.rand.NextVector2Circular(16f, 16f);
+                    // Distribuir equitativamente los 6 proyectiles a lo largo de los segmentos del látigo
+                    int pointIndex = (int)((list.Count - 1) * (i / 5f));
+                    if (pointIndex < 0) pointIndex = 0;
+                    if (pointIndex >= list.Count) pointIndex = list.Count - 1;
                     
-                    // Evitar que aparezcan dentro de bloques (mover hacia el jugador hasta encontrar espacio libre)
-                    for (int j = 0; j < 20; j++)
-                    {
-                        if (!Collision.SolidCollision(spawnPos - new Vector2(12, 12), 24, 24))
-                            break; // Encontró espacio libre
-
-                        Vector2 toPlayer = player.Center - spawnPos;
-                        if (toPlayer.LengthSquared() < 400f) break; // Si está muy cerca del jugador, parar
-                        
-                        toPlayer.Normalize();
-                        spawnPos += toPlayer * 16f; // Retroceder un bloque (16px)
-                    }
+                    Vector2 spawnPos = list[pointIndex];
                     
-                    // Velocidad inicial rápida hacia afuera (scatter)
-                    Vector2 initialVelocity = Main.rand.NextVector2CircularEdge(8f, 8f) * Main.rand.NextFloat(0.8f, 1.2f);
+                    // Velocidad inicial hacia afuera (-10%). 
+                    // Como el proyectil ahora tiene extraUpdates = 1, dividimos el valor real entre 2 (5.4f en vez de 10.8f)
+                    Vector2 initialVelocity = Main.rand.NextVector2CircularEdge(5.4f, 5.4f) * Main.rand.NextFloat(0.8f, 1.2f);
                     
                     Projectile.NewProjectile(
                         Projectile.GetSource_FromThis(),
@@ -128,27 +113,138 @@ namespace Whips145.Projectiles
                 Vector2 element = list[i];
                 Vector2 diff = list[i + 1] - element;
                 float rotation = diff.ToRotation() - MathHelper.PiOver2;
-                Color color = Lighting.GetColor(element.ToTileCoordinates());
+                
+                // Ignorar la luz del mapa SOLO para los segmentos (estrellas). 
+                // El mango (i == 0) y la punta (i == list.Count - 2) usan luz normal.
+                Color color;
+                if (i == 0 || i == list.Count - 2)
+                    color = Lighting.GetColor(element.ToTileCoordinates());
+                else
+                    color = Color.White;
 
+                bool isBig = false;
+                bool isX = false;
                 if (i > 0 && i < list.Count - 2)
                 {
-                    float dist = diff.Length();
-                    scale = dist / (frameHeight - 6.5f);
-                    if (scale < 1f) scale = 1f;
+                    int j = i - 1;
+                    // Patrón de 4 segmentos:
+                    // j % 4 == 0 -> + (cruz normal)
+                    // j % 4 == 1 -> x (estrella rotada 45 grados)
+                    // j % 4 == 2 -> + (cruz grande)  <-- la primera de las 3 cruces
+                    // j % 4 == 3 -> + (cruz normal)
+                    
+                    isX = (j % 4 == 1);
+                    isBig = (j % 4 == 2);
+                    
+                    // Todos tamaño similar (0.45), menos la cruz grande que aumenta un ~5% extra (0.58)
+                    scale = isBig ? 0.58f : 0.45f;
+                    
+                    if (isX)
+                    {
+                        // Si es una "x", la rotamos 45 grados respecto al látigo
+                        rotation += MathHelper.PiOver4;
+                    }
                 }
 
                 // Draw the connecting line (solo si no es el último tramo después de la punta)
                 if (i < list.Count - 2)
                 {
                     Texture2D magicPixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
-                    Vector2 lineScale = new Vector2(diff.Length(), 2f);
-                    Color lineColor = new Color(11, 175, 237);
-                    Color litLineColor = Lighting.GetColor(element.ToTileCoordinates(), lineColor);
+                    Vector2 lineScale = new Vector2(diff.Length(), 1.5f); // Grosor cambiado de 2f a 1f
+                    Color lineColor = new Color(37, 116, 176);
+                    // Multiplicar por 0.9f le aplica un 10% de transparencia (90% visible)
+                    Color litLineColor = lineColor * 0.75f; 
                     Main.EntitySpriteDraw(magicPixel, element - Main.screenPosition, new Rectangle(0, 0, 1, 1), litLineColor, diff.ToRotation(), new Vector2(0, 0.5f), lineScale, SpriteEffects.None, 0);
                 }
 
-                // Draw the segment
-                Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
+                // Luz ambiental
+                Lighting.AddLight(element, 0.05f, 0.3f, 0.5f);
+
+                // Ignoramos los primeros segmentos pegados al jugador (i <= 2)
+                // Y hacemos que la punta suelte MÁS polvo que la base, para compensar que la punta viaja más rápido
+                if (i > 2 && i < list.Count - 1)
+                {
+                    // i bajo (cerca del jugador) = menos probabilidad
+                    // i alto (cerca de la punta) = más probabilidad
+                    int chance = 60 - (i * 3);
+                    if (chance < 10) chance = 10;
+
+                    if (Main.rand.NextBool(chance))
+                    {
+                        int d = Dust.NewDust(element - new Vector2(4, 4), 8, 8, 229, 0f, 0f, 0, Color.White, 0.4f);
+                        Main.dust[d].noGravity = true;
+                        Main.dust[d].velocity *= 0.5f;
+                        Main.dust[d].fadeIn = 0.8f;
+                    }
+                }
+
+                // Draw the segment bloom (Mango y todas las estrellas)
+                if (i >= 0 && i < list.Count - 2)
+                {
+                    bool isRedCircle = (i == 0 || isBig);
+                    
+                    float progress = (float)i / list.Count;
+                    float intensity = 0.6f + (0.4f * progress);
+                    
+                    Color bloomColor = new Color(37, 116, 176, 0) * (0.3f * intensity); 
+                    
+                    Texture2D glowTex = ModContent.Request<Texture2D>("Terraria/Images/Extra_89").Value;
+                    Vector2 glowOrigin = glowTex.Size() / 2f;
+                    
+                    // LÓGICA DE TAMAÑOS POR ZONAS (Amarilla, Verde, Roja)
+                    float baseGlowScale;
+                    if (progress <= 0.33f) {
+                        // Zona Amarilla (Base): Tamaño actual de las verdes (~0.66)
+                        baseGlowScale = 0.66f;
+                    } else if (progress <= 0.66f) {
+                        // Zona Verde (Medio): Aumento del 10% (0.66 * 1.10 = 0.726)
+                        // Interpolamos suavemente para que no haya un salto brusco
+                        float t = (progress - 0.33f) / 0.33f;
+                        baseGlowScale = MathHelper.Lerp(0.66f, 0.726f, t);
+                    } else {
+                        // Zona Roja (Punta): Aumento del 25% (0.70 * 1.25 = 0.875)
+                        float t = (progress - 0.66f) / 0.34f;
+                        baseGlowScale = MathHelper.Lerp(0.726f, 0.875f, t);
+                    }
+                    
+                    // Aumento del 15% pedido para las cruces
+                    baseGlowScale *= 1.15f;
+                    
+                    // Mantenemos las estrellas pequeñas a un 20% del tamaño, y damos +5% extra a las grandes (1.05f)
+                    float glowScale = baseGlowScale * (isRedCircle ? 0.90f : 0.35f);
+
+                    // CÁLCULO DE ALINEACIÓN
+                    Vector2 visualCenter = (pos - Main.screenPosition) + diff.SafeNormalize(Vector2.Zero) * ((frameHeight / 2f) - 4f) * scale;
+
+                    // 1. Núcleo central suave
+                    Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor * 0.25f, 0f, glowOrigin, glowScale * 0.7f, SpriteEffects.None, 0);
+
+                    // ALINEACIÓN EN PANTALLA (0 GRADOS, O 45 GRADOS PARA LAS X)
+                    float flareRot = isX ? MathHelper.PiOver4 : 0f;
+
+                    // 2. Destello vertical/diagonal
+                    Vector2 scaleLong = new Vector2(0.12f, 1.3f) * glowScale;
+                    Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor, flareRot, glowOrigin, scaleLong, SpriteEffects.None, 0);
+
+                    // 3. Destello horizontal/diagonal opuesto
+                    Vector2 scaleShort = new Vector2(0.8f, 0.12f) * glowScale;
+                    Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor, flareRot, glowOrigin, scaleShort, SpriteEffects.None, 0);
+                }
+
+                // Draw the main segment
+                if (i > 0 && i < list.Count - 2)
+                {
+                    // Para que las estrellas rotadas (X) no se salgan de la línea, las dibujamos rotando sobre su centro visual
+                    Vector2 visualCenter = (pos - Main.screenPosition) + diff.SafeNormalize(Vector2.Zero) * ((frameHeight / 2f) - 4f) * scale;
+                    Vector2 trueOrigin = new Vector2(frameWidth / 2f, frameHeight / 2f);
+                    Main.EntitySpriteDraw(texture, visualCenter, frame, color, rotation, trueOrigin, scale, SpriteEffects.None, 0);
+                }
+                else
+                {
+                    // Mango y punta se dibujan de forma normal
+                    Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0);
+                }
+                
                 pos += diff;
             }
 
