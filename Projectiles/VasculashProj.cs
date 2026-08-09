@@ -49,10 +49,10 @@ namespace Whips145.Projectiles
                 return false;
             }
 
-            // Reproducir el sonido personalizado justo a la mitad de la extensión
+            // Reproducir el sonido nativo justo a la mitad de la extensión
             if (Projectile.ai[0] == (int)(timeToFlyOut / 2f))
             {
-                SoundEngine.PlaySound(new SoundStyle("Whips145/Sounds/Vasculash_Hit"), Projectile.position);
+                SoundEngine.PlaySound(SoundID.NPCHit9, Projectile.position);
             }
 
             // Generar partículas a lo largo del látigo (restaurando lo que hacía la IA nativa)
@@ -60,7 +60,7 @@ namespace Whips145.Projectiles
             Projectile.FillWhipControlPoints(Projectile, list);
             for (int i = 0; i < list.Count; i++)
             {
-                if (Main.rand.NextBool(5)) 
+                if (Vector2.Distance(list[i], player.Center) > 40f && Main.rand.NextBool(10)) 
                 {
                     int dust = Dust.NewDust(list[i] - new Vector2(10, 10), 20, 20, DustID.Blood, 0f, 0f, 0, default, 1.0f);
                     // Dejamos que caigan con la gravedad (sin noGravity)
@@ -82,7 +82,7 @@ namespace Whips145.Projectiles
             target.AddBuff(ModContent.BuffType<VasculashTag>(), 300);
 
             // Partículas de sangre carmesí
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 2; i++)
             {
                 int dust = Dust.NewDust(target.position, target.width, target.height, DustID.Blood, 0f, 0f, 0, default, 1.0f);
                 Main.dust[dust].velocity *= 0.3f;
@@ -140,7 +140,7 @@ namespace Whips145.Projectiles
                 Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
 
                 // Partículas al usar el látigo
-                if (Main.rand.NextBool(10)) 
+                if (Vector2.Distance(pos, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(20)) 
                 {
                     int dust = Dust.NewDust(pos - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, DustID.Blood, 0f, 0f, 0, default, 1.0f);
                     Main.dust[dust].velocity *= 0.3f;
