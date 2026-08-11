@@ -27,8 +27,11 @@ namespace Whips145.Common
         public bool hasElectricEelTag = false;
         public bool hasElectricEelDebuff = false;
         public bool hasConstellationTag = false;
+        public bool hasPossessionTag = false;
+        public bool hasPossessionEyeTag = false;
 
         public bool starcrashMeteorDropped = false; // Garantiza solo 1 meteorito por marca
+        public bool possessionEyeDropped = false; // Garantiza invocación única por marca
         public int electricEelTimer = 0; // Temporizador para el efecto del rayo (Electric Eel)
         public override bool InstancePerEntity => true; // Instancia por NPC
 
@@ -48,6 +51,7 @@ namespace Whips145.Common
                 npc.buffImmune[ModContent.BuffType<SlimeWhipDebuff>()] = false;
                 npc.buffImmune[ModContent.BuffType<SoulscourgeTag>()] = false;
                 npc.buffImmune[ModContent.BuffType<VasculashTag>()] = false;
+                npc.buffImmune[ModContent.BuffType<PossessionEyeTag>()] = false;
                 npc.buffImmune[ModContent.BuffType<PossessionTag>()] = false;
             }
         }
@@ -125,6 +129,8 @@ namespace Whips145.Common
                 hasElectricEelTag = npc.HasBuff(ModContent.BuffType<ElectricEelTag>());
                 hasElectricEelDebuff = npc.HasBuff(ModContent.BuffType<ElectricEelDebuff>());
                 hasConstellationTag = npc.HasBuff(ModContent.BuffType<ConstellationTag>());
+                hasPossessionTag = npc.HasBuff(ModContent.BuffType<PossessionTag>());
+                hasPossessionEyeTag = npc.HasBuff(ModContent.BuffType<PossessionEyeTag>());
 
                 // ── ELECTRIC EEL: Efectos visuales de rayo cada segundo ──
                 if (hasElectricEelDebuff)
@@ -297,6 +303,48 @@ namespace Whips145.Common
                 hasStarcrashTag = false;
             }
 
+            // ── POSSESSION: Invoca 3 ojos que disparan láseres curvos ──────────
+            if (hasPossessionEyeTag && !possessionEyeDropped)
+            {
+                // El daño de los láseres es proporcional al golpe que activó la marca
+                int eyeDamage = (int)(damageDone * 0.75f); // 75% del daño del minion por ojo
+
+                possessionEyeDropped = true; // Bloqueo de uso único por hit de látigo
+
+                if (Main.myPlayer == projectile.owner)
+                {
+                    // Delays basados en tu línea de tiempo: 0, 5 ticks, 7 ticks
+                    float[] delays = { 0f, 5f, 7f };
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        // Posición aleatoria en un radio de 10 bloques, pero nunca más cerca de 3 bloques (48 píxeles)
+                        Vector2 randomOffset = Main.rand.NextVector2Circular(160f, 160f);
+                        if (randomOffset.Length() < 48f)
+                        {
+                            randomOffset = randomOffset.SafeNormalize(Vector2.UnitY) * 48f;
+                        }
+                        Vector2 spawnPos = npc.Center + randomOffset;
+                        
+                        Projectile.NewProjectile(
+                            projectile.GetSource_FromThis(),
+                            spawnPos,
+                            Vector2.Zero,
+                            ModContent.ProjectileType<PossessionEyeProj>(),
+                            eyeDamage,
+                            0f,
+                            projectile.owner,
+                            npc.whoAmI, // ai[0] guarda a qué enemigo apuntar
+                            delays[i]   // ai[1] guarda el retraso escalonado
+                        );
+                    }
+                }
+
+                // CONSUMIR LA MARCA DE OJOS:
+                npc.DelBuff(npc.FindBuffIndex(ModContent.BuffType<PossessionEyeTag>()));
+                hasPossessionEyeTag = false;
+            }
+
             // ── VULGAR DISPLAY OF FLOWER: Brotan pétalos del enemigo (Volatile Energy) ──
             if (hasVulgarEnergy && whipPlayer.vulgarCooldown == 0)
             {
@@ -381,6 +429,8 @@ namespace Whips145.Common
             bitWriter.WriteBit(hasVulgarEnergy);
             bitWriter.WriteBit(hasElectricEelTag);
             bitWriter.WriteBit(hasConstellationTag);
+            bitWriter.WriteBit(hasPossessionTag);
+            bitWriter.WriteBit(hasPossessionEyeTag);
         }
 
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
@@ -390,6 +440,8 @@ namespace Whips145.Common
             hasVulgarEnergy = bitReader.ReadBit();
             hasElectricEelTag = bitReader.ReadBit();
             hasConstellationTag = bitReader.ReadBit();
+            hasPossessionTag = bitReader.ReadBit();
+            hasPossessionEyeTag = bitReader.ReadBit();
         }
     }
 }

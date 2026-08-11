@@ -217,6 +217,11 @@ namespace Whips145.Projectiles
             {
                 target.buffImmune[ModContent.BuffType<PossessionTag>()] = false;
                 target.AddBuff(ModContent.BuffType<PossessionTag>(), 300); // 5 segundos
+                
+                target.buffImmune[ModContent.BuffType<PossessionEyeTag>()] = false;
+                target.AddBuff(ModContent.BuffType<PossessionEyeTag>(), 300); // 5 segundos
+                
+                target.GetGlobalNPC<Common.WhipTagGlobalNPC>().possessionEyeDropped = false;
             }
 
             // Asegurarnos de que este látigo específico solo genere 1 láser por cada enemigo que toque.

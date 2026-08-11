@@ -68,6 +68,11 @@ Buffs: {
 		DisplayName: Slime Whip Debuff
 		Description: Mods.Whips145.Buffs.SlimeWhipDebuff.Description
 	}
+
+	PossessionEyeTag: {
+		DisplayName: Possession Eye Tag
+		Description: Mods.Whips145.Buffs.PossessionEyeTag.Description
+	}
 }
 
 Items: {
@@ -192,4 +197,5 @@ Projectiles: {
 	PossessionEyeProj.DisplayName: Possession Eye Proj
 	PossessionLaserProj.DisplayName: Possession Laser Proj
 	ElectricParticle.DisplayName: Electric Particle
+	PossessionEyeLaserProj.DisplayName: Possession Eye Laser Proj
 }
