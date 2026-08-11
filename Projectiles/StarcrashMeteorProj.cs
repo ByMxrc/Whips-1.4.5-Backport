@@ -15,7 +15,9 @@ namespace Whips145.Projectiles
 
         public override void SetStaticDefaults()
         {
-            // No necesitamos TrailCache, el Meteor Staff real usa Dust para la estela.
+            // Activamos el rastro para poder dibujar la cola de cometa
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
 
         public override void SetDefaults()
@@ -69,13 +71,28 @@ namespace Whips145.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            // Limpiamos el PreDraw. 
-            // Ya no usamos texturas deformadas para el rastro.
-            // El juego dibujará tu textura (StarcrashProj1) automáticamente y el humo/fuego cubrirá el resto.
-            
-            // Hacemos que el meteorito se vea brillante en la oscuridad
-            lightColor = Color.White; 
-            return true;
+            Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            // 1. Dibujar la estela (cola de cometa) con 50% de transparencia
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                if (Projectile.oldPos[i] == Vector2.Zero) continue;
+                
+                // Transparencia base del 50% (* 0.5f) que se va desvaneciendo hacia la punta de la cola
+                float progress = 1f - (i / (float)Projectile.oldPos.Length);
+                Color trailColor = Color.White * 0.5f * progress;
+                
+                // Calculamos la posición de dibujado desde el oldPos
+                Vector2 drawPos = Projectile.oldPos[i] + new Vector2(Projectile.width / 2f, Projectile.height / 2f) - Main.screenPosition;
+                
+                Main.EntitySpriteDraw(texture, drawPos, null, trailColor, Projectile.rotation, origin, Projectile.scale * progress, SpriteEffects.None, 0);
+            }
+
+            // 2. Dibujar el meteorito principal (brillante)
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+
+            return false; // Retornamos false para que el juego no lo dibuje de nuevo por defecto
         }
 
         public override bool PreKill(int timeLeft)

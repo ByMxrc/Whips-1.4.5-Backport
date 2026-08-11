@@ -266,7 +266,11 @@ namespace Whips145.Common
 
                     Vector2 spawnPos = new Vector2(npc.Center.X + randomXOffset, npc.Center.Y - 300f + randomYOffset);
 
-                    float duration = 15f; // ~0.2 segundos, más rápido y difícil de esquivar
+                    // De 1m:10s:127f a 1m:11s:007f en un video a 144fps:
+                    // Faltan 17 frames para terminar el segundo 10, más 7 frames del segundo 11 = 24 frames.
+                    // 24 frames a 144fps es exactamente 0.166 segundos.
+                    // En Terraria (60fps), 0.166s equivale a exactamente 10 ticks.
+                    float duration = 10f; 
                     Vector2 velocity = (npc.Center - spawnPos) / duration;
 
                     Projectile.NewProjectile(
