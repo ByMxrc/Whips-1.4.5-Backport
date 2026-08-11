@@ -158,7 +158,12 @@ namespace Whips145.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            // Aplica el buff (el tag de 3 de daño) como indica la wiki
+            if (target.type == Terraria.ID.NPCID.TargetDummy)
+            {
+                return;
+            }
+            // Aplica el buff (el tag de 3 de daño) como indica la wiki - forzando inmunidad
+            target.buffImmune[ModContent.BuffType<Buffs.CobwhipTag>()] = false;
             target.AddBuff(ModContent.BuffType<Buffs.CobwhipTag>(), 180);
         }
     }

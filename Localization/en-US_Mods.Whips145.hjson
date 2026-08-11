@@ -53,6 +53,21 @@ Buffs: {
 		DisplayName: Possession Energy
 		Description: Mods.Whips145.Buffs.PossessionEnergy.Description
 	}
+
+	CobwhipPlayerBuff: {
+		DisplayName: Cobwhip Player Buff
+		Description: Mods.Whips145.Buffs.CobwhipPlayerBuff.Description
+	}
+
+	ElectricEelDebuff: {
+		DisplayName: Electric Eel Debuff
+		Description: Mods.Whips145.Buffs.ElectricEelDebuff.Description
+	}
+
+	SlimeWhipDebuff: {
+		DisplayName: Slime Whip Debuff
+		Description: Mods.Whips145.Buffs.SlimeWhipDebuff.Description
+	}
 }
 
 Items: {
@@ -176,4 +191,5 @@ Projectiles: {
 	PossessionManager.DisplayName: Possession Manager
 	PossessionEyeProj.DisplayName: Possession Eye Proj
 	PossessionLaserProj.DisplayName: Possession Laser Proj
+	ElectricParticle.DisplayName: Electric Particle
 }

@@ -8,6 +8,7 @@ namespace Whips145.Buffs
     // Cuando un minion golpea al enemigo marcado, se invoca un meteorito.
     public class StarcrashTag : ModBuff
     {
+        public override string Texture => "Whips145/Buffs/Buff_TagAllWhips";
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;

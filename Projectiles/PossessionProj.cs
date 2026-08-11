@@ -4,12 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Whips145.Buffs;
 
 namespace Whips145.Projectiles
 {
     /// <summary>
     /// PossessionProj - Proyectil para la animación del látigo Possession.
-    /// Látigo simple de 20 segmentos y largo alcance sin marcas, buffs ni efectos adicionales.
+    /// Aplica PossessionTag a los enemigos golpeados (+25 tag damage para invocaciones).
+    /// Las mecánicas adicionales del Possession se implementarán más adelante.
     /// </summary>
     public class PossessionProj : ModProjectile
     {
@@ -209,6 +211,13 @@ namespace Whips145.Projectiles
         {
             if (target.friendly || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
                 return;
+
+            // Aplicar la marca de daño del Possession - forzando ignorar inmunidad, EXCEPTO a dummys
+            if (target.type != Terraria.ID.NPCID.TargetDummy)
+            {
+                target.buffImmune[ModContent.BuffType<PossessionTag>()] = false;
+                target.AddBuff(ModContent.BuffType<PossessionTag>(), 300); // 5 segundos
+            }
 
             // Asegurarnos de que este látigo específico solo genere 1 láser por cada enemigo que toque.
             if (hitEnemiesForLasers.Contains(target.whoAmI))

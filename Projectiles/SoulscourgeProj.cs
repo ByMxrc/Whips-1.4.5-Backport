@@ -67,7 +67,8 @@ namespace Whips145.Projectiles
                 return;
 
             Projectile.damage = (int)(Projectile.damage * (1f - 0.4f));
-            // Tag de Soulscourge (5 segundos = 300 ticks)
+            // Tag de Soulscourge (5 segundos = 300 ticks) - forzando ignorar inmunidad
+            target.buffImmune[ModContent.BuffType<SoulscourgeTag>()] = false;
             target.AddBuff(ModContent.BuffType<SoulscourgeTag>(), 300);
 
             // Partículas verdes de corrupción (Verde claro como el Scourge of the Corruptor)

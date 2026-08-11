@@ -63,13 +63,15 @@ namespace Whips145.Projectiles
 
             Projectile.damage = (int)(Projectile.damage * (1f - 0.15f));
             
-            // Tag damage (9 tag damage, dura 4 segundos = 240 ticks)
+            // Tag damage (9 tag damage, dura 4 segundos = 240 ticks) - forzando ignorar inmunidad
+            target.buffImmune[ModContent.BuffType<VulgarDisplayTag>()] = false;
             target.AddBuff(ModContent.BuffType<VulgarDisplayTag>(), 240);
 
             // La energía volátil solo se aplica al primer enemigo golpeado por cada balanceo
             if (!appliedEnergy)
             {
                 appliedEnergy = true;
+                target.buffImmune[ModContent.BuffType<VulgarDisplayEnergy>()] = false;
                 target.AddBuff(ModContent.BuffType<VulgarDisplayEnergy>(), 240);
             }
         }

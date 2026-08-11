@@ -33,7 +33,8 @@ namespace Whips145.Projectiles
 
             Projectile.damage = (int)(Projectile.damage * (1f - 0.1f));
             
-            // Tag de Constellation (4 segundos = 240 ticks)
+            // Tag de Constellation (4 segundos = 240 ticks) - forzando ignorar inmunidad
+            target.buffImmune[ModContent.BuffType<ConstellationTag>()] = false;
             target.AddBuff(ModContent.BuffType<ConstellationTag>(), 240);
 
             Player player = Main.player[Projectile.owner];

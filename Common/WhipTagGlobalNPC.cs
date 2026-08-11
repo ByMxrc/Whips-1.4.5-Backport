@@ -25,6 +25,7 @@ namespace Whips145.Common
         public bool hasVulgarTag = false;
         public bool hasVulgarEnergy = false;
         public bool hasElectricEelTag = false;
+        public bool hasElectricEelDebuff = false;
         public bool hasConstellationTag = false;
 
         public bool starcrashMeteorDropped = false; // Garantiza solo 1 meteorito por marca
@@ -40,11 +41,14 @@ namespace Whips145.Common
                 npc.buffImmune[ModContent.BuffType<VulgarDisplayTag>()] = false;
                 npc.buffImmune[ModContent.BuffType<VulgarDisplayEnergy>()] = false;
                 npc.buffImmune[ModContent.BuffType<ElectricEelTag>()] = false;
+                npc.buffImmune[ModContent.BuffType<ElectricEelDebuff>()] = false;
                 npc.buffImmune[ModContent.BuffType<ConstellationTag>()] = false;
                 npc.buffImmune[ModContent.BuffType<CobwhipTag>()] = false;
                 npc.buffImmune[ModContent.BuffType<SlimeWhipTag>()] = false;
+                npc.buffImmune[ModContent.BuffType<SlimeWhipDebuff>()] = false;
                 npc.buffImmune[ModContent.BuffType<SoulscourgeTag>()] = false;
                 npc.buffImmune[ModContent.BuffType<VasculashTag>()] = false;
+                npc.buffImmune[ModContent.BuffType<PossessionTag>()] = false;
             }
         }
 
@@ -78,14 +82,34 @@ namespace Whips145.Common
         {
             if (projectile.minion || ProjectileID.Sets.MinionShot[projectile.type] || projectile.sentry || ProjectileID.Sets.SentryShot[projectile.type])
             {
+                int critChance = 0;
+
                 if (npc.HasBuff(ModContent.BuffType<CobwhipTag>())) modifiers.FlatBonusDamage += 3;
-                if (npc.HasBuff(ModContent.BuffType<ConstellationTag>())) modifiers.FlatBonusDamage += 15;
-                if (npc.HasBuff(ModContent.BuffType<ElectricEelTag>())) modifiers.FlatBonusDamage += 12;
+                if (npc.HasBuff(ModContent.BuffType<ConstellationTag>()))
+                {
+                    modifiers.FlatBonusDamage += 15;
+                    critChance += 15; // 15% crit
+                }
+                if (npc.HasBuff(ModContent.BuffType<ElectricEelTag>()))
+                {
+                    modifiers.FlatBonusDamage += 12;
+                    critChance += 5; // 5% crit
+                }
+                if (npc.HasBuff(ModContent.BuffType<PossessionTag>()))
+                {
+                    modifiers.FlatBonusDamage += 25;
+                    critChance += 10; // 10% crit
+                }
                 if (npc.HasBuff(ModContent.BuffType<SlimeWhipTag>())) modifiers.FlatBonusDamage += 3;
                 if (npc.HasBuff(ModContent.BuffType<SoulscourgeTag>())) modifiers.FlatBonusDamage += 5;
                 if (npc.HasBuff(ModContent.BuffType<StarcrashTag>())) modifiers.FlatBonusDamage += 2;
                 if (npc.HasBuff(ModContent.BuffType<VasculashTag>())) modifiers.FlatBonusDamage += 5;
                 if (npc.HasBuff(ModContent.BuffType<VulgarDisplayTag>())) modifiers.FlatBonusDamage += 9;
+
+                if (critChance > 0 && Main.rand.Next(100) < critChance)
+                {
+                    modifiers.SetCrit();
+                }
             }
         }
 
@@ -99,15 +123,16 @@ namespace Whips145.Common
                 hasVulgarTag = npc.HasBuff(ModContent.BuffType<VulgarDisplayTag>());
                 hasVulgarEnergy = npc.HasBuff(ModContent.BuffType<VulgarDisplayEnergy>());
                 hasElectricEelTag = npc.HasBuff(ModContent.BuffType<ElectricEelTag>());
+                hasElectricEelDebuff = npc.HasBuff(ModContent.BuffType<ElectricEelDebuff>());
                 hasConstellationTag = npc.HasBuff(ModContent.BuffType<ConstellationTag>());
 
                 // ── ELECTRIC EEL: Efectos visuales de rayo cada segundo ──
-                if (hasElectricEelTag)
+                if (hasElectricEelDebuff)
                 {
                     // Efecto visual persistente: mantener partículas eléctricas envolviendo al enemigo
                     if (Main.rand.NextBool(3))
                     {
-                        int auraDust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.Electric, 0f, 0f, 0, default, 1.2f);
+                        int auraDust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.Electric, 0f, 0f, 0, default, 0.9f);
                         Main.dust[auraDust].noGravity = true;
                         Main.dust[auraDust].velocity *= 0.5f;
                     }
@@ -119,7 +144,7 @@ namespace Whips145.Common
                         electricEelTimer = 0;
 
                         // Buscar otros enemigos con la marca a menos de 100 bloques (1600 pixeles)
-                        int maxTargets = 10;
+                        int maxTargets = 3; // Límite de 3 para un máximo de 200 de daño (50 base + 150)
                         int targetsFound = 0;
 
                         // Los Target Dummies no emiten ni reciben rayos visuales (evita el ruido visual extremo), 
@@ -129,7 +154,7 @@ namespace Whips145.Common
                             for (int i = 0; i < Main.maxNPCs; i++)
                             {
                                 NPC other = Main.npc[i];
-                                if (other.active && !other.friendly && other.type != NPCID.TargetDummy && other.whoAmI != npc.whoAmI && other.HasBuff(ModContent.BuffType<ElectricEelTag>()))
+                                if (other.active && !other.friendly && other.type != NPCID.TargetDummy && other.whoAmI != npc.whoAmI && other.HasBuff(ModContent.BuffType<ElectricEelDebuff>()))
                                 {
                                     if (Vector2.Distance(npc.Center, other.Center) <= 1600f)
                                     {
@@ -143,7 +168,7 @@ namespace Whips145.Common
                                             // Efecto zig-zag aleatorio
                                             position += Main.rand.NextVector2Circular(8f, 8f);
                                             
-                                            Dust dust = Dust.NewDustPerfect(position, DustID.Electric, Vector2.Zero, 0, default, 1.2f);
+                                            Dust dust = Dust.NewDustPerfect(position, DustID.Electric, Vector2.Zero, 0, default, 0.9f);
                                         dust.noGravity = true;
                                         dust.velocity = Main.rand.NextVector2Circular(0.5f, 0.5f);
                                     }

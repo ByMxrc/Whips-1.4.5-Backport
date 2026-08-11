@@ -49,7 +49,7 @@ namespace Whips145.Projectiles
                         0,
                         0,
                         DustID.Electric,
-                        0f, 0f, 0, default, 1.5f
+                        0f, 0f, 0, default, 1f
                     );
                     Main.dust[dust].noGravity = true;
                     Main.dust[dust].velocity *= 2f;
@@ -59,13 +59,38 @@ namespace Whips145.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            if (target.type == Terraria.ID.NPCID.TargetDummy)
+            {
+                return;
+            }
             // Evitar efectos en NPCs amigables
             if (target.friendly)
                 return;
 
             Projectile.damage = (int)(Projectile.damage * (1f - 0.05f));
-            // Tag del Electric Eel (4 segundos)
+            // Tag del Electric Eel (4 segundos) - forzando ignorar inmunidad
+            target.buffImmune[ModContent.BuffType<ElectricEelTag>()] = false;
             target.AddBuff(ModContent.BuffType<ElectricEelTag>(), 240);
+
+            // Debuff eléctrico visual y de efecto (4 segundos)
+            target.buffImmune[ModContent.BuffType<ElectricEelDebuff>()] = false;
+            target.AddBuff(ModContent.BuffType<ElectricEelDebuff>(), 240);
+
+            // ==========================================
+            // MÓDULO 1: Partículas con transparencia
+            // ==========================================
+            int cantidadParticulas1 = 2; // Cantidad de partículas a generar
+            int alphaParticulas1 = 50;  // Transparencia (0 es opaco, 255 es invisible, 127 es 50%)
+            float escalaParticulas1 = 0.5f; // Tamaño inicial de las partículas
+            float fadeInParticulas1 = 1.2f; // Tamaño máximo al que crecerán (hace el efecto de fade-in)
+            
+            for (int i = 0; i < cantidadParticulas1; i++)
+            {
+                int hitDust1 = Dust.NewDust(target.position, target.width, target.height, DustID.Electric, 0f, 0f, alphaParticulas1, default, escalaParticulas1);
+                Main.dust[hitDust1].noGravity = true;
+                Main.dust[hitDust1].velocity = Main.rand.NextVector2Circular(2f, 2f);
+                Main.dust[hitDust1].fadeIn = fadeInParticulas1;
+            }
 
             // Nota: En 1.4.5, el Electric Eel NO aplica el tag en área automáticamente con el látigo.
             // Para marcar a múltiples enemigos, el jugador debe golpearlos individualmente o

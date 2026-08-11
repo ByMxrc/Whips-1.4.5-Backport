@@ -35,11 +35,11 @@ namespace Whips145.Projectiles
                 return;
 
             Projectile.damage = (int)(Projectile.damage * (1f - 0.6f));
-            // Tag del Slime Whip (3 segundos)
+            // Tag del Slime Whip (3 segundos) - forzando ignorar inmunidad
+            target.buffImmune[ModContent.BuffType<SlimeWhipTag>()] = false;
             target.AddBuff(ModContent.BuffType<SlimeWhipTag>(), 180);
 
-            // Aplica el debuff Slimed (Empapado de Slime) - 3 segundos
-            target.AddBuff(BuffID.Slimed, 180);
+            // (Removido: El debuff de slime ahora solo se aplica con la punta)
 
             // Partículas azules de slime (4 es el tipo clásico de slime)
             for (int i = 0; i < 2; i++)
@@ -81,6 +81,10 @@ namespace Whips145.Projectiles
                     {
                         target.AddBuff(BuffID.OnFire, 180);
                     }
+                    
+                    // Aplica el debuff visual del slime (solo con la punta)
+                    target.buffImmune[ModContent.BuffType<SlimeWhipDebuff>()] = false;
+                    target.AddBuff(ModContent.BuffType<SlimeWhipDebuff>(), 180);
                 }
             }
         }

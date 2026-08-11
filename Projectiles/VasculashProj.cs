@@ -65,7 +65,8 @@ namespace Whips145.Projectiles
                 return;
 
             Projectile.damage = (int)(Projectile.damage * (1f - 0.4f));
-            // Tag de Vasculash (5 segundos = 300 ticks)
+            // Tag de Vasculash (5 segundos = 300 ticks) - forzando ignorar inmunidad
+            target.buffImmune[ModContent.BuffType<VasculashTag>()] = false;
             target.AddBuff(ModContent.BuffType<VasculashTag>(), 300);
         }
     

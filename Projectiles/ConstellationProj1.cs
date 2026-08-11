@@ -49,7 +49,12 @@ namespace Whips145.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            // Aplica el tag del Constellation al enemigo
+            if (target.type == Terraria.ID.NPCID.TargetDummy)
+            {
+                return;
+            }
+            // Aplica el tag del Constellation al enemigo - forzando ignorar inmunidad
+            target.buffImmune[ModContent.BuffType<ConstellationTag>()] = false;
             target.AddBuff(ModContent.BuffType<ConstellationTag>(), 240);
         }
 

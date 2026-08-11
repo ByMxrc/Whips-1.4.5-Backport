@@ -37,7 +37,8 @@ namespace Whips145.Projectiles
             if (Projectile.localAI[0] == 0f)
             {
                 Projectile.localAI[0] = 1f;
-                // Aplicar tag
+                // Aplicar tag - forzando ignorar inmunidad a debuffs
+                target.buffImmune[ModContent.BuffType<StarcrashTag>()] = false;
                 target.AddBuff(ModContent.BuffType<StarcrashTag>(), 300);
 
                 // Resetear el flag para que pueda caer un nuevo meteorito con esta marca

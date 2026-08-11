@@ -7,6 +7,8 @@ namespace Whips145.Buffs
 {
     public class CobwhipTag : ModBuff
     {
+        public override string Texture => "Whips145/Buffs/Buff_TagAllWhips";
+
         public override void SetStaticDefaults()
         {
             // Tag que dejan las arañas del Cobwhip sobre los enemigos
@@ -14,6 +16,7 @@ namespace Whips145.Buffs
             Main.pvpBuff[Type] = true;
             Main.buffNoSave[Type] = true;
             BuffID.Sets.LongerExpertDebuff[Type] = false;
+            BuffID.Sets.IsATagBuff[Type] = true;
         }
 
         public override void Update(NPC npc, ref int buffIndex)

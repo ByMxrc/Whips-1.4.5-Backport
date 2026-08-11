@@ -36,8 +36,12 @@ namespace Whips145.Projectiles
                 return;
 
             Projectile.damage = (int)(Projectile.damage * (1f - 0.6f));
-            // Aplicar el tag de Cobwhip (3 segundos = 180 ticks)
+            // Forzar el tag ignorando inmunidad a debuffs (igual que los tags vanilla de látigos)
+            target.buffImmune[ModContent.BuffType<CobwhipTag>()] = false;
             target.AddBuff(ModContent.BuffType<CobwhipTag>(), 180);
+
+            // Buff visible en la barra del JUGADOR (la araña es una invocación que no ocupa slot)
+            Main.player[Projectile.owner].AddBuff(ModContent.BuffType<CobwhipPlayerBuff>(), 180);
 
             // Partículas blancas de telaraña
             for (int i = 0; i < 2; i++)
