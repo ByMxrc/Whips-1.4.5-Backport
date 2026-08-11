@@ -1,0 +1,201 @@
+Buffs: {
+	CobwhipTag: {
+		DisplayName: Marca del Cobwhip
+		Description: Mods.Whips145.Buffs.CobwhipTag.Description
+	}
+
+	ConstellationTag: {
+		DisplayName: Marca de Constellation
+		Description: Mods.Whips145.Buffs.ConstellationTag.Description
+	}
+
+	ElectricEelTag: {
+		DisplayName: Marca de Electric Eel
+		Description: Mods.Whips145.Buffs.ElectricEelTag.Description
+	}
+
+	PossessionTag: {
+		DisplayName: Marca de Possession
+		Description: Mods.Whips145.Buffs.PossessionTag.Description
+	}
+
+	SlimeWhipTag: {
+		DisplayName: Marca del Slime Whip
+		Description: Mods.Whips145.Buffs.SlimeWhipTag.Description
+	}
+
+	SoulscourgeTag: {
+		DisplayName: Marca de Soulscourge
+		Description: Mods.Whips145.Buffs.SoulscourgeTag.Description
+	}
+
+	StarcrashTag: {
+		DisplayName: Marca de Starcrash
+		Description: Mods.Whips145.Buffs.StarcrashTag.Description
+	}
+
+	VasculashTag: {
+		DisplayName: Marca de Vasculash
+		Description: Mods.Whips145.Buffs.VasculashTag.Description
+	}
+
+	VulgarDisplayTag: {
+		DisplayName: Marca de Vulgar Display
+		Description: Mods.Whips145.Buffs.VulgarDisplayTag.Description
+	}
+
+	VulgarDisplayEnergy: {
+		DisplayName: Energía de Vulgar Display
+		Description: Mods.Whips145.Buffs.VulgarDisplayEnergy.Description
+	}
+
+	PossessionEnergy: {
+		DisplayName: Energía de Possession
+		Description: Mods.Whips145.Buffs.PossessionEnergy.Description
+	}
+
+	CobwhipPlayerBuff: {
+		DisplayName: Mejora del Cobwhip
+		Description: Mods.Whips145.Buffs.CobwhipPlayerBuff.Description
+	}
+
+	ElectricEelDebuff: {
+		DisplayName: Electrizado
+		Description: Mods.Whips145.Buffs.ElectricEelDebuff.Description
+	}
+
+	SlimeWhipDebuff: {
+		DisplayName: Debuff del Slime Whip
+		Description: Mods.Whips145.Buffs.SlimeWhipDebuff.Description
+	}
+
+	PossessionEyeTag: {
+		DisplayName: Marca del Ojo de Possession
+		Description: Mods.Whips145.Buffs.PossessionEyeTag.Description
+	}
+}
+
+Items: {
+	Cobwhip: {
+		DisplayName: Cobwhip
+		Tooltip:
+			'''
+			3 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos para invocar una pequeña araña
+			'''
+	}
+
+	Constellation: {
+		DisplayName: Constellation
+		Tooltip:
+			'''
+			15 de daño de invocación por marca
+			15% de probabilidad de ataque crítico de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos para esparcir estrellas aliadas
+			'''
+	}
+
+	ElectricEel: {
+		DisplayName: Anguila Eléctrica
+		Tooltip:
+			'''
+			12 de daño de invocación por marca
+			5% de probabilidad de ataque crítico de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos con energía eléctrica
+			La energía eléctrica resuena entre los enemigos
+			'''
+	}
+
+	Possession: {
+		DisplayName: Possession
+		Tooltip:
+			'''
+			25 de daño de invocación por marca
+			10% de probabilidad de ataque crítico de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos con energía profética
+			Visiones atacan a los enemigos golpeados por invocaciones
+			'''
+	}
+
+	SlimeWhip: {
+		DisplayName: Látigo de Slime
+		Tooltip:
+			'''
+			3 de daño de invocación por marca
+			El chasquido del látigo puede encender a los enemigos
+			'''
+	}
+
+	Soulscourge: {
+		DisplayName: Soulscourge
+		Tooltip:
+			'''
+			5 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			'Azota a tus enemigos con los restos del mal encarnado'
+			'''
+	}
+
+	Starcrash: {
+		DisplayName: Starcrash
+		Tooltip:
+			'''
+			2 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos con energía inestable
+			Meteoritos caen sobre los enemigos inestables al ser golpeados por invocaciones
+			'''
+	}
+
+	Vasculash: {
+		DisplayName: Vasculash
+		Tooltip:
+			'''
+			5 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			'¡Arterias, venas y tendones!'
+			'''
+	}
+
+	VulgarDisplayOfFlower: {
+		DisplayName: Vulgar Display Of Flower
+		Tooltip:
+			'''
+			9 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos con energía volátil
+			Pétalos violentos florecen en los enemigos golpeados por invocaciones
+			'¿Un látigo de espinas arrancado de la mismísima Reina de la Selva? ¡Brutal!'
+			'''
+	}
+}
+
+Projectiles: {
+	CobwhipProj.DisplayName: Proyectil de Cobwhip
+	ConstellationProj.DisplayName: Proyectil de Constellation
+	ElectricEelProj.DisplayName: Proyectil de Electric Eel
+	PossessionProj.DisplayName: Proyectil de Possession
+	SlimeWhipProj.DisplayName: Proyectil de Slime Whip
+	SoulscourgeProj.DisplayName: Proyectil de Soulscourge
+	StarcrashProj.DisplayName: Proyectil de Starcrash
+	VasculashProj.DisplayName: Proyectil de Vasculash
+	VulgarDisplayOfFlowerProj.DisplayName: Proyectil de Vulgar Display Of Flower
+	PossessionProj1.DisplayName: Proyectil 1 de Possession
+	PossessionProj2.DisplayName: Proyectil 2 de Possession
+	PossessionProjSecondary.DisplayName: Proyectil Secundario de Possession
+	CobwhipProj1.DisplayName: Proyectil 1 de Cobwhip
+	StarcrashProj1.DisplayName: Proyectil 1 de Starcrash
+	StarcrashMeteorProj.DisplayName: Meteorito de Starcrash
+	StarcrashMeteorOverlayProj.DisplayName: Efecto de Meteorito de Starcrash
+	VulgarDisplayOfFlowerProj1.DisplayName: Proyectil 1 de Vulgar Display Of Flower
+	ConstellationProj1.DisplayName: Proyectil 1 de Constellation
+	PossessionManager.DisplayName: Gestor de Possession
+	PossessionEyeProj.DisplayName: Ojo de Possession
+	PossessionLaserProj.DisplayName: Láser de Possession
+	ElectricParticle.DisplayName: Partícula Eléctrica
+	PossessionEyeLaserProj.DisplayName: Láser Curvo de Possession
+}
