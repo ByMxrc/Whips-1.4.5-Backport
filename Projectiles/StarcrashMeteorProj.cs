@@ -50,17 +50,11 @@ namespace Whips145.Projectiles
                 // Polvo de fuego intenso (naranja/rojo) como el meteorito vanilla
                 for (int i = 0; i < 2; i++)
                 {
-                    int d = Dust.NewDust(spawnPos, Projectile.width, Projectile.height, DustID.Torch, 
-                                         Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 2.8f);
+                    int d = Dust.NewDust(spawnPos, Projectile.width, Projectile.height, 270, 
+                                         Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 1.25f);
                     Main.dust[d].noGravity = true;
                     Main.dust[d].velocity *= 0.3f; // El polvo se queda atrás formando la cola
                 }
-                
-                // Polvo chispeante (blanco/amarillo) para el centro caliente
-                int d2 = Dust.NewDust(spawnPos, Projectile.width, Projectile.height, DustID.SparksMech, 
-                                      0f, 0f, 100, default, 1.5f);
-                Main.dust[d2].velocity *= 1.2f;
-                Main.dust[d2].noGravity = true;
             }
 
             // Solo empieza a chocar contra bloques cuando está a punto de llegar a la altura del enemigo

@@ -42,7 +42,7 @@ namespace Whips145.Projectiles
 
                 if (Main.rand.NextBool(13)) // Densidad ajustada (un 10% adicional más)
                 {
-                    int type = Main.rand.NextBool() ? DustID.ChlorophyteWeapon : DustID.PinkSlime;
+                    int type = Main.rand.NextBool() ? 166 : 167;
                     
                     // Inercia en la dirección del látigo con una ligera dispersión
                     Vector2 dustVelocity = whipDirection * Main.rand.NextFloat(3f, 6f) + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f));

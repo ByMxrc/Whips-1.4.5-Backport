@@ -19,8 +19,8 @@ namespace Whips145.Projectiles
         public override void SetDefaults()
         {
             Projectile.DefaultToWhip();
-            Projectile.WhipSettings.Segments = 15;
-            Projectile.WhipSettings.RangeMultiplier = 0.46f;
+            Projectile.WhipSettings.Segments = 18;
+            Projectile.WhipSettings.RangeMultiplier = 0.40f; // Alcance maximo: 13 bloques
         }
 
         public override bool PreAI()
@@ -28,7 +28,7 @@ namespace Whips145.Projectiles
             Player player = Main.player[Projectile.owner];
             
             // Actualizamos los segmentos según el multiplicador (lo que antes hacía AI())
-            Projectile.WhipSettings.Segments = (int)(15 * player.whipRangeMultiplier);
+            Projectile.WhipSettings.Segments = (int)(18 * player.whipRangeMultiplier);
 
             // Recreamos la IA nativa del látigo para evitar que corra la original y ponga el sonido
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
@@ -55,19 +55,6 @@ namespace Whips145.Projectiles
                 SoundEngine.PlaySound(SoundID.NPCHit9, Projectile.position);
             }
 
-            // Generar partículas a lo largo del látigo (restaurando lo que hacía la IA nativa)
-            List<Vector2> list = new List<Vector2>();
-            Projectile.FillWhipControlPoints(Projectile, list);
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (Vector2.Distance(list[i], player.Center) > 40f && Main.rand.NextBool(10)) 
-                {
-                    int dust = Dust.NewDust(list[i] - new Vector2(10, 10), 20, 20, DustID.Blood, 0f, 0f, 0, default, 1.0f);
-                    // Dejamos que caigan con la gravedad (sin noGravity)
-                    Main.dust[dust].velocity *= 0.3f;
-                }
-            }
-
             return false; // Retornamos false para evitar que corra la IA nativa del látigo
         }
 
@@ -80,13 +67,6 @@ namespace Whips145.Projectiles
             Projectile.damage = (int)(Projectile.damage * (1f - 0.4f));
             // Tag de Vasculash (5 segundos = 300 ticks)
             target.AddBuff(ModContent.BuffType<VasculashTag>(), 300);
-
-            // Partículas de sangre carmesí
-            for (int i = 0; i < 2; i++)
-            {
-                int dust = Dust.NewDust(target.position, target.width, target.height, DustID.Blood, 0f, 0f, 0, default, 1.0f);
-                Main.dust[dust].velocity *= 0.3f;
-            }
         }
     
         public override bool PreDraw(ref Color lightColor)
@@ -101,21 +81,15 @@ namespace Whips145.Projectiles
             int totalFrames = 6;
             int frameWidth = texture.Width;
             int frameHeight = texture.Height / totalFrames;
+            Vector2 origin = new Vector2(frameWidth / 2f, 4f); 
 
             Vector2 pos = list[0];
             for (int i = 0; i < list.Count - 1; i++)
             {
                 Rectangle frame = new Rectangle(0, 0, frameWidth, frameHeight);
-                Vector2 origin = new Vector2(frameWidth / 2f, 4f); 
 
-                if (i == 0)
-                {
-                    frame.Y = 0;
-                }
-                else if (i == list.Count - 2)
-                {
-                    frame.Y = frameHeight * (totalFrames - 1);
-                }
+                if (i == 0) frame.Y = 0;
+                else if (i == list.Count - 2) frame.Y = frameHeight * (totalFrames - 1);
                 else
                 {
                     int midFrame = 1 + (i % (totalFrames - 2));
@@ -127,26 +101,58 @@ namespace Whips145.Projectiles
                 float rotation = diff.ToRotation() - MathHelper.PiOver2;
                 Color color = Lighting.GetColor(element.ToTileCoordinates());
 
-                // Escala Y dinámica: solo estira si la distancia es mayor al tamaño del segmento
-                // para evitar que se separen al aumentar el rango, pero sin aplastarlos.
-                float scaleY = 1f;
-                if (diff.Length() > (frameHeight - 4f))
+                // 3 zonas de escala independientes:
+                // - Mango (i==0): escala propia
+                // - Cuerpo: progresión suave de pequeño a grande
+                // - Punta: escala propia
+                float finalScale;
+                if (i == 0)
                 {
-                    scaleY = diff.Length() / (frameHeight - 4f);
+                    finalScale = 0.75f; // Mango
                 }
-                Vector2 scale = new Vector2(1f, scaleY);
-
-                // Draw the segment
-                Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
-
-                // Partículas al usar el látigo
-                if (Vector2.Distance(pos, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(20)) 
+                else if (i == list.Count - 2)
                 {
-                    int dust = Dust.NewDust(pos - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, DustID.Blood, 0f, 0f, 0, default, 1.0f);
-                    Main.dust[dust].velocity *= 0.3f;
+                    finalScale = 0.8f; // Punta
+                }
+                else
+                {
+                    float bodyProgress = (float)(i - 1) / (float)(list.Count - 3);
+                    finalScale = MathHelper.Lerp(0.6f, 0.8f, bodyProgress); // Cuerpo
                 }
 
-                pos += diff;
+                // --- ESTIRAMIENTO de los primeros segmentos del cuerpo ---
+                // Ajusta estos valores a gusto:
+                int earlyStretchCount = 7;    // Cuántos segmentos del inicio se estiran
+                float earlyStretchMax  = 1f; // Máximo estiramiento (1.0 = nada, 1.5 = mucho)
+
+                float stretchY = 1.0f;
+                if (i > 0 && i <= earlyStretchCount)
+                {
+                    float t = 1f - (float)(i - 1) / earlyStretchCount;
+                    stretchY = MathHelper.Lerp(1.0f, earlyStretchMax, t);
+                }
+
+                Vector2 scale = new Vector2(finalScale, finalScale * stretchY);
+
+                Main.EntitySpriteDraw(texture, element - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
+
+                if (Vector2.Distance(element, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(30)) 
+                {
+                    // Aumentamos la escala de 1.0f a 1.6f para que la sangre tarde más en desaparecer
+                    int dust = Dust.NewDust(element - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, DustID.Blood, 0f, 0f, 0, default, 1.25f);
+                    Vector2 dustDir = diff.SafeNormalize(Vector2.Zero);
+                    Main.dust[dust].velocity = dustDir * Main.rand.NextFloat(1.5f, 3f)
+                        + new Vector2(Main.rand.NextFloat(-0.4f, 0.4f), Main.rand.NextFloat(-0.2f, 0.2f));
+                }
+
+                if (Vector2.Distance(element, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(25)) 
+                {
+                    int dust = Dust.NewDust(element - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, 115, 0f, 0f, 0, default, 1.0f);
+                    // Salen en la dirección del swing del látigo (diff apunta hacia donde ataca)
+                    Vector2 dustDir = diff.SafeNormalize(Vector2.Zero);
+                    Main.dust[dust].velocity = dustDir * Main.rand.NextFloat(1.5f, 3f)
+                        + new Vector2(Main.rand.NextFloat(-0.4f, 0.4f), Main.rand.NextFloat(-0.2f, 0.2f));
+                }
             }
 
             return false;

@@ -280,7 +280,18 @@ namespace Whips145.Common
                 if (Main.myPlayer == projectile.owner)
                 {
                     float baseAngle = Main.rand.NextFloat(MathHelper.TwoPi);
-                    float speed = 6.0f; // Aumentado para separarse ~5.5-6 bloques (aprox 95 píxeles)
+                    // Aumentado masivamente de 6.0 a 16.0 para que se alejen mucho más del objetivo
+                    float speed = 16.0f; 
+                    
+                    // Definimos el orden en que brillarán: 0 y 1 son los primeros, 2 es el que tarda más
+                    int[] glowOrder = { 0, 1, 2 };
+                    for (int k = 0; k < 3; k++) {
+                        int r = Main.rand.Next(3);
+                        int temp = glowOrder[k];
+                        glowOrder[k] = glowOrder[r];
+                        glowOrder[r] = temp;
+                    }
+
                     for (int i = 0; i < 3; i++)
                     {
                         float angle = baseAngle + (i * MathHelper.TwoPi / 3f);
@@ -293,7 +304,9 @@ namespace Whips145.Common
                             ModContent.ProjectileType<VulgarDisplayOfFlowerProj1>(), 
                             petalDamage, 
                             0f, 
-                            projectile.owner
+                            projectile.owner,
+                            0f,             // ai[0] no se usa
+                            glowOrder[i]    // ai[1] guarda si es el rezagado
                         );
                     }
                 }

@@ -55,8 +55,8 @@ namespace Whips145.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            // Evita golpear durante la fase de dispersión (30 ticks lógicos = 60 con extraUpdates)
-            if (Projectile.localAI[0] <= 60)
+            // Evita golpear durante la fase de dispersión (29 frames visuales a 60fps = 58 ticks con extraUpdates)
+            if (Projectile.localAI[0] <= 58)
             {
                 return false;
             }
@@ -80,7 +80,7 @@ namespace Whips145.Projectiles
             // localAI[0] maneja el contador del retraso
             Projectile.localAI[0]++;
 
-            if (Projectile.localAI[0] <= 60) // 0.5 seg * 60 fps * 2 (extraUpdates)
+            if (Projectile.localAI[0] <= 58) // 70 frames @ 144fps = ~29 frames @ 60fps = 58 ticks (extraUpdates)
             {
                 // Primera fase: salen volando y frenan un poco
                 Projectile.velocity *= 0.95f;

@@ -41,37 +41,38 @@ namespace Whips145.Projectiles
             // Efecto: Liberar 6 estrellas fugaces (solo en el primer golpe de cada balanceo)
             if (!spawnedStars && Projectile.owner == Main.myPlayer)
             {
-
                 spawnedStars = true;
-
                 int starDamage = (int)(Projectile.originalDamage * 0.297f);
 
                 List<Vector2> list = new List<Vector2>();
                 Projectile.FillWhipControlPoints(Projectile, list);
 
-                for (int i = 0; i < 6; i++)
+                int maxStars = 6;
+                int spawned = 0;
+
+                for (int i = 1; i < list.Count - 1 && spawned < maxStars; i++)
                 {
-                    // Distribuir equitativamente los 6 proyectiles a lo largo de los segmentos del látigo
-                    int pointIndex = (int)((list.Count - 1) * (i / 5f));
-                    if (pointIndex < 0) pointIndex = 0;
-                    if (pointIndex >= list.Count) pointIndex = list.Count - 1;
-                    
-                    Vector2 spawnPos = list[pointIndex];
-                    
-                    // Velocidad inicial hacia afuera (-10%). 
-                    // Como el proyectil ahora tiene extraUpdates = 1, dividimos el valor real entre 2 (5.4f en vez de 10.8f)
-                    Vector2 initialVelocity = Main.rand.NextVector2CircularEdge(5.4f, 5.4f) * Main.rand.NextFloat(0.8f, 1.2f);
-                    
-                    Projectile.NewProjectile(
-                        Projectile.GetSource_FromThis(),
-                        spawnPos,
-                        initialVelocity,
-                        ModContent.ProjectileType<ConstellationProj1>(),
-                        starDamage,
-                        Projectile.knockBack,
-                        Projectile.owner,
-                        target.whoAmI // ai[0] guarda el NPC inicial al que debe perseguir
-                    );
+                    int j = i - 1;
+                    if (j % 3 == 0) // Exactamente la misma lógica del patrón visual (1 sí, 2 no)
+                    {
+                        Vector2 spawnPos = list[i];
+                        
+                        // Velocidad inicial hacia afuera
+                        Vector2 initialVelocity = Main.rand.NextVector2CircularEdge(5.4f, 5.4f) * Main.rand.NextFloat(0.8f, 1.2f);
+                        
+                        Projectile.NewProjectile(
+                            Projectile.GetSource_FromThis(),
+                            spawnPos,
+                            initialVelocity,
+                            ModContent.ProjectileType<ConstellationProj1>(),
+                            starDamage,
+                            Projectile.knockBack,
+                            Projectile.owner,
+                            target.whoAmI // ai[0] guarda el NPC inicial al que debe perseguir
+                        );
+                        
+                        spawned++;
+                    }
                 }
             }
         }
@@ -127,14 +128,9 @@ namespace Whips145.Projectiles
                 if (i > 0 && i < list.Count - 2)
                 {
                     int j = i - 1;
-                    // Patrón de 4 segmentos:
-                    // j % 4 == 0 -> + (cruz normal)
-                    // j % 4 == 1 -> x (estrella rotada 45 grados)
-                    // j % 4 == 2 -> + (cruz grande)  <-- la primera de las 3 cruces
-                    // j % 4 == 3 -> + (cruz normal)
-                    
-                    isX = (j % 4 == 1);
-                    isBig = (j % 4 == 2);
+                    // Patrón de 3 segmentos: 1 brilla, 2 no brillan
+                    isBig = (j % 3 == 0); 
+                    isX = (j % 3 == 1);
                     
                     // Todos tamaño similar (0.45), menos la cruz grande que aumenta un ~5% extra (0.58)
                     scale = isBig ? 0.58f : 0.45f;
@@ -210,14 +206,19 @@ namespace Whips145.Projectiles
                     // Aumento del 15% pedido para las cruces
                     baseGlowScale *= 1.15f;
                     
-                    // Mantenemos las estrellas pequeñas a un 20% del tamaño, y damos +5% extra a las grandes (1.05f)
-                    float glowScale = baseGlowScale * (isRedCircle ? 0.90f : 0.35f);
+                    // Mantenemos las estrellas pequeñas a un 20% del tamaño, y damos +5% extra a las grandes
+                    float glowScale = baseGlowScale * (isRedCircle ? 1.4f : 0.35f); // Aumentado el 0.90f a 1.4f para que brillen MUCHO más
 
                     // CÁLCULO DE ALINEACIÓN
                     Vector2 visualCenter = (pos - Main.screenPosition) + diff.SafeNormalize(Vector2.Zero) * ((frameHeight / 2f) - 4f) * scale;
 
                     // 1. Núcleo central suave
-                    Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor * 0.25f, 0f, glowOrigin, glowScale * 0.7f, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor * (isRedCircle ? 0.4f : 0.25f), 0f, glowOrigin, glowScale * 0.7f, SpriteEffects.None, 0);
+                    
+                    // Añadir un núcleo blanco extra para las estrellas que más brillan
+                    if (isRedCircle) {
+                        Main.EntitySpriteDraw(glowTex, visualCenter, null, Color.White * 0.6f, 0f, glowOrigin, glowScale * 0.2f, SpriteEffects.None, 0);
+                    }
 
                     // ALINEACIÓN EN PANTALLA (0 GRADOS, O 45 GRADOS PARA LAS X)
                     float flareRot = isX ? MathHelper.PiOver4 : 0f;

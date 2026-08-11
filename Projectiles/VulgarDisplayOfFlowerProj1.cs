@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -31,8 +32,11 @@ namespace Whips145.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            // Evita golpear durante el primer medio segundo (30 ticks) al enemigo del que salieron
-            if (Projectile.timeLeft > 120 - 30)
+            // Evita golpear durante la fase de expansión. Depende de si es de los rezagados o no.
+            bool isDelayed = Projectile.ai[1] == 2;
+            int homingStartTick = isDelayed ? 40 : 30;
+
+            if (Projectile.localAI[0] < homingStartTick)
             {
                 return false;
             }
@@ -51,21 +55,20 @@ namespace Whips145.Projectiles
                 }
             }
 
-            // Inicialización de tiempo de expansión (0.33s a 0.67s = 20 a 40 ticks)
-            if (Projectile.localAI[0] == 0)
-            {
-                Projectile.localAI[0] = Main.rand.Next(20, 41);
-            }
+            Projectile.localAI[0]++;
+            int tick = (int)Projectile.localAI[0];
+            bool isDelayed = Projectile.ai[1] == 2;
+            int homingStartTick = isDelayed ? 40 : 30;
 
-            // Fase de expansión
-            if (Projectile.localAI[0] > 1)
+            if (tick < homingStartTick)
             {
-                Projectile.localAI[0]--;
+                // Fase de expansión
                 Projectile.velocity *= 0.95f; // Frena suavemente
                 Projectile.rotation += Projectile.velocity.X * 0.05f; // Rota un poco visualmente
             }
-            else // Fase de persecución
+            else 
             {
+                // Fase de persecución
                 float maxDetectRadius = 340f; // 21.25 tiles
                 float sqrMaxDetectRadius = maxDetectRadius * maxDetectRadius;
                 NPC closestNPC = null;
@@ -97,27 +100,90 @@ namespace Whips145.Projectiles
                     // Si está persiguiendo a un objetivo, se asegura de ser completamente visible
                     if (Projectile.alpha > 0)
                         Projectile.alpha = Math.Max(0, Projectile.alpha - 15);
+                        
+                    // Orientar en la dirección de movimiento
+                    Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
                 }
                 else
                 {
                     // Si no hay objetivos (o el que perseguía murió), se frena poco a poco y se desvanece
                     Projectile.velocity *= 0.98f;
+                    Projectile.rotation += Projectile.velocity.X * 0.05f;
                     Projectile.alpha += 10;
                     if (Projectile.alpha >= 255)
                     {
                         Projectile.Kill();
                     }
                 }
-                
-                // Orientar en la dirección de movimiento
-                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             }
 
-            // Partículas de polvo opcionales para efecto visual extra
-            if (Main.rand.NextBool(3))
+            // Partículas opcionales al brillar
+            bool isGlowing = (!isDelayed && tick >= 8 && tick <= 19) || (isDelayed && tick >= 22 && tick <= 33);
+            if (isGlowing && Main.rand.NextBool(2))
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Grass, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PinkFairy, 0f, 0f, 100, default, 1.2f);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity *= 0.5f;
             }
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Type].Value;
+            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
+            Rectangle frameRect = new Rectangle(0, frameHeight * Projectile.frame, texture.Width, frameHeight);
+            Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
+
+            bool isDelayed = Projectile.ai[1] == 2;
+            int tick = (int)Projectile.localAI[0];
+            
+            bool isGlowing = false;
+            float glowFactor = 0f;
+
+            if (!isDelayed)
+            {
+                if (tick >= 8 && tick <= 19)
+                {
+                    isGlowing = true;
+                    // Parábola matemática (seno) para hacer fade in (0 a 1) y fade out (1 a 0)
+                    glowFactor = (float)Math.Sin(Math.PI * (tick - 8) / 11f);
+                }
+            }
+            else
+            {
+                if (tick >= 22 && tick <= 33)
+                {
+                    isGlowing = true;
+                    glowFactor = (float)Math.Sin(Math.PI * (tick - 22) / 11f);
+                }
+            }
+
+            if (isGlowing)
+            {
+                Texture2D glowTex = ModContent.Request<Texture2D>("Terraria/Images/Extra_89").Value;
+                Vector2 glowOrigin = glowTex.Size() / 2f;
+                
+                // Bloom rosa
+                Color bloomColor = new Color(255, 105, 180, 0) * glowFactor * 0.8f;
+                Vector2 visualCenter = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+                float glowScale = Projectile.scale * 0.6f * glowFactor;
+
+                // Núcleo
+                Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor * 0.7f, 0f, glowOrigin, glowScale * 1.5f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(glowTex, visualCenter, null, Color.White * 0.6f * glowFactor, 0f, glowOrigin, glowScale * 0.5f, SpriteEffects.None, 0);
+
+                // Destellos en cruz (+)
+                Vector2 scaleLong = new Vector2(0.12f, 1.3f) * glowScale;
+                Vector2 scaleShort = new Vector2(1.3f, 0.12f) * glowScale;
+
+                // Usamos una rotación fija o la del proyectil, aquí usamos la rotación del proyectil
+                Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor, Projectile.rotation, glowOrigin, scaleLong, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor, Projectile.rotation, glowOrigin, scaleShort, SpriteEffects.None, 0);
+            }
+
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), frameRect, lightColor * ((255 - Projectile.alpha) / 255f), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+
+            return false;
         }
 
         public override void Kill(int timeLeft)
