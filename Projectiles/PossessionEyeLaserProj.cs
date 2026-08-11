@@ -52,15 +52,15 @@ namespace Whips145.Projectiles
                         float sign = Main.rand.NextBool() ? 1f : -1f;
                         float randomAngle = sign * Main.rand.NextFloat(1.0f, 1.57f);
                         
-                        // Sale disparado hacia el costado
-                        Projectile.velocity = toTarget.RotatedBy(randomAngle) * 12f;
+                        // Sale disparado hacia el costado (más lento para que dure más tiempo)
+                        Projectile.velocity = toTarget.RotatedBy(randomAngle) * 8f;
                         Projectile.localAI[0] = 1f;
                     }
 
                     // Homing: Ajustar la velocidad para que gire hacia el objetivo dibujando una curva
                     Vector2 toTargetNow = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-                    float speed = 24f; // Velocidad máxima (con extraUpdates viaja muy rápido)
-                    float turnSpeed = 0.08f; // Suavidad de giro (menor = curva más amplia)
+                    float speed = 16f; // Velocidad reducida (antes 24f) para que dure un 50% más
+                    float turnSpeed = 0.06f; // Suavidad de giro ajustada a la nueva velocidad
                     
                     Projectile.velocity = (Projectile.velocity * (1f - turnSpeed)) + (toTargetNow * speed * turnSpeed);
                 }

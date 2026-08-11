@@ -318,12 +318,9 @@ namespace Whips145.Common
 
                     for (int i = 0; i < 3; i++)
                     {
-                        // Posición aleatoria en un radio de 10 bloques, pero nunca más cerca de 3 bloques (48 píxeles)
-                        Vector2 randomOffset = Main.rand.NextVector2Circular(160f, 160f);
-                        if (randomOffset.Length() < 48f)
-                        {
-                            randomOffset = randomOffset.SafeNormalize(Vector2.UnitY) * 48f;
-                        }
+                        // Dirección aleatoria y distancia entre 7 bloques (112 píxeles) y 15 bloques (240 píxeles)
+                        Vector2 randomOffset = Main.rand.NextVector2Unit() * Main.rand.NextFloat(112f, 240f);
+                        
                         Vector2 spawnPos = npc.Center + randomOffset;
                         
                         Projectile.NewProjectile(
