@@ -3,13 +3,13 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class CobwhipProj1 : ModProjectile
     {
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 4; // 4 frames de animación de la araña (24x14 cada uno)
+            Main.projFrames[Type] = 4; // 4 frames de animaciÃ³n de la araÃ±a (24x14 cada uno)
         }
 
         public override void SetDefaults()
@@ -38,7 +38,7 @@ namespace Whips145.Projectiles
 
         public override void AI()
         {
-            // Animación
+            // AnimaciÃ³n
             if (System.Math.Abs(Projectile.velocity.X) > 0.5f) 
             {
                 if (++Projectile.frameCounter >= 5)
@@ -50,7 +50,7 @@ namespace Whips145.Projectiles
             } 
             else 
             {
-                Projectile.frame = 0; // Se queda quieta si no camina rápido
+                Projectile.frame = 0; // Se queda quieta si no camina rÃ¡pido
             }
 
             // 2. BUSCAR OBJETIVO
@@ -77,7 +77,7 @@ namespace Whips145.Projectiles
             float diffX = targetPos.X - Projectile.Center.X;
             float distToTarget = Vector2.Distance(Projectile.Center, targetPos);
 
-            // 1. GRAVEDAD BÁSICA
+            // 1. GRAVEDAD BÃSICA
             Projectile.velocity.Y += 0.4f;
                 if (Projectile.velocity.Y > 10f)
                 {
@@ -88,7 +88,7 @@ namespace Whips145.Projectiles
                 if (System.Math.Abs(diffX) > 20f)
                 {
                     Projectile.velocity.X += System.Math.Sign(diffX) * 0.5f;
-                    float maxSpeed = target != null ? 7f : 5f; // Corre más rápido si persigue
+                    float maxSpeed = target != null ? 7f : 5f; // Corre mÃ¡s rÃ¡pido si persigue
                     
                     if (System.Math.Abs(Projectile.velocity.X) > maxSpeed)
                     {
@@ -97,7 +97,7 @@ namespace Whips145.Projectiles
                 }
                 else
                 {
-                    Projectile.velocity.X *= 0.8f; // Fricción al llegar
+                    Projectile.velocity.X *= 0.8f; // FricciÃ³n al llegar
                 }
 
                 // Reducir cooldown de salto
@@ -111,20 +111,28 @@ namespace Whips145.Projectiles
                 
                 if (onGround)
                 {
-                    // Si estamos persiguiendo y bastante cerca, el objetivo está MÁS ARRIBA que la araña, y NO está en cooldown
-                    if (target != null && distToTarget < 120f && targetPos.Y < Projectile.position.Y - 10f && Projectile.ai[0] == 0)
+                    // Si se está moviendo hacia un objetivo y no está en cooldown
+                    if (System.Math.Abs(diffX) > 20f && Projectile.ai[0] == 0)
                     {
-                        Projectile.velocity.Y = -3.5f; // Salto pequeño
-                        Projectile.velocity.X = System.Math.Sign(diffX) * 6f; // Acelerón en el aire
-                        Projectile.ai[0] = 45; // 45 frames de cooldown para no brincar como loco
+                        if (Main.rand.NextBool(6)) // 1/6 de probabilidad de salto grande
+                        {
+                            Projectile.velocity.Y = -9.8f; // Salto de 7.5 bloques (120px)
+                        }
+                        else
+                        {
+                            Projectile.velocity.Y = -5.65f; // Salto de 2.5 bloques (40px)
+                        }
+                        
+                        // Cooldown de 10 frames para que no rebote instantáneamente cada milisegundo
+                        Projectile.ai[0] = 10; 
                     }
-                    // Si vamos caminando y nos topamos con una pared, saltamos el obstáculo
+                    // Si topamos con una pared, saltamos el obstáculo
                     else if (System.Math.Abs(Projectile.velocity.X) > 0.5f)
                     {
                         Vector2 checkPos = Projectile.position + new Vector2(System.Math.Sign(Projectile.velocity.X) * 16, 0);
                         if (Collision.SolidCollision(checkPos, Projectile.width, Projectile.height))
                         {
-                            Projectile.velocity.Y = -4f; // Salto normal para obstáculos
+                            Projectile.velocity.Y = -5.65f;
                         }
                     }
                 }
@@ -162,7 +170,7 @@ namespace Whips145.Projectiles
             {
                 return;
             }
-            // Aplica el buff (el tag de 3 de daño) como indica la wiki - forzando inmunidad
+            // Aplica el buff (el tag de 3 de daÃ±o) como indica la wiki - forzando inmunidad
             target.buffImmune[ModContent.BuffType<Buffs.CobwhipTag>()] = false;
             target.AddBuff(ModContent.BuffType<Buffs.CobwhipTag>(), 180);
         }

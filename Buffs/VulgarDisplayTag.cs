@@ -1,14 +1,14 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Whips145.Buffs
+namespace TerrariaWhipsBackport.Buffs
 {
     // Tag de Vulgar Display of Flower: cuando los minions golpean al enemigo marcado,
-    // florecen pétalos que hacen daño adicional.
+    // florecen pÃ©talos que hacen daÃ±o adicional.
     public class VulgarDisplayTag : ModBuff
     {
-        public override string Texture => "Whips145/Buffs/Buff_TagAllWhips";
+        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_TagAllWhips";
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;

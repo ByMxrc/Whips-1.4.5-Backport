@@ -1,13 +1,13 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Projectiles;
+using TerrariaWhipsBackport.Projectiles;
 
-namespace Whips145.Items
+namespace TerrariaWhipsBackport.Items
 {
     /// <summary>
-    /// Vasculash - Látigo de Carmesí (alternativa a Soulscourge).
-    /// Daño: 19 | Tag: +5 | Receta: 12 Crimtane Bars en Anvil
+    /// Vasculash - LÃ¡tigo de CarmesÃ­ (alternativa a Soulscourge).
+    /// DaÃ±o: 19 | Tag: +5 | Receta: 12 Crimtane Bars en Anvil
     /// </summary>
     public class Vasculash : ModItem
     {

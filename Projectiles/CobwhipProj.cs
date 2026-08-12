@@ -5,9 +5,9 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Buffs;
+using TerrariaWhipsBackport.Buffs;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class CobwhipProj : ModProjectile
     {
@@ -20,7 +20,7 @@ namespace Whips145.Projectiles
         {
             Projectile.DefaultToWhip();
             Projectile.WhipSettings.Segments = 20;
-            Projectile.WhipSettings.RangeMultiplier = 0.43f;
+            Projectile.WhipSettings.RangeMultiplier = 1f;
         }
 
         public override void AI()
@@ -31,19 +31,19 @@ namespace Whips145.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            // Evitar efectos en muñecos de pruebas o animales
+            // Evitar efectos en muÃ±ecos de pruebas o animales
             if (target.friendly || target.type == NPCID.TargetDummy || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
                 return;
 
             Projectile.damage = (int)(Projectile.damage * (1f - 0.6f));
-            // Forzar el tag ignorando inmunidad a debuffs (igual que los tags vanilla de látigos)
+            // Forzar el tag ignorando inmunidad a debuffs (igual que los tags vanilla de lÃ¡tigos)
             target.buffImmune[ModContent.BuffType<CobwhipTag>()] = false;
             target.AddBuff(ModContent.BuffType<CobwhipTag>(), 180);
 
-            // Buff visible en la barra del JUGADOR (la araña es una invocación que no ocupa slot)
+            // Buff visible en la barra del JUGADOR (la araÃ±a es una invocaciÃ³n que no ocupa slot)
             Main.player[Projectile.owner].AddBuff(ModContent.BuffType<CobwhipPlayerBuff>(), 180);
 
-            // Partículas blancas de telaraña
+            // PartÃ­culas blancas de telaraÃ±a
             for (int i = 0; i < 2; i++)
             {
                 int dust = Dust.NewDust(target.position, target.width, target.height, DustID.Web, 0f, 0f, 150, default, 1f);
@@ -53,7 +53,7 @@ namespace Whips145.Projectiles
 
             Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 
-            // Solo spawnear nuestra arañita si el enemigo es válido (no dummies, no animales amistosos)
+            // Solo spawnear nuestra araÃ±ita si el enemigo es vÃ¡lido (no dummies, no animales amistosos)
             if (Main.myPlayer == Projectile.owner && target.CanBeChasedBy())
             {
                 int existingSpider = -1;
@@ -69,7 +69,7 @@ namespace Whips145.Projectiles
 
                 if (existingSpider != -1)
                 {
-                    // Refrescar duración si ya existe
+                    // Refrescar duraciÃ³n si ya existe
                     Main.projectile[existingSpider].timeLeft = 180;
                     Main.projectile[existingSpider].alpha = 0; // Reiniciar transparencia
                 }
@@ -82,7 +82,7 @@ namespace Whips145.Projectiles
                         spawnPos,
                         Vector2.Zero,
                         ModContent.ProjectileType<CobwhipProj1>(),
-                        2, // 2 de daño base
+                        2, // 2 de daÃ±o base
                         0f, // 0 knockback
                         Projectile.owner
                     );
@@ -112,7 +112,7 @@ namespace Whips145.Projectiles
             for (int i = 0; i < list.Count - 1; i++)
             {
                 Rectangle frame = new Rectangle(0, 0, frameWidth, frameHeight);
-                Vector2 origin = new Vector2(frameWidth / 2f, 4f);
+                Vector2 origin = new Vector2(frameWidth / 2f, frameHeight / 2f);
                 if (i == 0)
                 {
                     frame.Y = 0;
@@ -132,19 +132,16 @@ namespace Whips145.Projectiles
                 float rotation = diff.ToRotation() - MathHelper.PiOver2;
                 Color color = Lighting.GetColor(element.ToTileCoordinates());
 
-                // Escala Y dinámica: solo estira si la distancia es mayor al tamaño del segmento
-                // para evitar que se separen al aumentar el rango, pero sin aplastarlos.
-                float scaleY = 1f;
-                if (diff.Length() > (frameHeight - 4f))
-                {
-                    scaleY = diff.Length() / (frameHeight - 4f);
-                }
+                // Como la textura original tiene padding transparente y mide 14px pero el arte
+                // solo mide unos 6px, al dividir por 14 (frameHeight) el juego la aplasta a la mitad.
+                // Usando 6f evitamos que se aplaste, ya que diff.Length() es aprox 7.2px.
+                float scaleY = diff.Length() / 6f;
                 Vector2 scale = new Vector2(1f, scaleY);
 
                 // Draw the segment
                 Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
 
-                // Partículas al usar el látigo
+                // PartÃ­culas al usar el lÃ¡tigo
                 if (Main.rand.NextBool(25)) 
                 {
                     int dust = Dust.NewDust(pos - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, DustID.Web, 0f, 0f, 150, default, 1f);

@@ -4,13 +4,13 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Buffs;
+using TerrariaWhipsBackport.Buffs;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
-    // El Starcrash marca al enemigo con energía "cargada".
+    // El Starcrash marca al enemigo con energÃ­a "cargada".
     // Cuando un minion golpea al enemigo marcado, se invoca un meteorito
-    // que hace 1.33x el daño del minion en área pequeña.
+    // que hace 1.33x el daÃ±o del minion en Ã¡rea pequeÃ±a.
     public class StarcrashProj : ModProjectile
     {
         public override void SetStaticDefaults()
@@ -22,12 +22,12 @@ namespace Whips145.Projectiles
         {
             Projectile.DefaultToWhip();
             Projectile.WhipSettings.Segments = 10;
-            Projectile.WhipSettings.RangeMultiplier = 0.61f;
+            Projectile.WhipSettings.RangeMultiplier = 1f;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            // Evitar efectos en muñecos de pruebas o animales
+            // Evitar efectos en muÃ±ecos de pruebas o animales
             if (target.friendly || target.type == NPCID.TargetDummy || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
                 return;
 
@@ -60,8 +60,8 @@ namespace Whips145.Projectiles
             int frameWidth = texture.Width;
             int frameHeight = texture.Height / totalFrames;
 
-            // --- 1. DIBUJAR LA LÍNEA MORADA ORIGINAL ---
-            // Dibujamos la línea usando TODOS los puntos físicos para que la curva siempre sea 100% suave
+            // --- 1. DIBUJAR LA LÃNEA MORADA ORIGINAL ---
+            // Dibujamos la lÃ­nea usando TODOS los puntos fÃ­sicos para que la curva siempre sea 100% suave
             for (int i = 0; i < list.Count - 2; i++)
             {
                 Vector2 element = list[i];
@@ -96,7 +96,7 @@ namespace Whips145.Projectiles
             {
                 float targetDist = s * segmentLength;
                 
-                // Prevenir que una estrella desaparezca si la separación extra de +2f sobrepasa el largo total de la cuerda
+                // Prevenir que una estrella desaparezca si la separaciÃ³n extra de +2f sobrepasa el largo total de la cuerda
                 if (targetDist >= totalLength) targetDist = totalLength - 0.01f;
 
                 float accumulated = 0f;

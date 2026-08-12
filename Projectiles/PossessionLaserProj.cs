@@ -1,14 +1,14 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class PossessionLaserProj : ModProjectile
     {
-        public override string Texture => "Whips145/Projectiles/PossessionLaser";
+        public override string Texture => "TerrariaWhipsBackport/Projectiles/PossessionLaser";
 
         public override void SetDefaults()
         {
@@ -28,11 +28,11 @@ namespace Whips145.Projectiles
             {
                 Projectile.localAI[0] = 1f;
                 
-                // Ángulo aleatorio leve para simular el cuerpo ondulante de una serpiente
+                // Ãngulo aleatorio leve para simular el cuerpo ondulante de una serpiente
                 float randomAngle = Main.rand.NextFloat(-0.4f, 0.4f);
                 Projectile.localAI[1] = randomAngle;
                 
-                // Variación de posición ligera arriba/abajo para que la línea suba y baje
+                // VariaciÃ³n de posiciÃ³n ligera arriba/abajo para que la lÃ­nea suba y baje
                 Vector2 dir = new Vector2(Projectile.ai[0], Projectile.ai[1]);
                 if (dir == Vector2.Zero) dir = Vector2.UnitX;
                 Vector2 perp = new Vector2(-dir.Y, dir.X);
@@ -55,9 +55,9 @@ namespace Whips145.Projectiles
             }
 
             // Curva de opacidad calibrada para 20 ticks:
-            //   ticks 0.0 - 3.0: fade-IN (aparece rápido y suave)
+            //   ticks 0.0 - 3.0: fade-IN (aparece rÃ¡pido y suave)
             //   ticks 3.0 - 8.0: se mantiene brillante
-            //   ticks 8.0 - 20.0: fade-OUT (desaparición muy extendida y suave)
+            //   ticks 8.0 - 20.0: fade-OUT (desapariciÃ³n muy extendida y suave)
             float maxVisibleTime = 20f;
             float elapsed = maxVisibleTime - Projectile.timeLeft;
             if (Projectile.timeLeft <= maxVisibleTime && elapsed >= 0f)
@@ -90,15 +90,15 @@ namespace Whips145.Projectiles
             }
                 
             // Cuando desaparece, suelta un "estallido" del polvo del Phantasmal Eye (Vortex)
-            // Estas son las mismas partículas que deja el látigo en el aire.
+            // Estas son las mismas partÃ­culas que deja el lÃ¡tigo en el aire.
             if (Projectile.timeLeft <= 2)
             {
-                for (int i = 0; i < 4; i++) // Generar varias partículas
+                for (int i = 0; i < 4; i++) // Generar varias partÃ­culas
                 {
                     if (Main.rand.Next(100) < 60) // Misma probabilidad del 60%
                     {
                         int dustType = Main.rand.NextBool(2) ? 229 : 228;
-                        // Esparcirlas un poco alrededor del centro del láser
+                        // Esparcirlas un poco alrededor del centro del lÃ¡ser
                         Vector2 dustPos = Projectile.Center + Main.rand.NextVector2Circular(12f, 12f);
                         
                         Dust dust = Dust.NewDustDirect(dustPos - new Vector2(5, 5), 10, 10, dustType, 0f, 0f, 100, default, 1.4f);
@@ -114,13 +114,13 @@ namespace Whips145.Projectiles
             Vector2 dir = new Vector2(Projectile.ai[0], Projectile.ai[1]);
             if (dir == Vector2.Zero) dir = Vector2.UnitX;
 
-            // Ajustamos la rotación asumiendo que el sprite original es vertical.
+            // Ajustamos la rotaciÃ³n asumiendo que el sprite original es vertical.
             // Le sumamos Pi/2 (90 grados) para que se alinee horizontalmente si atacamos a los lados.
-            // Y por último le sumamos el ángulo aleatorio de localAI[1] para el zig-zag.
+            // Y por Ãºltimo le sumamos el Ã¡ngulo aleatorio de localAI[1] para el zig-zag.
             Projectile.rotation = dir.ToRotation() + MathHelper.PiOver2 + Projectile.localAI[1];
 
             Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Type].Value;
-            // Calcular cuánto se ha estirado (de 0 a 1) durante el fade-in
+            // Calcular cuÃ¡nto se ha estirado (de 0 a 1) durante el fade-in
             float maxVisibleTime = 20f;
             float elapsed = maxVisibleTime - Projectile.timeLeft;
             
@@ -136,11 +136,11 @@ namespace Whips145.Projectiles
             }
             float shrinkProgress = MathHelper.SmoothStep(0f, 1f, fadeOutProgress);
 
-            // La textura del láser originalmente apunta hacia arriba, así que su largo es el eje Y.
+            // La textura del lÃ¡ser originalmente apunta hacia arriba, asÃ­ que su largo es el eje Y.
             // Anclamos el origen en la parte inferior (Y = Height) para que crezca desde la base hacia la punta.
             Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height);
             
-            // Dirección original hacia la que fue disparado (del jugador al enemigo)
+            // DirecciÃ³n original hacia la que fue disparado (del jugador al enemigo)
             Vector2 rawDir = new Vector2(Projectile.ai[0], Projectile.ai[1]);
             if (rawDir == Vector2.Zero) rawDir = Vector2.UnitX;
             rawDir.Normalize();
@@ -154,16 +154,16 @@ namespace Whips145.Projectiles
             float baseCoreX = Projectile.scale * 1.2f;
             float baseCoreY = Projectile.scale * 0.8f;
 
-            // Escalas actuales (lo que creció en el fade-in, menos lo que se encoge en el fade-out)
+            // Escalas actuales (lo que creciÃ³ en el fade-in, menos lo que se encoge en el fade-out)
             float currentStretchY = stretchY * (1f - shrinkProgress);
             Vector2 bloomScale = new Vector2(baseBloomX, baseBloomY * currentStretchY);
             Vector2 coreScale = new Vector2(baseCoreX, baseCoreY * currentStretchY);
 
-            // Ajustamos la posición de dibujo base
+            // Ajustamos la posiciÃ³n de dibujo base
             Vector2 baseBloomStart = Projectile.Center - rawDir * (texture.Height * 0.5f * baseBloomY);
             Vector2 baseCoreStart = Projectile.Center - rawDir * (texture.Height * 0.5f * baseCoreY);
 
-            // Si se está encogiendo, movemos el punto de inicio hacia adelante para que la punta se quede en su lugar
+            // Si se estÃ¡ encogiendo, movemos el punto de inicio hacia adelante para que la punta se quede en su lugar
             Vector2 bloomDrawPos = baseBloomStart + rawDir * (texture.Height * baseBloomY * shrinkProgress) - Main.screenPosition;
             Vector2 coreDrawPos = baseCoreStart + rawDir * (texture.Height * baseCoreY * shrinkProgress) - Main.screenPosition;
 

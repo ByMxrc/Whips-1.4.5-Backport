@@ -1,16 +1,16 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace Whips145.Buffs
+namespace TerrariaWhipsBackport.Buffs
 {
     /// <summary>
-    /// Buff visible en la barra del JUGADOR cuando tiene la araña del Cobwhip activa.
-    /// La araña actúa como una invocación sin ocupar espacio de invocación,
+    /// Buff visible en la barra del JUGADOR cuando tiene la araÃ±a del Cobwhip activa.
+    /// La araÃ±a actÃºa como una invocaciÃ³n sin ocupar espacio de invocaciÃ³n,
     /// por eso este buff le aparece al jugador y no como debuff en los enemigos.
     /// </summary>
     public class CobwhipPlayerBuff : ModBuff
     {
-        public override string Texture => "Whips145/Buffs/Buff_SpiderWhip";
+        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_SpiderWhip";
 
         public override void SetStaticDefaults()
         {

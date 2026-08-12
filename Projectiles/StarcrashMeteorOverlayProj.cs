@@ -1,22 +1,22 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class StarcrashMeteorOverlayProj : ModProjectile
     {
-        public override string Texture => "Whips145/Projectiles/StarcrashProj1";
+        public override string Texture => "TerrariaWhipsBackport/Projectiles/StarcrashProj1";
 
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.Meteor1);
             AIType = ProjectileID.Meteor1; 
             
-            // Este es solo visual y hace daño extra si queremos, pero lo ideal 
-            // es que solo acompañe al meteorito principal, así que le quitaremos
-            // el daño para que no pegue doble, o lo podemos dejar igual.
+            // Este es solo visual y hace daÃ±o extra si queremos, pero lo ideal 
+            // es que solo acompaÃ±e al meteorito principal, asÃ­ que le quitaremos
+            // el daÃ±o para que no pegue doble, o lo podemos dejar igual.
             // Para que no interfieran los IFrames, usamos inmunidad local.
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1; 

@@ -1,13 +1,13 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Projectiles;
+using TerrariaWhipsBackport.Projectiles;
 
-namespace Whips145.Items
+namespace TerrariaWhipsBackport.Items
 {
     /// <summary>
-    /// Soulscourge - Látigo de Corrupción (alternativa a Vasculash).
-    /// Daño: 17 | Tag: +5 | Receta: 12 Demonite Bars en Anvil
+    /// Soulscourge - LÃ¡tigo de CorrupciÃ³n (alternativa a Vasculash).
+    /// DaÃ±o: 17 | Tag: +5 | Receta: 12 Demonite Bars en Anvil
     /// </summary>
     public class Soulscourge : ModItem
     {

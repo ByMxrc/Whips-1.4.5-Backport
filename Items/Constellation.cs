@@ -1,14 +1,14 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Projectiles;
+using TerrariaWhipsBackport.Projectiles;
 
-namespace Whips145.Items
+namespace TerrariaWhipsBackport.Items
 {
     /// <summary>
-    /// Constellation - Látigo de Stardust Fragments.
-    /// Al golpear lanza 6 estrellas fugaces hacia el enemigo con un pequeño delay.
-    /// Daño: 130 | Tag: +15 | Multi-hit penalty: 10%
+    /// Constellation - LÃ¡tigo de Stardust Fragments.
+    /// Al golpear lanza 6 estrellas fugaces hacia el enemigo con un pequeÃ±o delay.
+    /// DaÃ±o: 130 | Tag: +15 | Multi-hit penalty: 10%
     /// Receta: 18 Stardust Fragments en Ancient Manipulator
     /// </summary>
     public class Constellation : ModItem

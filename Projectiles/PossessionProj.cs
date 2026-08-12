@@ -1,17 +1,17 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Buffs;
+using TerrariaWhipsBackport.Buffs;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     /// <summary>
-    /// PossessionProj - Proyectil para la animación del látigo Possession.
+    /// PossessionProj - Proyectil para la animaciÃ³n del lÃ¡tigo Possession.
     /// Aplica PossessionTag a los enemigos golpeados (+25 tag damage para invocaciones).
-    /// Las mecánicas adicionales del Possession se implementarán más adelante.
+    /// Las mecÃ¡nicas adicionales del Possession se implementarÃ¡n mÃ¡s adelante.
     /// </summary>
     public class PossessionProj : ModProjectile
     {
@@ -23,7 +23,7 @@ namespace Whips145.Projectiles
         public override void SetDefaults()
         {
             Projectile.DefaultToWhip();
-            Projectile.WhipSettings.Segments = 20; // 20 segmentos (añadir más solo hace que el látigo se enrosque y pierda alcance)
+            Projectile.WhipSettings.Segments = 20; // 20 segmentos (aÃ±adir mÃ¡s solo hace que el lÃ¡tigo se enrosque y pierda alcance)
             Projectile.WhipSettings.RangeMultiplier = 1.09f; // Multiplicador exacto para llegar a 34 casillas
         }
 
@@ -32,8 +32,8 @@ namespace Whips145.Projectiles
         private bool hasSavedOriginalAnimation = false;
         private bool isManualDamage = false;
 
-        // ─── COMBO ELIMINADO DEL PROYECTIL ───────────────────
-        // Ahora la lógica de combo se maneja en Possession.cs con PossessionPlayer.
+        // â”€â”€â”€ COMBO ELIMINADO DEL PROYECTIL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // Ahora la lÃ³gica de combo se maneja en Possession.cs con PossessionPlayer.
 
         private int ChainRoleCode => (int)Projectile.ai[1];
         private bool IsChainWhip => ChainRoleCode >= 10; // los roles legacy son 0,1,2,4
@@ -101,7 +101,7 @@ namespace Whips145.Projectiles
 
             Player player = Main.player[Projectile.owner];
 
-            // Forzamos el daño manualmente AHORA, mientras el brazo del jugador sigue falsificado
+            // Forzamos el daÃ±o manualmente AHORA, mientras el brazo del jugador sigue falsificado
             isManualDamage = true;
             Projectile.Damage();
             isManualDamage = false;
@@ -114,7 +114,7 @@ namespace Whips145.Projectiles
                 hasSavedOriginalAnimation = false;
             }
 
-            // Calcular si está estirándose o recogiéndose
+            // Calcular si estÃ¡ estirÃ¡ndose o recogiÃ©ndose
             int duration = (int)Projectile.localAI[1];
             int framesSinceStart = realFramesPassed - (int)delay;
             int currentFakeAnimation = duration - framesSinceStart;
@@ -122,11 +122,11 @@ namespace Whips145.Projectiles
 
             bool isExtending = currentFakeAnimation > duration / 2;
 
-            // progreso de vida del látigo, de 0 (recién sale) a 1 (totalmente recogido)
+            // progreso de vida del lÃ¡tigo, de 0 (reciÃ©n sale) a 1 (totalmente recogido)
             float progressT = duration > 0 ? MathHelper.Clamp(framesSinceStart / (float)duration, 0f, 1f) : 0f;
 
-            // Partículas a lo largo del cuerpo del látigo (alta densidad como látigos mágicos/eléctricos)
-            // Ya no lo limitamos a un par de látigos, y además generamos varias partículas por frame.
+            // PartÃ­culas a lo largo del cuerpo del lÃ¡tigo (alta densidad como lÃ¡tigos mÃ¡gicos/elÃ©ctricos)
+            // Ya no lo limitamos a un par de lÃ¡tigos, y ademÃ¡s generamos varias partÃ­culas por frame.
             if (Projectile.ai[1] == 0f || Projectile.ai[1] == 2f || IsChainPairA || IsChainPairB)
             {
                 // Para alta densidad, iteramos varias veces por frame
@@ -135,7 +135,7 @@ namespace Whips145.Projectiles
                 {
                     if (Main.rand.Next(100) < 45) // Reducido un 15% adicional (de 72 a 60)
                     {
-                        // Falsificamos la animación para obtener los puntos del látigo en este frame exacto
+                        // Falsificamos la animaciÃ³n para obtener los puntos del lÃ¡tigo en este frame exacto
                         int originalMax = player.itemAnimationMax;
                         int originalAnim = player.itemAnimation;
                         player.itemAnimationMax = duration;
@@ -149,8 +149,8 @@ namespace Whips145.Projectiles
 
                         if (list.Count > 0)
                         {
-                            // Elegimos un punto aleatorio a lo largo del látigo
-                            // (ahora permitimos desde el 20% del látigo en adelante para más densidad visual)
+                            // Elegimos un punto aleatorio a lo largo del lÃ¡tigo
+                            // (ahora permitimos desde el 20% del lÃ¡tigo en adelante para mÃ¡s densidad visual)
                             int index = Main.rand.Next(list.Count / 5, list.Count);
                             Vector2 dustPos = list[index];
 
@@ -162,20 +162,20 @@ namespace Whips145.Projectiles
 
                                 Dust dust = Dust.NewDustDirect(dustPos - new Vector2(5, 5), 10, 10, dustType, 0f, 0f, 100, default, 1.4f);
                                 dust.noGravity = true;
-                                dust.velocity *= 0.8f; // Estela más pronunciada al moverse
+                                dust.velocity *= 0.8f; // Estela mÃ¡s pronunciada al moverse
                             }
                         }
                     }
                 }
             }
 
-            // Reflejar también los puntos de colisión solo mientras se estira (látigo ancla legacy)
+            // Reflejar tambiÃ©n los puntos de colisiÃ³n solo mientras se estira (lÃ¡tigo ancla legacy)
             if (Projectile.ai[1] == 4f && isExtending)
             {
                 MirrorWhipPoints(Projectile.WhipPointsForCollision);
             }
             // Pareja de la cadena nueva: uno viene de arriba (normal) y otro de abajo (espejado)
-            // Ya no usamos interpolación (progressT) para no "forzar" la curva en el centro.
+            // Ya no usamos interpolaciÃ³n (progressT) para no "forzar" la curva en el centro.
             else if (IsChainPairA || IsChainPairB)
             {
                 float mix = IsChainPairA ? 0f : 1f;
@@ -187,11 +187,11 @@ namespace Whips145.Projectiles
         {
             Player player = Main.player[Projectile.owner];
             
-            // Usamos 1.09f, que es el multiplicador matemáticamente exacto para que el 
+            // Usamos 1.09f, que es el multiplicador matemÃ¡ticamente exacto para que el 
             // alcance base (que es 31) llegue clavado a los 34 bloques.
             Projectile.WhipSettings.RangeMultiplier = 1.09f;
 
-            // Actualiza los segmentos dinámicamente
+            // Actualiza los segmentos dinÃ¡micamente
             Projectile.WhipSettings.Segments = (int)(20 * player.whipRangeMultiplier);
         }
 
@@ -200,7 +200,7 @@ namespace Whips145.Projectiles
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            // Calculamos el multiplicador acumulativo del 5% basado en cuántos enemigos ya hemos golpeado.
+            // Calculamos el multiplicador acumulativo del 5% basado en cuÃ¡ntos enemigos ya hemos golpeado.
             // System.Math.Pow(0.95, hitCount) hace que el 1er golpe sea 100%, el 2do 95%, el 3ro 90.25%, etc.
             float mult = (float)System.Math.Pow(0.95, hitCount);
             modifiers.SourceDamage *= mult;
@@ -212,7 +212,7 @@ namespace Whips145.Projectiles
             if (target.friendly || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
                 return;
 
-            // Aplicar la marca de daño del Possession - forzando ignorar inmunidad, EXCEPTO a dummys
+            // Aplicar la marca de daÃ±o del Possession - forzando ignorar inmunidad, EXCEPTO a dummys
             if (target.type != Terraria.ID.NPCID.TargetDummy)
             {
                 target.buffImmune[ModContent.BuffType<PossessionTag>()] = false;
@@ -224,7 +224,7 @@ namespace Whips145.Projectiles
                 target.GetGlobalNPC<Common.WhipTagGlobalNPC>().possessionEyeDropped = false;
             }
 
-            // Asegurarnos de que este látigo específico solo genere 1 láser por cada enemigo que toque.
+            // Asegurarnos de que este lÃ¡tigo especÃ­fico solo genere 1 lÃ¡ser por cada enemigo que toque.
             if (hitEnemiesForLasers.Contains(target.whoAmI))
                 return;
             
@@ -243,19 +243,19 @@ namespace Whips145.Projectiles
                         activeCount++;
                 }
 
-                // Límite seguro para evitar llenar los 1000 slots de Terraria si se golpea a cientos de dummys
+                // LÃ­mite seguro para evitar llenar los 1000 slots de Terraria si se golpea a cientos de dummys
                 if (activeCount < 100)
                 {
-                    // Delay chico y escalonado por distancia: como el látigo golpea a casi
-                    // toda la fila casi en el mismo instante (están muy juntos), sin ALGO de
+                    // Delay chico y escalonado por distancia: como el lÃ¡tigo golpea a casi
+                    // toda la fila casi en el mismo instante (estÃ¡n muy juntos), sin ALGO de
                     // escalonado la fila entera se ilumina de golpe. Pero dist/24 (el valor
-                    // original) era demasiado fuerte y hacía que los láseres lejanos
-                    // aparecieran recién después de terminado el combo entero. dist/60 es un
-                    // punto medio: para el rango máximo del látigo (~34 tiles ≈ 544px) da
-                    // como mucho ~9 ticks de retraso, dentro de la vida visible de un láser.
+                    // original) era demasiado fuerte y hacÃ­a que los lÃ¡seres lejanos
+                    // aparecieran reciÃ©n despuÃ©s de terminado el combo entero. dist/60 es un
+                    // punto medio: para el rango mÃ¡ximo del lÃ¡tigo (~34 tiles â‰ˆ 544px) da
+                    // como mucho ~9 ticks de retraso, dentro de la vida visible de un lÃ¡ser.
                     float dist = Vector2.Distance(player.Center, target.Center);
-                    // Delay casi instantáneo. Solo aplicamos un mini escalonamiento
-                    // por orden de golpe y un pequeño ruido aleatorio para que no aparezcan 
+                    // Delay casi instantÃ¡neo. Solo aplicamos un mini escalonamiento
+                    // por orden de golpe y un pequeÃ±o ruido aleatorio para que no aparezcan 
                     // 100% en el mismo frame si golpea a varios a la vez.
                     int hitOrder = hitEnemiesForLasers.Count;
                     float delay = (hitOrder * 0.5f) + Main.rand.NextFloat(0f, 1.0f);
@@ -274,7 +274,7 @@ namespace Whips145.Projectiles
         private static readonly int[] frameContentHeight = { 18, 14, 14, 14, 24, 26, 28 };
         private static readonly int[] frameContentTop    = { 2, 6, 6, 6, 0, 0, 0 };
 
-        // Función matemática para invertir la curva del látigo ("de abajo hacia arriba")
+        // FunciÃ³n matemÃ¡tica para invertir la curva del lÃ¡tigo ("de abajo hacia arriba")
         private void MirrorWhipPoints(List<Vector2> points)
         {
             if (points == null || points.Count < 2) return;
@@ -287,7 +287,7 @@ namespace Whips145.Projectiles
                 Vector2 p = points[i];
                 Vector2 v = p - origin;
                 
-                // Proyección sobre la dirección en la que apuntamos
+                // ProyecciÃ³n sobre la direcciÃ³n en la que apuntamos
                 Vector2 proj = Vector2.Dot(v, direction) * direction;
                 // Componente perpendicular (la curva)
                 Vector2 perp = v - proj;
@@ -297,11 +297,11 @@ namespace Whips145.Projectiles
             }
         }
 
-        // Versión continua del mirror: en vez de invertir de golpe, interpola la
+        // VersiÃ³n continua del mirror: en vez de invertir de golpe, interpola la
         // componente perpendicular entre la curva normal (mix=0, curva pronunciada
         // "hacia arriba") y la espejada (mix=1, "hacia abajo"). La curva hacia abajo
-        // se atenúa con downStrength para que no se doble tan pronunciada como la
-        // de arriba (queda más recta). Dos látigos con mix opuesto se cruzan cerca
+        // se atenÃºa con downStrength para que no se doble tan pronunciada como la
+        // de arriba (queda mÃ¡s recta). Dos lÃ¡tigos con mix opuesto se cruzan cerca
         // de mix=0.5.
         private const float DownCurveStrength = 0.5f; // 1 = igual de pronunciada, 0 = totalmente recta hacia abajo
 
@@ -346,7 +346,7 @@ namespace Whips145.Projectiles
 
             if (realFramesPassed < delay)
             {
-                return false; // No dibujar nada si está en espera
+                return false; // No dibujar nada si estÃ¡ en espera
             }
 
             List<Vector2> list = new List<Vector2>();
@@ -355,7 +355,7 @@ namespace Whips145.Projectiles
             int prevAnim = player.itemAnimation;
             int prevAnimMax = player.itemAnimationMax;
 
-            // Engañar a FillWhipControlPoints
+            // EngaÃ±ar a FillWhipControlPoints
             int duration = (int)Projectile.localAI[1];
             int framesSinceStart = realFramesPassed - (int)delay;
             int currentFakeAnimation = duration - framesSinceStart;
@@ -371,9 +371,9 @@ namespace Whips145.Projectiles
             if (isChainPair)
             {
                 chainMix = IsChainPairA ? 0f : 1f;
-                // NOTA: Se eliminó el timeOffset que cortaba la animación prematuramente.
-                // Ahora los látigos cruzados duran todo su tiempo de vida y se recogen (retract)
-                // visualmente al igual que un látigo normal, en lugar de desaparecer de golpe.
+                // NOTA: Se eliminÃ³ el timeOffset que cortaba la animaciÃ³n prematuramente.
+                // Ahora los lÃ¡tigos cruzados duran todo su tiempo de vida y se recogen (retract)
+                // visualmente al igual que un lÃ¡tigo normal, en lugar de desaparecer de golpe.
             }
 
             player.itemAnimation = currentFakeAnimation;
@@ -381,7 +381,7 @@ namespace Whips145.Projectiles
 
             Projectile.FillWhipControlPoints(Projectile, list);
 
-            // Si es la tercera ola (dinámico), aplicamos la reflexión solo al estirarse
+            // Si es la tercera ola (dinÃ¡mico), aplicamos la reflexiÃ³n solo al estirarse
             if (Projectile.ai[1] == 4f && isExtending)
             {
                 MirrorWhipPoints(list);
@@ -402,7 +402,7 @@ namespace Whips145.Projectiles
 
             Main.instance.LoadProjectile(Type);
             Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Type].Value;
-            Texture2D glowTexture = ModContent.Request<Texture2D>("Whips145/Projectiles/PossessionProj_1").Value;
+            Texture2D glowTexture = ModContent.Request<Texture2D>("TerrariaWhipsBackport/Projectiles/PossessionProj_1").Value;
             
             SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
@@ -412,22 +412,22 @@ namespace Whips145.Projectiles
             int frameHeight = texture.Height / totalFrames;
 
             // (la punta), el punto de partida del siguiente segmento sigue
-            // siendo exactamente donde terminó el anterior -> nunca hay hueco.
+            // siendo exactamente donde terminÃ³ el anterior -> nunca hay hueco.
             Vector2 pos = list[0];
 
             float lastRotation = 0f;
             bool hasRotation = false;
 
             // Umbral de longitud (en px^2) por debajo del cual consideramos el
-            // segmento "casi nulo" y reutilizamos la rotación anterior en vez
-            // de calcular una nueva dirección poco fiable.
+            // segmento "casi nulo" y reutilizamos la rotaciÃ³n anterior en vez
+            // de calcular una nueva direcciÃ³n poco fiable.
             const float minSegmentLengthSq = 4f; // ~2px
 
-            // Máxima diferencia angular (radianes) permitida entre un segmento
+            // MÃ¡xima diferencia angular (radianes) permitida entre un segmento
             // y el anterior. Evita que la punta "chasquee" lejos del resto de
-            // la curva cuando el último punto de control de
+            // la curva cuando el Ãºltimo punto de control de
             // FillWhipControlPoints se adelanta bruscamente (crack del whip).
-            const float maxAngleDeltaFromPrev = MathHelper.PiOver4 * 0.6f; // ~27°
+            const float maxAngleDeltaFromPrev = MathHelper.PiOver4 * 0.6f; // ~27Â°
 
             for (int i = 0; i < list.Count - 1; i++)
             {
@@ -438,13 +438,13 @@ namespace Whips145.Projectiles
                 }
                 else if (i == list.Count - 2)
                 {
-                    // Punta final: forzamos el frame 6 para todos los látigos 
-                    // porque su sprite es más delgado y encaja a la perfección sin sobresalir.
+                    // Punta final: forzamos el frame 6 para todos los lÃ¡tigos 
+                    // porque su sprite es mÃ¡s delgado y encaja a la perfecciÃ³n sin sobresalir.
                     frameIndex = 6;
                 }
                 else if (i == list.Count - 3)
                 {
-                    frameIndex = 3; // Pre-punta (último segmento recto antes del gancho)
+                    frameIndex = 3; // Pre-punta (Ãºltimo segmento recto antes del gancho)
                 }
                 else
                 {
@@ -455,7 +455,7 @@ namespace Whips145.Projectiles
                 Vector2 origin = new Vector2(frameWidth / 2f, frameContentTop[frameIndex]);
 
                 // Solo para las puntas (frames 4, 5 y 6), recortamos la altura del frame
-                // para ignorar los píxeles basura accidentales que están en el fondo del sprite.
+                // para ignorar los pÃ­xeles basura accidentales que estÃ¡n en el fondo del sprite.
                 if (frameIndex >= 4)
                 {
                     currentFrameHeight = frameContentHeight[frameIndex];
@@ -470,17 +470,17 @@ namespace Whips145.Projectiles
                 float rotation;
                 if (length * length < minSegmentLengthSq)
                 {
-                    // Segmento casi nulo: no confiamos en su dirección,
-                    // mantenemos la orientación del segmento anterior, o si es el primero, 
-                    // usamos la velocidad general del látigo para que no apunten hacia abajo.
+                    // Segmento casi nulo: no confiamos en su direcciÃ³n,
+                    // mantenemos la orientaciÃ³n del segmento anterior, o si es el primero, 
+                    // usamos la velocidad general del lÃ¡tigo para que no apunten hacia abajo.
                     rotation = hasRotation ? lastRotation : Projectile.velocity.ToRotation() - MathHelper.PiOver2;
                 }
                 else
                 {
-                    // Si es la punta (frames 4, 5 y 6), forzamos la misma rotación que la pre-punta.
-                    // Como el sprite de la punta tiene 6 píxeles de "cuerpo" por encima del punto de origen,
-                    // si la punta gira respecto a la pre-punta, esos 6 píxeles sobresalen por los lados.
-                    // Al obligarla a seguir la misma línea, esos píxeles se ocultan perfectamente dentro de la pre-punta.
+                    // Si es la punta (frames 4, 5 y 6), forzamos la misma rotaciÃ³n que la pre-punta.
+                    // Como el sprite de la punta tiene 6 pÃ­xeles de "cuerpo" por encima del punto de origen,
+                    // si la punta gira respecto a la pre-punta, esos 6 pÃ­xeles sobresalen por los lados.
+                    // Al obligarla a seguir la misma lÃ­nea, esos pÃ­xeles se ocultan perfectamente dentro de la pre-punta.
                     if (frameIndex >= 4 && hasRotation)
                     {
                         rotation = lastRotation;
@@ -491,7 +491,7 @@ namespace Whips145.Projectiles
 
                         if (hasRotation)
                         {
-                            // Limita cuánto puede girar este segmento respecto al anterior.
+                            // Limita cuÃ¡nto puede girar este segmento respecto al anterior.
                             float delta = MathHelper.WrapAngle(rotation - lastRotation);
                             if (delta > maxAngleDeltaFromPrev)
                                 rotation = lastRotation + maxAngleDeltaFromPrev;
@@ -505,7 +505,7 @@ namespace Whips145.Projectiles
                 hasRotation = true;
 
                 // Vector de dibujo REAL: misma longitud que el original, pero
-                // en la dirección (posiblemente limitada) con la que
+                // en la direcciÃ³n (posiblemente limitada) con la que
                 // efectivamente se va a rotar el sprite. Esto es lo que
                 // garantiza que no quede un hueco visual entre segmentos.
                 Vector2 drawDirection = (rotation + MathHelper.PiOver2).ToRotationVector2();
@@ -516,7 +516,7 @@ namespace Whips145.Projectiles
                 float divisor = frameContentHeight[frameIndex];
                 float scaleY = length / divisor;
 
-                // Si la longitud del segmento es prácticamente nula (el látigo está recogido),
+                // Si la longitud del segmento es prÃ¡cticamente nula (el lÃ¡tigo estÃ¡ recogido),
                 // ocultamos el segmento.
                 if (length < 2f)
                 {
@@ -525,23 +525,23 @@ namespace Whips145.Projectiles
 
                 // Los frames de la punta (4, 5 y 6) ya traen una curva dibujada.
                 // Si permitimos que se encojan, la curva se distorsiona y se ven "aplastadas".
-                // Mientras no estén ocultas (scaleY > 0), forzamos un mínimo de 1f.
+                // Mientras no estÃ©n ocultas (scaleY > 0), forzamos un mÃ­nimo de 1f.
                 if (frameIndex >= 4 && scaleY > 0f)
                 {
                     if (scaleY < 1f)
                         scaleY = 1f; // Evita puntas aplastadas
                     else if (scaleY > 1.3f)
-                        scaleY = 1.3f; // Evita que se estiren de más y vuelen
+                        scaleY = 1.3f; // Evita que se estiren de mÃ¡s y vuelen
                 }
 
                 Vector2 scale = new Vector2(1f, scaleY);
                 
-                // Capa base (con iluminación del mundo)
+                // Capa base (con iluminaciÃ³n del mundo)
                 Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
                 
                 // Capa brillante (Glowmask pura que no es afectada por la oscuridad)
                 // SOLO la dibujamos para las puntas (frames 4, 5 y 6) para evitar
-                // que el cuerpo se vuelva un manchón blanco al superponerse.
+                // que el cuerpo se vuelva un manchÃ³n blanco al superponerse.
                 if (frameIndex >= 4)
                 {
                     Main.EntitySpriteDraw(glowTexture, pos - Main.screenPosition, frame, Color.White, rotation, origin, scale, flip, 0);
@@ -563,10 +563,10 @@ namespace Whips145.Projectiles
         {
             Player player = Main.player[Projectile.owner];
             
-            // Para la detección de colisiones, Terraria usa FillWhipControlPoints, el cual puede leer itemAnimation e itemAnimationMax.
-            // Si el jugador hace un solo click, su itemAnimation real vuelve a 0 mientras nuestros látigos con delay siguen vivos.
-            // Esto causa que FillWhipControlPoints colapse la hitbox al centro del jugador, haciendo que no haga daño.
-            // Solución: Falsificamos ambos valores para la colisión exactamente igual que en la IA y el dibujo.
+            // Para la detecciÃ³n de colisiones, Terraria usa FillWhipControlPoints, el cual puede leer itemAnimation e itemAnimationMax.
+            // Si el jugador hace un solo click, su itemAnimation real vuelve a 0 mientras nuestros lÃ¡tigos con delay siguen vivos.
+            // Esto causa que FillWhipControlPoints colapse la hitbox al centro del jugador, haciendo que no haga daÃ±o.
+            // SoluciÃ³n: Falsificamos ambos valores para la colisiÃ³n exactamente igual que en la IA y el dibujo.
             int originalMax = player.itemAnimationMax;
             int originalAnim = player.itemAnimation;
 

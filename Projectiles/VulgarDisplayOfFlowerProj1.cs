@@ -1,17 +1,17 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using System;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class VulgarDisplayOfFlowerProj1 : ModProjectile
     {
         public override void SetStaticDefaults()
         {
-            // Ajusta este valor al número real de frames de tu sprite.
+            // Ajusta este valor al nÃºmero real de frames de tu sprite.
             // Si la imagen es 18x160 y cada frame es cuadrado (18x20), son 8 frames.
             Main.projFrames[Projectile.type] = 8;
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
@@ -32,7 +32,7 @@ namespace Whips145.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            // Evita golpear durante la fase de expansión. Depende de si es de los rezagados o no.
+            // Evita golpear durante la fase de expansiÃ³n. Depende de si es de los rezagados o no.
             bool isDelayed = Projectile.ai[1] == 2;
             int homingStartTick = isDelayed ? 40 : 30;
 
@@ -45,7 +45,7 @@ namespace Whips145.Projectiles
 
         public override void AI()
         {
-            // Animación
+            // AnimaciÃ³n
             if (++Projectile.frameCounter >= 4)
             {
                 Projectile.frameCounter = 0;
@@ -62,13 +62,13 @@ namespace Whips145.Projectiles
 
             if (tick < homingStartTick)
             {
-                // Fase de expansión
+                // Fase de expansiÃ³n
                 Projectile.velocity *= 0.95f; // Frena suavemente
                 Projectile.rotation += Projectile.velocity.X * 0.05f; // Rota un poco visualmente
             }
             else 
             {
-                // Fase de persecución
+                // Fase de persecuciÃ³n
                 float maxDetectRadius = 340f; // 21.25 tiles
                 float sqrMaxDetectRadius = maxDetectRadius * maxDetectRadius;
                 NPC closestNPC = null;
@@ -97,16 +97,16 @@ namespace Whips145.Projectiles
 
                     Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
 
-                    // Si está persiguiendo a un objetivo, se asegura de ser completamente visible
+                    // Si estÃ¡ persiguiendo a un objetivo, se asegura de ser completamente visible
                     if (Projectile.alpha > 0)
                         Projectile.alpha = Math.Max(0, Projectile.alpha - 15);
                         
-                    // Orientar en la dirección de movimiento
+                    // Orientar en la direcciÃ³n de movimiento
                     Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
                 }
                 else
                 {
-                    // Si no hay objetivos (o el que perseguía murió), se frena poco a poco y se desvanece
+                    // Si no hay objetivos (o el que perseguÃ­a muriÃ³), se frena poco a poco y se desvanece
                     Projectile.velocity *= 0.98f;
                     Projectile.rotation += Projectile.velocity.X * 0.05f;
                     Projectile.alpha += 10;
@@ -117,7 +117,7 @@ namespace Whips145.Projectiles
                 }
             }
 
-            // Partículas opcionales al brillar
+            // PartÃ­culas opcionales al brillar
             bool isGlowing = (!isDelayed && tick >= 8 && tick <= 19) || (isDelayed && tick >= 22 && tick <= 33);
             if (isGlowing && Main.rand.NextBool(2))
             {
@@ -145,7 +145,7 @@ namespace Whips145.Projectiles
                 if (tick >= 8 && tick <= 19)
                 {
                     isGlowing = true;
-                    // Parábola matemática (seno) para hacer fade in (0 a 1) y fade out (1 a 0)
+                    // ParÃ¡bola matemÃ¡tica (seno) para hacer fade in (0 a 1) y fade out (1 a 0)
                     glowFactor = (float)Math.Sin(Math.PI * (tick - 8) / 11f);
                 }
             }
@@ -168,7 +168,7 @@ namespace Whips145.Projectiles
                 Vector2 visualCenter = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
                 float glowScale = Projectile.scale * 0.6f * glowFactor;
 
-                // Núcleo
+                // NÃºcleo
                 Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor * 0.7f, 0f, glowOrigin, glowScale * 1.5f, SpriteEffects.None, 0);
                 Main.EntitySpriteDraw(glowTex, visualCenter, null, Color.White * 0.6f * glowFactor, 0f, glowOrigin, glowScale * 0.5f, SpriteEffects.None, 0);
 
@@ -176,7 +176,7 @@ namespace Whips145.Projectiles
                 Vector2 scaleLong = new Vector2(0.12f, 1.3f) * glowScale;
                 Vector2 scaleShort = new Vector2(1.3f, 0.12f) * glowScale;
 
-                // Usamos una rotación fija o la del proyectil, aquí usamos la rotación del proyectil
+                // Usamos una rotaciÃ³n fija o la del proyectil, aquÃ­ usamos la rotaciÃ³n del proyectil
                 Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor, Projectile.rotation, glowOrigin, scaleLong, SpriteEffects.None, 0);
                 Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor, Projectile.rotation, glowOrigin, scaleShort, SpriteEffects.None, 0);
             }
@@ -188,12 +188,12 @@ namespace Whips145.Projectiles
 
         public override void Kill(int timeLeft)
         {
-            // Partículas rosas que se desvanecen en el lugar donde el pétalo desaparece
+            // PartÃ­culas rosas que se desvanecen en el lugar donde el pÃ©talo desaparece
             for (int i = 0; i < 5; i++)
             {
                 int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PinkSlime, 0f, 0f, 150, default, 1.2f);
                 Main.dust[dust].noGravity = true; // Flotan en el lugar
-                Main.dust[dust].velocity *= 0.3f; // Casi no se mueven para desaparecer ahí mismo
+                Main.dust[dust].velocity *= 0.3f; // Casi no se mueven para desaparecer ahÃ­ mismo
             }
         }
     }

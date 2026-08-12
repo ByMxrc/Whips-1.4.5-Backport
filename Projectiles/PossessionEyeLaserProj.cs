@@ -1,14 +1,14 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class PossessionEyeLaserProj : ModProjectile
     {
-        public override string Texture => "Whips145/Projectiles/PossessionLaser";
+        public override string Texture => "TerrariaWhipsBackport/Projectiles/PossessionLaser";
 
         public override void SetStaticDefaults()
         {
@@ -29,37 +29,39 @@ namespace Whips145.Projectiles
             Projectile.DamageType = DamageClass.SummonMeleeSpeed;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
-            Projectile.extraUpdates = 2; // Viaja muy rápido
+            Projectile.extraUpdates = 2; // Viaja muy rÃ¡pido
             Projectile.Opacity = 0f; // Comienza invisible para el fade-in
         }
 
         public override void AI()
         {
             int targetIndex = (int)Projectile.ai[0];
+            bool targetDead = true;
             
             if (targetIndex >= 0 && targetIndex < Main.maxNPCs)
             {
                 NPC target = Main.npc[targetIndex];
-                if (target.active)
+                if (target.active && target.life > 0)
                 {
-                    // Primer tick: Le damos una dirección inicial perpendicular para forzar una curva amplia
+                    targetDead = false;
+                    // Primer tick: Le damos una direcciÃ³n inicial perpendicular para forzar una curva amplia
                     if (Projectile.localAI[0] == 0f)
                     {
                         Vector2 toTarget = target.Center - Projectile.Center;
                         toTarget.Normalize();
                         
-                        // Desvío fuerte a la izquierda o derecha (entre 60 y 90 grados)
+                        // DesvÃ­o fuerte a la izquierda o derecha (entre 60 y 90 grados)
                         float sign = Main.rand.NextBool() ? 1f : -1f;
                         float randomAngle = sign * Main.rand.NextFloat(1.0f, 1.57f);
                         
-                        // Sale disparado hacia el costado (más lento para que dure más tiempo)
+                        // Sale disparado hacia el costado (mÃ¡s lento para que dure mÃ¡s tiempo)
                         Projectile.velocity = toTarget.RotatedBy(randomAngle) * 8f;
                         Projectile.localAI[0] = 1f;
                     }
 
                     // Homing: Ajustar la velocidad para que gire hacia el objetivo dibujando una curva
                     Vector2 toTargetNow = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-                    float speed = 16f; // Velocidad reducida (antes 24f) para que dure un 50% más
+                    float speed = 16f; // Velocidad reducida (antes 24f) para que dure un 50% mÃ¡s
                     float turnSpeed = 0.06f; // Suavidad de giro ajustada a la nueva velocidad
                     
                     Projectile.velocity = (Projectile.velocity * (1f - turnSpeed)) + (toTargetNow * speed * turnSpeed);
@@ -69,16 +71,29 @@ namespace Whips145.Projectiles
             // Rotar de acuerdo a la velocidad
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            // Opacidad (Fade-in más largo y notorio)
-            if (Projectile.localAI[1] < 24f) // 24 updates (8 ticks reales)
+            if (targetDead)
             {
-                Projectile.Opacity = MathHelper.Lerp(0f, 1f, Projectile.localAI[1] / 24f);
+                // Frena casi por completo (recorre como 1 bloque) y se desvanece
+                Projectile.velocity *= 0.8f; 
+                Projectile.Opacity -= 0.03f;
+                if (Projectile.Opacity <= 0f)
+                {
+                    Projectile.active = false; // Desaparece silenciosamente sin generar explosiÃ³n
+                }
             }
             else
             {
-                Projectile.Opacity = 1f;
+                // Opacidad normal (Fade-in)
+                if (Projectile.localAI[1] < 24f) // 24 updates (8 ticks reales)
+                {
+                    Projectile.Opacity = MathHelper.Lerp(0f, 1f, Projectile.localAI[1] / 24f);
+                }
+                else
+                {
+                    Projectile.Opacity = 1f;
+                }
+                Projectile.localAI[1]++;
             }
-            Projectile.localAI[1]++;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -86,10 +101,10 @@ namespace Whips145.Projectiles
             Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Type].Value;
             Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
 
-            // Escala base: podemos hacerla un poco más fina ajustando X
+            // Escala base: podemos hacerla un poco mÃ¡s fina ajustando X
             Vector2 scale = new Vector2(Projectile.scale * 0.7f, Projectile.scale * 1.2f); 
 
-            // Dibujar la estela (cola del láser) con los colores originales de la textura
+            // Dibujar la estela (cola del lÃ¡ser) con los colores originales de la textura
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 if (Projectile.oldPos[i] == Vector2.Zero) continue;
@@ -101,7 +116,7 @@ namespace Whips145.Projectiles
                 Vector2 drawPos = Projectile.oldPos[i] + Projectile.Size * 0.5f - Main.screenPosition;
                 float rot = Projectile.oldRot[i];
 
-                // La estela se encoge ligeramente hacia atrás (efecto cometa)
+                // La estela se encoge ligeramente hacia atrÃ¡s (efecto cometa)
                 Vector2 trailScale = new Vector2(scale.X * progress, scale.Y);
 
                 Main.EntitySpriteDraw(texture, drawPos, null, trailColor, rot, origin, trailScale, SpriteEffects.None, 0);
@@ -123,7 +138,7 @@ namespace Whips145.Projectiles
 
         public override void Kill(int timeLeft)
         {
-            // Pequeña explosión de partículas de Phantasmal Eye (Vortex)
+            // PequeÃ±a explosiÃ³n de partÃ­culas de Phantasmal Eye (Vortex)
             for (int i = 0; i < 15; i++)
             {
                 int dustType = Main.rand.NextBool(2) ? 229 : 228;

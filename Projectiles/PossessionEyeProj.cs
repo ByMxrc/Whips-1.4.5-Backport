@@ -1,9 +1,9 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class PossessionEyeProj : ModProjectile
     {
@@ -24,7 +24,7 @@ namespace Whips145.Projectiles
             int targetIndex = (int)Projectile.ai[0];
             float delay = Projectile.ai[1];
 
-            // Fase de Delay (aún no ha aparecido)
+            // Fase de Delay (aÃºn no ha aparecido)
             if (Projectile.localAI[0] < delay)
             {
                 Projectile.localAI[0]++;
@@ -39,9 +39,9 @@ namespace Whips145.Projectiles
                 Projectile.timeLeft = 50; // Ajustamos la vida restante a 50 ticks
             }
             
-            if (Projectile.localAI[1] == 2f)
+            if (Projectile.localAI[1] == 0f)
             {
-                // Disparar el láser curvo vinculado a este ojo y apuntando al mismo enemigo con 2 ticks de retraso
+                // Disparar el lÃ¡ser curvo vinculado a este ojo y apuntando al mismo enemigo con 2 ticks de retraso
                 if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<PossessionEyeLaserProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner, targetIndex);
@@ -62,7 +62,7 @@ namespace Whips145.Projectiles
                     if (target.Center.X < Projectile.Center.X)
                     {
                         Projectile.spriteDirection = -1;
-                        Projectile.rotation += MathHelper.Pi; // Corregir rotación por el flip
+                        Projectile.rotation += MathHelper.Pi; // Corregir rotaciÃ³n por el flip
                     }
                     else
                     {
@@ -71,7 +71,7 @@ namespace Whips145.Projectiles
                 }
             }
 
-            // Mismo ciclo de vida visual que el láser (aprox 50 ticks)
+            // Mismo ciclo de vida visual que el lÃ¡ser (aprox 50 ticks)
             // 0 a 4 ticks: Fade IN (desde 50% hasta 100%)
             if (timer <= 4f)
             {

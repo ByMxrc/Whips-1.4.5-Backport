@@ -1,10 +1,10 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Items;
+using TerrariaWhipsBackport.Items;
 
-namespace Whips145.Common
+namespace TerrariaWhipsBackport.Common
 {
     public class BossBagGlobalItem : GlobalItem
     {

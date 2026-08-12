@@ -1,11 +1,11 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace Whips145.Buffs
+namespace TerrariaWhipsBackport.Buffs
 {
     public class ElectricEelDebuff : ModBuff
     {
-        public override string Texture => "Whips145/Buffs/Buff_ElectricWhip";
+        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_ElectricWhip";
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;

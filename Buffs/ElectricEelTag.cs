@@ -1,13 +1,13 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Whips145.Buffs
+namespace TerrariaWhipsBackport.Buffs
 {
-    // Tag del Electric Eel: genera un aura eléctrica que daña enemigos cercanos.
+    // Tag del Electric Eel: genera un aura elÃ©ctrica que daÃ±a enemigos cercanos.
     public class ElectricEelTag : ModBuff
     {
-        public override string Texture => "Whips145/Buffs/Buff_TagAllWhips";
+        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_TagAllWhips";
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;

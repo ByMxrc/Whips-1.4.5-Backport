@@ -1,13 +1,13 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Buffs;
+using TerrariaWhipsBackport.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class VasculashProj : ModProjectile
     {
@@ -27,10 +27,10 @@ namespace Whips145.Projectiles
         {
             Player player = Main.player[Projectile.owner];
             
-            // Actualizamos los segmentos según el multiplicador (lo que antes hacía AI())
+            // Actualizamos los segmentos segÃºn el multiplicador (lo que antes hacÃ­a AI())
             Projectile.WhipSettings.Segments = (int)(18 * player.whipRangeMultiplier);
 
-            // Recreamos la IA nativa del látigo para evitar que corra la original y ponga el sonido
+            // Recreamos la IA nativa del lÃ¡tigo para evitar que corra la original y ponga el sonido
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             Projectile.Center = Main.GetPlayerArmPosition(Projectile);
             Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
@@ -49,18 +49,18 @@ namespace Whips145.Projectiles
                 return false;
             }
 
-            // Reproducir el sonido nativo justo a la mitad de la extensión
+            // Reproducir el sonido nativo justo a la mitad de la extensiÃ³n
             if (Projectile.ai[0] == (int)(timeToFlyOut / 2f))
             {
                 SoundEngine.PlaySound(SoundID.NPCHit9, Projectile.position);
             }
 
-            return false; // Retornamos false para evitar que corra la IA nativa del látigo
+            return false; // Retornamos false para evitar que corra la IA nativa del lÃ¡tigo
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            // Evitar efectos en muñecos de pruebas o animales
+            // Evitar efectos en muÃ±ecos de pruebas o animales
             if (target.friendly || target.type == NPCID.TargetDummy || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
                 return;
 
@@ -104,7 +104,7 @@ namespace Whips145.Projectiles
 
                 // 3 zonas de escala independientes:
                 // - Mango (i==0): escala propia
-                // - Cuerpo: progresión suave de pequeño a grande
+                // - Cuerpo: progresiÃ³n suave de pequeÃ±o a grande
                 // - Punta: escala propia
                 float finalScale;
                 if (i == 0)
@@ -123,8 +123,8 @@ namespace Whips145.Projectiles
 
                 // --- ESTIRAMIENTO de los primeros segmentos del cuerpo ---
                 // Ajusta estos valores a gusto:
-                int earlyStretchCount = 7;    // Cuántos segmentos del inicio se estiran
-                float earlyStretchMax  = 1f; // Máximo estiramiento (1.0 = nada, 1.5 = mucho)
+                int earlyStretchCount = 7;    // CuÃ¡ntos segmentos del inicio se estiran
+                float earlyStretchMax  = 1f; // MÃ¡ximo estiramiento (1.0 = nada, 1.5 = mucho)
 
                 float stretchY = 1.0f;
                 if (i > 0 && i <= earlyStretchCount)
@@ -139,7 +139,7 @@ namespace Whips145.Projectiles
 
                 if (Vector2.Distance(element, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(30)) 
                 {
-                    // Aumentamos la escala de 1.0f a 1.6f para que la sangre tarde más en desaparecer
+                    // Aumentamos la escala de 1.0f a 1.6f para que la sangre tarde mÃ¡s en desaparecer
                     int dust = Dust.NewDust(element - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, DustID.Blood, 0f, 0f, 0, default, 1.25f);
                     Vector2 dustDir = diff.SafeNormalize(Vector2.Zero);
                     Main.dust[dust].velocity = dustDir * Main.rand.NextFloat(1.5f, 3f)
@@ -149,7 +149,7 @@ namespace Whips145.Projectiles
                 if (Vector2.Distance(element, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(25)) 
                 {
                     int dust = Dust.NewDust(element - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, 115, 0f, 0f, 0, default, 1.0f);
-                    // Salen en la dirección del swing del látigo (diff apunta hacia donde ataca)
+                    // Salen en la direcciÃ³n del swing del lÃ¡tigo (diff apunta hacia donde ataca)
                     Vector2 dustDir = diff.SafeNormalize(Vector2.Zero);
                     Main.dust[dust].velocity = dustDir * Main.rand.NextFloat(1.5f, 3f)
                         + new Vector2(Main.rand.NextFloat(-0.4f, 0.4f), Main.rand.NextFloat(-0.2f, 0.2f));

@@ -1,16 +1,16 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Projectiles;
+using TerrariaWhipsBackport.Projectiles;
 
-namespace Whips145.Items
+namespace TerrariaWhipsBackport.Items
 {
     /// <summary>
-    /// Possession - Látigo Drop de Moon Lord (25%).
-    /// Látigo simple sin efectos adicionales, debuffs ni marcas.
-    /// Daño: 110 (Invocador) | Knockback: 4 (Débil) | Use Time: 30 (Promedio) | Rango: 34 tiles | Velocidad: 8
+    /// Possession - LÃ¡tigo Drop de Moon Lord (25%).
+    /// LÃ¡tigo simple sin efectos adicionales, debuffs ni marcas.
+    /// DaÃ±o: 110 (Invocador) | Knockback: 4 (DÃ©bil) | Use Time: 30 (Promedio) | Rango: 34 tiles | Velocidad: 8
     /// </summary>
     public class Possession : ModItem
     {
@@ -25,15 +25,15 @@ namespace Whips145.Items
             Item.UseSound = SoundID.Item152;
             
             // Convertimos el arma en una canalizada (como el Zenith o Solar Eruption)
-            // Esto evade por completo las mecánicas estrictas de swing de Terraria que causan pausas
+            // Esto evade por completo las mecÃ¡nicas estrictas de swing de Terraria que causan pausas
             //
             // IMPORTANTE: NO usar autoReuse junto con channel. channel ya cubre el uso
             // continuo mientras se mantiene el click; autoReuse hace que Terraria reintente
             // "reusar" el item cada vez que itemAnimation toca un valor bajo, sin depender
             // bien de si el click sigue apretado. Como forzamos itemAnimation manualmente
-            // en el manager (Math.Max(2, ...)), ese patrón fluctuante terminaba disparando
+            // en el manager (Math.Max(2, ...)), ese patrÃ³n fluctuante terminaba disparando
             // Shoot() solo, cada ~50 ticks, para siempre, aunque hubieras soltado el click
-            // hace rato — eso era el "golpe extra" repetido.
+            // hace rato â€” eso era el "golpe extra" repetido.
             Item.channel = true;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.shoot = ModContent.ProjectileType<PossessionManager>();
@@ -41,14 +41,14 @@ namespace Whips145.Items
 
         public override bool CanUseItem(Player player)
         {
-            // Prevenir spam de clicks que cree múltiples managers simultáneos
+            // Prevenir spam de clicks que cree mÃºltiples managers simultÃ¡neos
             return player.ownedProjectileCounts[ModContent.ProjectileType<PossessionManager>()] <= 0;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             // Segunda barrera, independiente de CanUseItem: si por lo que sea Terraria
-            // vuelve a llamar a Shoot() con un manager todavía vivo, no dejamos que nazca uno nuevo.
+            // vuelve a llamar a Shoot() con un manager todavÃ­a vivo, no dejamos que nazca uno nuevo.
             if (player.ownedProjectileCounts[ModContent.ProjectileType<PossessionManager>()] > 0)
             {
                 return false;

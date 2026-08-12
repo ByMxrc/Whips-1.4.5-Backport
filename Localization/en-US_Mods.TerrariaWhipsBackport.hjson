@@ -1,77 +1,77 @@
-Buffs: {
+﻿Buffs: {
 	CobwhipTag: {
 		DisplayName: Cobwhip Tag
-		Description: Mods.Whips145.Buffs.CobwhipTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.CobwhipTag.Description
 	}
 
 	ConstellationTag: {
 		DisplayName: Constellation Tag
-		Description: Mods.Whips145.Buffs.ConstellationTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.ConstellationTag.Description
 	}
 
 	ElectricEelTag: {
 		DisplayName: Electric Eel Tag
-		Description: Mods.Whips145.Buffs.ElectricEelTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.ElectricEelTag.Description
 	}
 
 	PossessionTag: {
 		DisplayName: Possession Tag
-		Description: Mods.Whips145.Buffs.PossessionTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionTag.Description
 	}
 
 	SlimeWhipTag: {
 		DisplayName: Slime Whip Tag
-		Description: Mods.Whips145.Buffs.SlimeWhipTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.SlimeWhipTag.Description
 	}
 
 	SoulscourgeTag: {
 		DisplayName: Soulscourge Tag
-		Description: Mods.Whips145.Buffs.SoulscourgeTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.SoulscourgeTag.Description
 	}
 
 	StarcrashTag: {
 		DisplayName: Starcrash Tag
-		Description: Mods.Whips145.Buffs.StarcrashTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.StarcrashTag.Description
 	}
 
 	VasculashTag: {
 		DisplayName: Vasculash Tag
-		Description: Mods.Whips145.Buffs.VasculashTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.VasculashTag.Description
 	}
 
 	VulgarDisplayTag: {
 		DisplayName: Vulgar Display Tag
-		Description: Mods.Whips145.Buffs.VulgarDisplayTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.VulgarDisplayTag.Description
 	}
 
 	VulgarDisplayEnergy: {
 		DisplayName: Vulgar Display Energy
-		Description: Mods.Whips145.Buffs.VulgarDisplayEnergy.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.VulgarDisplayEnergy.Description
 	}
 
 	PossessionEnergy: {
 		DisplayName: Possession Energy
-		Description: Mods.Whips145.Buffs.PossessionEnergy.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionEnergy.Description
 	}
 
 	CobwhipPlayerBuff: {
 		DisplayName: Cobwhip Player Buff
-		Description: Mods.Whips145.Buffs.CobwhipPlayerBuff.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.CobwhipPlayerBuff.Description
 	}
 
 	ElectricEelDebuff: {
 		DisplayName: Electric Eel Debuff
-		Description: Mods.Whips145.Buffs.ElectricEelDebuff.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.ElectricEelDebuff.Description
 	}
 
 	SlimeWhipDebuff: {
 		DisplayName: Slime Whip Debuff
-		Description: Mods.Whips145.Buffs.SlimeWhipDebuff.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.SlimeWhipDebuff.Description
 	}
 
 	PossessionEyeTag: {
 		DisplayName: Possession Eye Tag
-		Description: Mods.Whips145.Buffs.PossessionEyeTag.Description
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionEyeTag.Description
 	}
 }
 

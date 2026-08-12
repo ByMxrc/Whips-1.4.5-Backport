@@ -1,14 +1,14 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class PossessionManager : ModProjectile
     {
         // Usamos una textura existente para evitar AssetLoadException,
-        // aunque nunca se dibujará porque PreDraw retorna false.
-        public override string Texture => "Whips145/Projectiles/PossessionProj";
+        // aunque nunca se dibujarÃ¡ porque PreDraw retorna false.
+        public override string Texture => "TerrariaWhipsBackport/Projectiles/PossessionProj";
 
         public override void SetDefaults()
         {
@@ -44,18 +44,18 @@ namespace Whips145.Projectiles
                 return;
             }
 
-            // Prevención estricta: Si algún otro mod fuerza el disparo del arma (ignorando CanUseItem) al golpear enemigos,
-            // esto creará un bucle infinito exponencial. Nos aseguramos de que solo sobreviva el manager más antiguo usando su timeLeft.
+            // PrevenciÃ³n estricta: Si algÃºn otro mod fuerza el disparo del arma (ignorando CanUseItem) al golpear enemigos,
+            // esto crearÃ¡ un bucle infinito exponencial. Nos aseguramos de que solo sobreviva el manager mÃ¡s antiguo usando su timeLeft.
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 if (Main.projectile[i].active && Main.projectile[i].type == Projectile.type && Main.projectile[i].owner == Projectile.owner)
                 {
                     if (i != Projectile.whoAmI)
                     {
-                        // El proyectil recién creado tendrá un timeLeft mayor que el viejo.
+                        // El proyectil reciÃ©n creado tendrÃ¡ un timeLeft mayor que el viejo.
                         if (Projectile.timeLeft > Main.projectile[i].timeLeft || (Projectile.timeLeft == Main.projectile[i].timeLeft && Projectile.whoAmI > i))
                         {
-                            // Somos más nuevos que el otro manager, nos destruimos para no interferir en el ciclo del viejo
+                            // Somos mÃ¡s nuevos que el otro manager, nos destruimos para no interferir en el ciclo del viejo
                             Projectile.Kill();
                             return;
                         }
@@ -70,22 +70,22 @@ namespace Whips145.Projectiles
             ref float finishingCombo = ref Projectile.ai[1];
 
             // Determinamos si el jugador sigue atacando. 
-            // Usamos Main.mouseLeft directamente para el dueño para ignorar cualquier desincronización del motor.
+            // Usamos Main.mouseLeft directamente para el dueÃ±o para ignorar cualquier desincronizaciÃ³n del motor.
             bool isChanneling = player.channel;
             if (Main.myPlayer == Projectile.owner)
             {
                 isChanneling = Main.mouseLeft;
             }
 
-            // Si suelta el click, activamos el fin del combo inmediatamente para no pasarnos del límite (stepTimer == 29)
+            // Si suelta el click, activamos el fin del combo inmediatamente para no pasarnos del lÃ­mite (stepTimer == 29)
             if (!isChanneling)
             {
                 finishingCombo = 1f;
             }
             else if (finishingCombo != 1f)
             {
-                // Solo permitimos "reanudar" el combo (volver a 0) si TODAVÍA no se
-                // había marcado el fin. Una vez que finishingCombo llegó a 1f, queda
+                // Solo permitimos "reanudar" el combo (volver a 0) si TODAVÃA no se
+                // habÃ­a marcado el fin. Una vez que finishingCombo llegÃ³ a 1f, queda
                 // enclavado: no debe poder "des-terminarse" a mitad del freeze.
                 finishingCombo = 0f;
             }
@@ -93,10 +93,10 @@ namespace Whips145.Projectiles
             int stepTimer = (int)timer % 30;
             int loopCount = (int)timer / 30;
 
-            // Forzar la animación del brazo para que parezca que está canalizando.
-            // Usamos Math.Max(2, ...) para evitar que la animación llegue a 0 o 1. 
-            // Si llega a 0, Terraria cree que el ataque terminó y suelta el 'channel' por 1 frame,
-            // lo que accidentalmente marcaba al manager para morir y rompía el ciclo.
+            // Forzar la animaciÃ³n del brazo para que parezca que estÃ¡ canalizando.
+            // Usamos Math.Max(2, ...) para evitar que la animaciÃ³n llegue a 0 o 1. 
+            // Si llega a 0, Terraria cree que el ataque terminÃ³ y suelta el 'channel' por 1 frame,
+            // lo que accidentalmente marcaba al manager para morir y rompÃ­a el ciclo.
             player.itemAnimation = System.Math.Max(2, 30 - stepTimer);
             player.itemAnimationMax = 30;
             player.itemTime = System.Math.Max(2, 30 - stepTimer);
@@ -118,10 +118,10 @@ namespace Whips145.Projectiles
                 whipVelocity = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.UnitX) * shootSpeed;
             }
 
-            // Evitar spawns en clientes si no son el dueño
+            // Evitar spawns en clientes si no son el dueÃ±o
             if (Main.myPlayer == Projectile.owner)
             {
-                // Contar látigos activos para evitar colapsar el límite de proyectiles en hitlags masivos
+                // Contar lÃ¡tigos activos para evitar colapsar el lÃ­mite de proyectiles en hitlags masivos
                 int activeWhips = 0;
                 for (int j = 0; j < Main.maxProjectiles; j++)
                 {
@@ -129,13 +129,13 @@ namespace Whips145.Projectiles
                         activeWhips++;
                 }
 
-                if (activeWhips < 30 && finishingCombo == 0f) // Límite seguro y no spawnea si está terminando
+                if (activeWhips < 30 && finishingCombo == 0f) // LÃ­mite seguro y no spawnea si estÃ¡ terminando
                 {
                     if (stepTimer == 0)
                     {
                         if (loopCount == 0)
                         {
-                            // Ola 1 Inicial: 2 latigos, sin cruzarse (uno con 1 tick de delay para evitar solapamiento visual idéntico)
+                            // Ola 1 Inicial: 2 latigos, sin cruzarse (uno con 1 tick de delay para evitar solapamiento visual idÃ©ntico)
                             Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.MountedCenter, whipVelocity, realType, damage, knockback, player.whoAmI, 0f, 0f, 0f);
                             Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.MountedCenter, whipVelocity, realType, damage, knockback, player.whoAmI, 0f, 0f, 1f);
                         }
@@ -159,10 +159,10 @@ namespace Whips145.Projectiles
                 }
             }
 
-            // Si completó las 3 olas (30 frames) y soltó el click
+            // Si completÃ³ las 3 olas (30 frames) y soltÃ³ el click
             if (stepTimer == 29 && finishingCombo == 1f)
             {
-                // Buscamos si aún quedan látigos vivos
+                // Buscamos si aÃºn quedan lÃ¡tigos vivos
                 int activeWhips = 0;
                 if (Main.myPlayer == Projectile.owner)
                 {
@@ -175,13 +175,13 @@ namespace Whips145.Projectiles
 
                 if (activeWhips == 0)
                 {
-                    // Si ya no quedan látigos, el manager muere de forma segura
+                    // Si ya no quedan lÃ¡tigos, el manager muere de forma segura
                     Projectile.Kill();
                     return;
                 }
                 else
                 {
-                    // Si hay látigos vivos, congelamos el manager en el frame 29 para mantener forzada la animación de ataque
+                    // Si hay lÃ¡tigos vivos, congelamos el manager en el frame 29 para mantener forzada la animaciÃ³n de ataque
                     player.itemAnimation = 2;
                     player.itemAnimationMax = 30;
                     player.itemTime = 2;

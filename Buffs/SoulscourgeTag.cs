@@ -1,12 +1,12 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Whips145.Buffs
+namespace TerrariaWhipsBackport.Buffs
 {
     public class SoulscourgeTag : ModBuff
     {
-        public override string Texture => "Whips145/Buffs/Buff_TagAllWhips";
+        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_TagAllWhips";
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;

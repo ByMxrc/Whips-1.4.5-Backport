@@ -1,20 +1,20 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Projectiles;
+using TerrariaWhipsBackport.Projectiles;
 
-namespace Whips145.Items
+namespace TerrariaWhipsBackport.Items
 {
     /// <summary>
-    /// Starcrash - Látigo de Meteorito. Marca al enemigo con energía cargada;
-    /// cuando los minions golpean al enemigo marcado, cae un meteorito que hace 1.33x el daño.
-    /// Daño: 18 | Tag: +2 | Receta: 20 Meteorite Bars + 10 Chains + 10 Fallen Stars en Anvil
+    /// Starcrash - LÃ¡tigo de Meteorito. Marca al enemigo con energÃ­a cargada;
+    /// cuando los minions golpean al enemigo marcado, cae un meteorito que hace 1.33x el daÃ±o.
+    /// DaÃ±o: 18 | Tag: +2 | Receta: 20 Meteorite Bars + 10 Chains + 10 Fallen Stars en Anvil
     /// </summary>
     public class Starcrash : ModItem
     {
         public override void SetDefaults()
         {
-            Item.DefaultToWhip(ModContent.ProjectileType<StarcrashProj>(), 18, 1.5f, 8f, 30);
+            Item.DefaultToWhip(ModContent.ProjectileType<StarcrashProj>(), 18, 1.5f, 4.3f, 30);
             Item.width = 32;
             Item.height = 32;
             Item.value = Item.sellPrice(gold: 1, silver: 80);

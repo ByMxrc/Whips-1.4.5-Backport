@@ -1,7 +1,7 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace Whips145.Common
+namespace TerrariaWhipsBackport.Common
 {
     public class WhipPlayer : ModPlayer
     {

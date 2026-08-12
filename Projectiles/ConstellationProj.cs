@@ -4,10 +4,10 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Buffs;
-using Whips145.Common;
+using TerrariaWhipsBackport.Buffs;
+using TerrariaWhipsBackport.Common;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class ConstellationProj : ModProjectile
     {
@@ -22,12 +22,12 @@ namespace Whips145.Projectiles
         {
             Projectile.DefaultToWhip();
             Projectile.WhipSettings.Segments = 20; // 20 segmentos = ~17 estrellas (igual que la original de stardust con armaduras que aumentan rango)
-            Projectile.WhipSettings.RangeMultiplier = 1.18f;
+            Projectile.WhipSettings.RangeMultiplier = 1.08f;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            // Evitar muñecos de pruebas y animales
+            // Evitar muÃ±ecos de pruebas y animales
             if (target.friendly || target.type == NPCID.TargetDummy || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
                 return;
 
@@ -54,7 +54,7 @@ namespace Whips145.Projectiles
                 for (int i = 1; i < list.Count - 1 && spawned < maxStars; i++)
                 {
                     int j = i - 1;
-                    if (j % 3 == 0) // Exactamente la misma lógica del patrón visual (1 sí, 2 no)
+                    if (j % 3 == 0) // Exactamente la misma lÃ³gica del patrÃ³n visual (1 sÃ­, 2 no)
                     {
                         Vector2 spawnPos = list[i];
                         
@@ -129,21 +129,21 @@ namespace Whips145.Projectiles
                 if (i > 0 && i < list.Count - 2)
                 {
                     int j = i - 1;
-                    // Patrón de 3 segmentos: 1 brilla, 2 no brillan
+                    // PatrÃ³n de 3 segmentos: 1 brilla, 2 no brillan
                     isBig = (j % 3 == 0); 
                     isX = (j % 3 == 1);
                     
-                    // Todos tamaño similar (0.45), menos la cruz grande que aumenta un ~5% extra (0.58)
+                    // Todos tamaÃ±o similar (0.45), menos la cruz grande que aumenta un ~5% extra (0.58)
                     scale = isBig ? 0.58f : 0.45f;
                     
                     if (isX)
                     {
-                        // Si es una "x", la rotamos 45 grados respecto al látigo
+                        // Si es una "x", la rotamos 45 grados respecto al lÃ¡tigo
                         rotation += MathHelper.PiOver4;
                     }
                 }
 
-                // Draw the connecting line (solo si no es el último tramo después de la punta)
+                // Draw the connecting line (solo si no es el Ãºltimo tramo despuÃ©s de la punta)
                 if (i < list.Count - 2)
                 {
                     Texture2D magicPixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
@@ -158,17 +158,18 @@ namespace Whips145.Projectiles
                 Lighting.AddLight(element, 0.05f, 0.3f, 0.5f);
 
                 // Ignoramos los primeros segmentos pegados al jugador (i <= 2)
-                // Y hacemos que la punta suelte MÁS polvo que la base, para compensar que la punta viaja más rápido
+                // Y hacemos que la punta suelte MÃS polvo que la base, para compensar que la punta viaja mÃ¡s rÃ¡pido
                 if (i > 2 && i < list.Count - 1)
                 {
                     // i bajo (cerca del jugador) = menos probabilidad
-                    // i alto (cerca de la punta) = más probabilidad
-                    int chance = 60 - (i * 3);
-                    if (chance < 10) chance = 10;
+                    // i alto (cerca de la punta) = mÃ¡s probabilidad
+                    // Valores duplicados para reducir las partículas a la mitad
+                    int chance = 150 - (i * 6);
+                    if (chance < 30) chance = 20;
 
                     if (Main.rand.NextBool(chance))
                     {
-                        int d = Dust.NewDust(element - new Vector2(4, 4), 8, 8, 229, 0f, 0f, 0, Color.White, 0.4f);
+                        int d = Dust.NewDust(element - new Vector2(4, 4), 8, 8, 180, 0f, 0f, 0, Color.White, 0.4f);
                         Main.dust[d].noGravity = true;
                         Main.dust[d].velocity *= 0.5f;
                         Main.dust[d].fadeIn = 0.8f;
@@ -188,10 +189,10 @@ namespace Whips145.Projectiles
                     Texture2D glowTex = ModContent.Request<Texture2D>("Terraria/Images/Extra_89").Value;
                     Vector2 glowOrigin = glowTex.Size() / 2f;
                     
-                    // LÓGICA DE TAMAÑOS POR ZONAS (Amarilla, Verde, Roja)
+                    // LÃ“GICA DE TAMAÃ‘OS POR ZONAS (Amarilla, Verde, Roja)
                     float baseGlowScale;
                     if (progress <= 0.33f) {
-                        // Zona Amarilla (Base): Tamaño actual de las verdes (~0.66)
+                        // Zona Amarilla (Base): TamaÃ±o actual de las verdes (~0.66)
                         baseGlowScale = 0.66f;
                     } else if (progress <= 0.66f) {
                         // Zona Verde (Medio): Aumento del 10% (0.66 * 1.10 = 0.726)
@@ -205,27 +206,27 @@ namespace Whips145.Projectiles
                     }
                     
                     // Aumento del 15% pedido para las cruces
-                    baseGlowScale *= 1.15f;
+                    baseGlowScale *= 1.05f;
                     
-                    // Mantenemos las estrellas pequeñas a un 20% del tamaño, y damos +5% extra a las grandes
-                    float glowScale = baseGlowScale * (isRedCircle ? 1.4f : 0.35f); // Aumentado el 0.90f a 1.4f para que brillen MUCHO más
+                    // Mantenemos las estrellas pequeÃ±as a un 20% del tamaÃ±o, y damos +5% extra a las grandes
+                    float glowScale = baseGlowScale * (isRedCircle ? 1.4f : 0.35f); // Aumentado el 0.90f a 1.4f para que brillen MUCHO mÃ¡s
 
-                    // CÁLCULO DE ALINEACIÓN
+                    // CÃLCULO DE ALINEACIÃ“N
                     Vector2 visualCenter = (pos - Main.screenPosition) + diff.SafeNormalize(Vector2.Zero) * ((frameHeight / 2f) - 4f) * scale;
 
-                    // 1. Núcleo central suave
+                    // 1. NÃºcleo central suave
                     Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor * (isRedCircle ? 0.4f : 0.25f), 0f, glowOrigin, glowScale * 0.7f, SpriteEffects.None, 0);
                     
-                    // Añadir un núcleo blanco extra para las estrellas que más brillan
+                    // AÃ±adir un nÃºcleo blanco extra para las estrellas que mÃ¡s brillan
                     if (isRedCircle) {
                         Main.EntitySpriteDraw(glowTex, visualCenter, null, Color.White * 0.6f, 0f, glowOrigin, glowScale * 0.2f, SpriteEffects.None, 0);
                     }
 
-                    // ALINEACIÓN EN PANTALLA (0 GRADOS, O 45 GRADOS PARA LAS X)
+                    // ALINEACIÃ“N EN PANTALLA (0 GRADOS, O 45 GRADOS PARA LAS X)
                     float flareRot = isX ? MathHelper.PiOver4 : 0f;
 
                     // 2. Destello vertical/diagonal
-                    Vector2 scaleLong = new Vector2(0.12f, 1.3f) * glowScale;
+                    Vector2 scaleLong = new Vector2(0.12f, 1f) * glowScale;
                     Main.EntitySpriteDraw(glowTex, visualCenter, null, bloomColor, flareRot, glowOrigin, scaleLong, SpriteEffects.None, 0);
 
                     // 3. Destello horizontal/diagonal opuesto
@@ -236,7 +237,7 @@ namespace Whips145.Projectiles
                 // Draw the main segment
                 if (i > 0 && i < list.Count - 2)
                 {
-                    // Para que las estrellas rotadas (X) no se salgan de la línea, las dibujamos rotando sobre su centro visual
+                    // Para que las estrellas rotadas (X) no se salgan de la lÃ­nea, las dibujamos rotando sobre su centro visual
                     Vector2 visualCenter = (pos - Main.screenPosition) + diff.SafeNormalize(Vector2.Zero) * ((frameHeight / 2f) - 4f) * scale;
                     Vector2 trueOrigin = new Vector2(frameWidth / 2f, frameHeight / 2f);
                     Main.EntitySpriteDraw(texture, visualCenter, frame, color, rotation, trueOrigin, scale, SpriteEffects.None, 0);

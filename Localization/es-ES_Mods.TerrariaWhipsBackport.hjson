@@ -1,0 +1,201 @@
+Buffs: {
+	CobwhipTag: {
+		DisplayName: Marca de la Latigaraña
+		Description: Mods.TerrariaWhipsBackport.Buffs.CobwhipTag.Description
+	}
+
+	ConstellationTag: {
+		DisplayName: Marca de Constelación
+		Description: Mods.TerrariaWhipsBackport.Buffs.ConstellationTag.Description
+	}
+
+	ElectricEelTag: {
+		DisplayName: Marca de la Anguila Eléctrica
+		Description: Mods.TerrariaWhipsBackport.Buffs.ElectricEelTag.Description
+	}
+
+	PossessionTag: {
+		DisplayName: Marca de Posesión
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionTag.Description
+	}
+
+	SlimeWhipTag: {
+		DisplayName: Marca del Látigo de Slime
+		Description: Mods.TerrariaWhipsBackport.Buffs.SlimeWhipTag.Description
+	}
+
+	SoulscourgeTag: {
+		DisplayName: Marca del Azote del alma
+		Description: Mods.TerrariaWhipsBackport.Buffs.SoulscourgeTag.Description
+	}
+
+	StarcrashTag: {
+		DisplayName: Marca del Choquestelar
+		Description: Mods.TerrariaWhipsBackport.Buffs.StarcrashTag.Description
+	}
+
+	VasculashTag: {
+		DisplayName: Marca del Vasculátigo
+		Description: Mods.TerrariaWhipsBackport.Buffs.VasculashTag.Description
+	}
+
+	VulgarDisplayTag: {
+		DisplayName: Marca del Mago de Flor
+		Description: Mods.TerrariaWhipsBackport.Buffs.VulgarDisplayTag.Description
+	}
+
+	VulgarDisplayEnergy: {
+		DisplayName: Energía del Mago de Flor
+		Description: Mods.TerrariaWhipsBackport.Buffs.VulgarDisplayEnergy.Description
+	}
+
+	PossessionEnergy: {
+		DisplayName: Energía de Posesión
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionEnergy.Description
+	}
+
+	CobwhipPlayerBuff: {
+		DisplayName: Mejora de la Latigaraña
+		Description: Mods.TerrariaWhipsBackport.Buffs.CobwhipPlayerBuff.Description
+	}
+
+	ElectricEelDebuff: {
+		DisplayName: Electrizado
+		Description: Mods.TerrariaWhipsBackport.Buffs.ElectricEelDebuff.Description
+	}
+
+	SlimeWhipDebuff: {
+		DisplayName: Debuff del Látigo de Slime
+		Description: Mods.TerrariaWhipsBackport.Buffs.SlimeWhipDebuff.Description
+	}
+
+	PossessionEyeTag: {
+		DisplayName: Marca del Ojo de Posesión
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionEyeTag.Description
+	}
+}
+
+Items: {
+	Cobwhip: {
+		DisplayName: Latigaraña
+		Tooltip:
+			'''
+			3 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos para invocar una pequeña araña
+			'''
+	}
+
+	Constellation: {
+		DisplayName: Constelación
+		Tooltip:
+			'''
+			15 de daño de invocación por marca
+			15% de probabilidad de golpe crítico de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos para esparcir estrellas aliadas
+			'''
+	}
+
+	ElectricEel: {
+		DisplayName: Anguila Eléctrica
+		Tooltip:
+			'''
+			12 de daño de invocación por marca
+			5% de probabilidad de golpe crítico de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos con energía eléctrica
+			La energía eléctrica resuena entre los enemigos
+			'''
+	}
+
+	Possession: {
+		DisplayName: Posesión
+		Tooltip:
+			'''
+			25 de daño de invocación por marca
+			10% de probabilidad de golpe crítico de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos con energía profética
+			Visiones atacan a los enemigos golpeados por invocaciones
+			'''
+	}
+
+	SlimeWhip: {
+		DisplayName: Látigo de Slime
+		Tooltip:
+			'''
+			3 de daño de invocación por marca
+			El chasquido del látigo puede encender a los enemigos
+			'''
+	}
+
+	Soulscourge: {
+		DisplayName: Azote del alma
+		Tooltip:
+			'''
+			5 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Azota a tus enemigos con los restos del mal encarnado
+			'''
+	}
+
+	Starcrash: {
+		DisplayName: Choquestelar
+		Tooltip:
+			'''
+			2 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos con energía inestable
+			Meteoritos caen sobre los enemigos inestables al ser golpeados por invocaciones
+			'''
+	}
+
+	Vasculash: {
+		DisplayName: Vasculátigo
+		Tooltip:
+			'''
+			5 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			¡Arterias, venas y tendones!
+			'''
+	}
+
+	VulgarDisplayOfFlower: {
+		DisplayName: Mago de Flor
+		Tooltip:
+			'''
+			9 de daño de invocación por marca
+			Tus invocaciones se enfocarán en los enemigos golpeados
+			Golpea a los enemigos con energía volátil
+			Pétalos violentos florecen en los enemigos golpeados por invocaciones
+			¿Un látigo de espinas arrancado de la mismísima Reina de la Selva?
+			'''
+	}
+}
+
+Projectiles: {
+	CobwhipProj.DisplayName: Proyectil de la Latigaraña
+	ConstellationProj.DisplayName: Proyectil de Constelación
+	ElectricEelProj.DisplayName: Proyectil de la Anguila Eléctrica
+	PossessionProj.DisplayName: Proyectil de Posesión
+	SlimeWhipProj.DisplayName: Proyectil del Látigo de Slime
+	SoulscourgeProj.DisplayName: Proyectil del Azote del alma
+	StarcrashProj.DisplayName: Proyectil del Choquestelar
+	VasculashProj.DisplayName: Proyectil del Vasculátigo
+	VulgarDisplayOfFlowerProj.DisplayName: Proyectil del Mago de Flor
+	PossessionProj1.DisplayName: Proyectil 1 de Posesión
+	PossessionProj2.DisplayName: Proyectil 2 de Posesión
+	PossessionProjSecondary.DisplayName: Proyectil Secundario de Posesión
+	CobwhipProj1.DisplayName: Proyectil 1 de la Latigaraña
+	StarcrashProj1.DisplayName: Proyectil 1 del Choquestelar
+	StarcrashMeteorProj.DisplayName: Meteorito del Choquestelar
+	StarcrashMeteorOverlayProj.DisplayName: Efecto de Meteorito del Choquestelar
+	VulgarDisplayOfFlowerProj1.DisplayName: Proyectil 1 del Mago de Flor
+	ConstellationProj1.DisplayName: Proyectil 1 de Constelación
+	PossessionManager.DisplayName: Gestor de Posesión
+	PossessionEyeProj.DisplayName: Ojo de Posesión
+	PossessionLaserProj.DisplayName: Láser de Posesión
+	ElectricParticle.DisplayName: Partícula Eléctrica
+	PossessionEyeLaserProj.DisplayName: Láser Curvo de Posesión
+}

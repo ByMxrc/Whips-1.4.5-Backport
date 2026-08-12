@@ -6,17 +6,17 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Whips145.Buffs;
-using Whips145.Items;
-using Whips145.Projectiles;
+using TerrariaWhipsBackport.Buffs;
+using TerrariaWhipsBackport.Items;
+using TerrariaWhipsBackport.Projectiles;
 
-namespace Whips145.Common
+namespace TerrariaWhipsBackport.Common
 {
     /// <summary>
     /// GlobalNPC que maneja:
-    /// 1. Drops de látigos en los jefes correspondientes (Plantera, Duke Fishron, Moon Lord)
+    /// 1. Drops de lÃ¡tigos en los jefes correspondientes (Plantera, Duke Fishron, Moon Lord)
     /// 2. Efectos especiales cuando los minions golpean a enemigos marcados con el tag
-    ///    de cada látigo (Starcrash, VulgarDisplay, ElectricEel, Constellation, Possession)
+    ///    de cada lÃ¡tigo (Starcrash, VulgarDisplay, ElectricEel, Constellation, Possession)
     /// </summary>
     public class WhipTagGlobalNPC : GlobalNPC
     {
@@ -31,13 +31,13 @@ namespace Whips145.Common
         public bool hasPossessionEyeTag = false;
 
         public bool starcrashMeteorDropped = false; // Garantiza solo 1 meteorito por marca
-        public bool possessionEyeDropped = false; // Garantiza invocación única por marca
+        public bool possessionEyeDropped = false; // Garantiza invocaciÃ³n Ãºnica por marca
         public int electricEelTimer = 0; // Temporizador para el efecto del rayo (Electric Eel)
         public override bool InstancePerEntity => true; // Instancia por NPC
 
         public override void SetDefaults(NPC npc)
         {
-            // Permitir que los Dummies reciban los tags de los látigos para poder probarlos
+            // Permitir que los Dummies reciban los tags de los lÃ¡tigos para poder probarlos
             if (npc.type == NPCID.TargetDummy)
             {
                 npc.buffImmune[ModContent.BuffType<StarcrashTag>()] = false;
@@ -56,25 +56,25 @@ namespace Whips145.Common
             }
         }
 
-        // ─── CONFIGURAR DROPS EN LOS JEFES ───────────────────────────────────────
+        // â”€â”€â”€ CONFIGURAR DROPS EN LOS JEFES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            // Vulgar Display of Flower → Plantera (25% de probabilidad)
+            // Vulgar Display of Flower â†’ Plantera (25% de probabilidad)
             if (npc.type == NPCID.Plantera)
             {
                 npcLoot.Add(ItemDropRule.Common(
                     ModContent.ItemType<VulgarDisplayOfFlower>(), 4)); // 1 en 4 = 25%
             }
 
-            // Electric Eel → Duke Fishron (25%)
+            // Electric Eel â†’ Duke Fishron (25%)
             if (npc.type == NPCID.DukeFishron)
             {
                 npcLoot.Add(ItemDropRule.Common(
                     ModContent.ItemType<ElectricEel>(), 4));
             }
 
-            // Possession → Moon Lord (25%)
+            // Possession â†’ Moon Lord (25%)
             if (npc.type == NPCID.MoonLordCore)
             {
                 npcLoot.Add(ItemDropRule.Common(
@@ -117,7 +117,7 @@ namespace Whips145.Common
             }
         }
 
-        // ─── ACTUALIZAR ESTADO DEL TAG SEGÚN BUFFS ACTIVOS ───────────────────────
+        // â”€â”€â”€ ACTUALIZAR ESTADO DEL TAG SEGÃšN BUFFS ACTIVOS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         public override void PostAI(NPC npc)
         {
@@ -132,10 +132,10 @@ namespace Whips145.Common
                 hasPossessionTag = npc.HasBuff(ModContent.BuffType<PossessionTag>());
                 hasPossessionEyeTag = npc.HasBuff(ModContent.BuffType<PossessionEyeTag>());
 
-                // ── ELECTRIC EEL: Efectos visuales de rayo cada segundo ──
+                // â”€â”€ ELECTRIC EEL: Efectos visuales de rayo cada segundo â”€â”€
                 if (hasElectricEelDebuff)
                 {
-                    // Efecto visual persistente: mantener partículas eléctricas envolviendo al enemigo
+                    // Efecto visual persistente: mantener partÃ­culas elÃ©ctricas envolviendo al enemigo
                     if (Main.rand.NextBool(3))
                     {
                         int auraDust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.Electric, 0f, 0f, 0, default, 0.9f);
@@ -150,11 +150,11 @@ namespace Whips145.Common
                         electricEelTimer = 0;
 
                         // Buscar otros enemigos con la marca a menos de 100 bloques (1600 pixeles)
-                        int maxTargets = 3; // Límite de 3 para un máximo de 200 de daño (50 base + 150)
+                        int maxTargets = 3; // LÃ­mite de 3 para un mÃ¡ximo de 200 de daÃ±o (50 base + 150)
                         int targetsFound = 0;
 
                         // Los Target Dummies no emiten ni reciben rayos visuales (evita el ruido visual extremo), 
-                        // pero sí reciben el daño base.
+                        // pero sÃ­ reciben el daÃ±o base.
                         if (npc.type != NPCID.TargetDummy)
                         {
                             for (int i = 0; i < Main.maxNPCs; i++)
@@ -164,7 +164,7 @@ namespace Whips145.Common
                                 {
                                     if (Vector2.Distance(npc.Center, other.Center) <= 1600f)
                                     {
-                                        // Dibujar línea de polvo eléctrico (rayo visual)
+                                        // Dibujar lÃ­nea de polvo elÃ©ctrico (rayo visual)
                                         Vector2 start = npc.Center;
                                         Vector2 end = other.Center;
                                         int numDusts = (int)(Vector2.Distance(start, end) / 8f);
@@ -186,7 +186,7 @@ namespace Whips145.Common
                             }
                         }
 
-                        // Realizar el daño directamente (así afecta a los Dummies y sale el número flotante sincronizado)
+                        // Realizar el daÃ±o directamente (asÃ­ afecta a los Dummies y sale el nÃºmero flotante sincronizado)
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             int damage = 50 + (targetsFound * 50);
@@ -208,12 +208,12 @@ namespace Whips145.Common
             }
         }
 
-        // ─── MODIFICACIÓN DE REGENERACIÓN DE VIDA (DAÑO CON EL TIEMPO) ───────────────
+        // â”€â”€â”€ MODIFICACIÃ“N DE REGENERACIÃ“N DE VIDA (DAÃ‘O CON EL TIEMPO) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
-            // El debuff de Slime (Slimed) hace que los debuffs de fuego hagan el doble de daño
-            if (npc.HasBuff(BuffID.Slimed))
+            // El debuff de Slime (Slimed) hace que los debuffs de fuego hagan el doble de daÃ±o
+            if (npc.HasBuff(BuffID.Slimed) || npc.HasBuff(ModContent.BuffType<Buffs.SlimeWhipDebuff>()))
             {
                 int extraLifeRegenLoss = 0;
                 
@@ -229,8 +229,8 @@ namespace Whips145.Common
                     // Duplicamos el lifeRegen restando la misma cantidad que quitan los debuffs originales
                     npc.lifeRegen -= extraLifeRegenLoss;
                     
-                    // El parámetro 'damage' controla el número de daño que sale flotando,
-                    // así que lo incrementamos para que visualmente cuadre con el daño doble
+                    // El parÃ¡metro 'damage' controla el nÃºmero de daÃ±o que sale flotando,
+                    // asÃ­ que lo incrementamos para que visualmente cuadre con el daÃ±o doble
                     int extraDamage = extraLifeRegenLoss / 4;
                     if (damage < extraDamage)
                     {
@@ -239,10 +239,10 @@ namespace Whips145.Common
                 }
             }
 
-            // La lógica de daño del Electric Eel se movió a PostAI para que sea un golpe directo sincronizado con el rayo.
+            // La lÃ³gica de daÃ±o del Electric Eel se moviÃ³ a PostAI para que sea un golpe directo sincronizado con el rayo.
         }
 
-        // ─── EFECTOS AL RECIBIR DAÑO DE PROYECTILES DE MINIONS ───────────────────
+        // â”€â”€â”€ EFECTOS AL RECIBIR DAÃ‘O DE PROYECTILES DE MINIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
@@ -250,14 +250,14 @@ namespace Whips145.Common
             if (!projectile.minion && !ProjectileID.Sets.MinionShot[projectile.type] && !projectile.sentry && !ProjectileID.Sets.SentryShot[projectile.type])
                 return;
 
-            // Evitar efectos en muñecos de pruebas o animales
+            // Evitar efectos en muÃ±ecos de pruebas o animales
             if (npc.friendly || npc.type == NPCID.TargetDummy || npc.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[npc.type])
                 return;
 
             Player owner = Main.player[projectile.owner];
             WhipPlayer whipPlayer = owner.GetModPlayer<WhipPlayer>();
 
-            // ── STARCRASH: Invoca un meteorito (1.33x el daño del minion) ──────────
+            // â”€â”€ STARCRASH: Invoca un meteorito (1.33x el daÃ±o del minion) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             if (hasStarcrashTag && whipPlayer.starcrashCooldown == 0 && !starcrashMeteorDropped)
             {
                 whipPlayer.starcrashCooldown = 50; // Cooldown global en el jugador
@@ -273,7 +273,7 @@ namespace Whips145.Common
                     Vector2 spawnPos = new Vector2(npc.Center.X + randomXOffset, npc.Center.Y - 300f + randomYOffset);
 
                     // De 1m:10s:127f a 1m:11s:007f en un video a 144fps:
-                    // Faltan 17 frames para terminar el segundo 10, más 7 frames del segundo 11 = 24 frames.
+                    // Faltan 17 frames para terminar el segundo 10, mÃ¡s 7 frames del segundo 11 = 24 frames.
                     // 24 frames a 144fps es exactamente 0.166 segundos.
                     // En Terraria (60fps), 0.166s equivale a exactamente 10 ticks.
                     float duration = 10f; 
@@ -291,7 +291,7 @@ namespace Whips145.Common
                     );
                 }
 
-                // Partículas en el enemigo al activarse
+                // PartÃ­culas en el enemigo al activarse
                 for (int i = 0; i < 4; i++)
                 {
                     Dust.NewDust(npc.position, npc.width, npc.height,
@@ -303,22 +303,22 @@ namespace Whips145.Common
                 hasStarcrashTag = false;
             }
 
-            // ── POSSESSION: Invoca 3 ojos que disparan láseres curvos ──────────
+            // â”€â”€ POSSESSION: Invoca 3 ojos que disparan lÃ¡seres curvos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             if (hasPossessionEyeTag && !possessionEyeDropped)
             {
-                // El daño de los láseres es proporcional al golpe que activó la marca
-                int eyeDamage = (int)(damageDone * 0.75f); // 75% del daño del minion por ojo
+                // El daÃ±o de los lÃ¡seres es proporcional al golpe que activÃ³ la marca
+                int eyeDamage = (int)(damageDone * 0.75f); // 75% del daÃ±o del minion por ojo
 
-                possessionEyeDropped = true; // Bloqueo de uso único por hit de látigo
+                possessionEyeDropped = true; // Bloqueo de uso Ãºnico por hit de lÃ¡tigo
 
                 if (Main.myPlayer == projectile.owner)
                 {
-                    // Delays basados en tu línea de tiempo: 0, 5 ticks, 7 ticks
+                    // Delays basados en tu lÃ­nea de tiempo: 0, 5 ticks, 7 ticks
                     float[] delays = { 0f, 5f, 7f };
 
                     for (int i = 0; i < 3; i++)
                     {
-                        // Dirección aleatoria y distancia entre 7 bloques (112 píxeles) y 15 bloques (240 píxeles)
+                        // DirecciÃ³n aleatoria y distancia entre 7 bloques (112 pÃ­xeles) y 15 bloques (240 pÃ­xeles)
                         Vector2 randomOffset = Main.rand.NextVector2Unit() * Main.rand.NextFloat(112f, 240f);
                         
                         Vector2 spawnPos = npc.Center + randomOffset;
@@ -331,7 +331,7 @@ namespace Whips145.Common
                             eyeDamage,
                             0f,
                             projectile.owner,
-                            npc.whoAmI, // ai[0] guarda a qué enemigo apuntar
+                            npc.whoAmI, // ai[0] guarda a quÃ© enemigo apuntar
                             delays[i]   // ai[1] guarda el retraso escalonado
                         );
                     }
@@ -342,22 +342,22 @@ namespace Whips145.Common
                 hasPossessionEyeTag = false;
             }
 
-            // ── VULGAR DISPLAY OF FLOWER: Brotan pétalos del enemigo (Volatile Energy) ──
+            // â”€â”€ VULGAR DISPLAY OF FLOWER: Brotan pÃ©talos del enemigo (Volatile Energy) â”€â”€
             if (hasVulgarEnergy && whipPlayer.vulgarCooldown == 0)
             {
                 whipPlayer.vulgarCooldown = 15;
 
-                // El daño de los pétalos es de 40 (fijo, ignora el daño del minion)
+                // El daÃ±o de los pÃ©talos es de 40 (fijo, ignora el daÃ±o del minion)
                 int petalDamage = 40;
 
-                // Invocar 3 pétalos en forma de triángulo
+                // Invocar 3 pÃ©talos en forma de triÃ¡ngulo
                 if (Main.myPlayer == projectile.owner)
                 {
                     float baseAngle = Main.rand.NextFloat(MathHelper.TwoPi);
-                    // Aumentado masivamente de 6.0 a 16.0 para que se alejen mucho más del objetivo
+                    // Aumentado masivamente de 6.0 a 16.0 para que se alejen mucho mÃ¡s del objetivo
                     float speed = 16.0f; 
                     
-                    // Definimos el orden en que brillarán: 0 y 1 son los primeros, 2 es el que tarda más
+                    // Definimos el orden en que brillarÃ¡n: 0 y 1 son los primeros, 2 es el que tarda mÃ¡s
                     int[] glowOrder = { 0, 1, 2 };
                     for (int k = 0; k < 3; k++) {
                         int r = Main.rand.Next(3);
@@ -385,7 +385,7 @@ namespace Whips145.Common
                     }
                 }
 
-                // CONSUMIR LA ENERGÍA VOLÁTIL: se quita el buff de energía, pero el de daño tag persiste
+                // CONSUMIR LA ENERGÃA VOLÃTIL: se quita el buff de energÃ­a, pero el de daÃ±o tag persiste
                 int buffIndex = npc.FindBuffIndex(ModContent.BuffType<VulgarDisplayEnergy>());
                 if (buffIndex != -1)
                 {
@@ -394,14 +394,14 @@ namespace Whips145.Common
                 hasVulgarEnergy = false;
             }
 
-            // ── CONSTELLATION: Estrellas fugaces del tag ─────────────────────────
-            // (Las estrellas se lanzan al golpear con el látigo en OnHitNPC del proyectil)
-            // Aquí podemos añadir un efecto extra cuando los minions golpean al enemigo marcado
+            // â”€â”€ CONSTELLATION: Estrellas fugaces del tag â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // (Las estrellas se lanzan al golpear con el lÃ¡tigo en OnHitNPC del proyectil)
+            // AquÃ­ podemos aÃ±adir un efecto extra cuando los minions golpean al enemigo marcado
             if (hasConstellationTag && whipPlayer.constellationCooldown == 0)
             {
                 whipPlayer.constellationCooldown = 30; // Cada 0.5 segundos
 
-                // Partículas de estrella alrededor del enemigo
+                // PartÃ­culas de estrella alrededor del enemigo
                 for (int i = 0; i < 5; i++)
                 {
                     int dust = Dust.NewDust(
@@ -417,7 +417,7 @@ namespace Whips145.Common
 
         }
 
-        // ─── SERIALIZACIÓN (necesario para InstancePerEntity) ────────────────────
+        // â”€â”€â”€ SERIALIZACIÃ“N (necesario para InstancePerEntity) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {

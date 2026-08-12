@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Buffs;
+using TerrariaWhipsBackport.Buffs;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class VulgarDisplayOfFlowerProj : ModProjectile
     {
@@ -20,8 +20,8 @@ namespace Whips145.Projectiles
         public override void SetDefaults()
         {
             Projectile.DefaultToWhip();
-            Projectile.WhipSettings.Segments = 10;
-            Projectile.WhipSettings.RangeMultiplier = 0.96f;
+            Projectile.WhipSettings.Segments = 11;
+            Projectile.WhipSettings.RangeMultiplier = 1f;
         }
 
         public override void PostAI()
@@ -29,22 +29,22 @@ namespace Whips145.Projectiles
             List<Vector2> list = new List<Vector2>();
             Projectile.FillWhipControlPoints(Projectile, list);
 
-            // Dirección general del látigo para la inercia de las partículas
+            // DirecciÃ³n general del lÃ¡tigo para la inercia de las partÃ­culas
             Vector2 whipDirection = Projectile.velocity.SafeNormalize(Vector2.UnitX * Projectile.spriteDirection);
             Player player = Main.player[Projectile.owner];
 
-            // Partículas durante la animación de ataque
+            // PartÃ­culas durante la animaciÃ³n de ataque
             for (int i = 0; i < list.Count; i++)
             {
-                // Evitamos generar polvo si los segmentos están retraídos o muy cerca del jugador
+                // Evitamos generar polvo si los segmentos estÃ¡n retraÃ­dos o muy cerca del jugador
                 if (Vector2.Distance(list[i], player.MountedCenter) < 50f)
                     continue;
 
-                if (Main.rand.NextBool(13)) // Densidad ajustada (un 10% adicional más)
+                if (Main.rand.NextBool(13)) // Densidad ajustada (un 10% adicional mÃ¡s)
                 {
                     int type = Main.rand.NextBool() ? 166 : 167;
                     
-                    // Inercia en la dirección del látigo con una ligera dispersión
+                    // Inercia en la direcciÃ³n del lÃ¡tigo con una ligera dispersiÃ³n
                     Vector2 dustVelocity = whipDirection * Main.rand.NextFloat(3f, 6f) + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f));
                     
                     int dust = Dust.NewDust(list[i], 0, 0, type, dustVelocity.X, dustVelocity.Y, 100, default, 1.4f);
@@ -57,7 +57,7 @@ namespace Whips145.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            // Evitar efectos en muñecos de pruebas o animales
+            // Evitar efectos en muÃ±ecos de pruebas o animales
             if (target.friendly || target.type == NPCID.TargetDummy || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
                 return;
 
@@ -67,7 +67,7 @@ namespace Whips145.Projectiles
             target.buffImmune[ModContent.BuffType<VulgarDisplayTag>()] = false;
             target.AddBuff(ModContent.BuffType<VulgarDisplayTag>(), 240);
 
-            // La energía volátil solo se aplica al primer enemigo golpeado por cada balanceo
+            // La energÃ­a volÃ¡til solo se aplica al primer enemigo golpeado por cada balanceo
             if (!appliedEnergy)
             {
                 appliedEnergy = true;
@@ -93,8 +93,7 @@ namespace Whips145.Projectiles
             for (int i = 0; i < list.Count - 1; i++)
             {
                 Rectangle frame = new Rectangle(0, 0, frameWidth, frameHeight);
-                Vector2 origin = new Vector2(frameWidth / 2f, 4f); 
-                float scale = 1f;
+                Vector2 origin = new Vector2(frameWidth / 2f, frameHeight / 2f); 
 
                 if (i == 0)
                 {
@@ -115,7 +114,7 @@ namespace Whips145.Projectiles
                 float rotation = diff.ToRotation() - MathHelper.PiOver2;
                 Color color = Lighting.GetColor(element.ToTileCoordinates());
 
-                // Draw the connecting line (solo si no es el último tramo después de la punta)
+                // Draw the connecting line (solo si no es el Ãºltimo tramo despuÃ©s de la punta)
                 if (i < list.Count - 2)
                 {
                     Texture2D magicPixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
@@ -125,8 +124,11 @@ namespace Whips145.Projectiles
                     Main.EntitySpriteDraw(magicPixel, element - Main.screenPosition, new Rectangle(0, 0, 1, 1), litLineColor, diff.ToRotation(), new Vector2(0, 0.5f), lineScale, SpriteEffects.None, 0);
                 }
 
-                // Draw the segment
-                Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
+                // Las flores van creciendo en tamaÃ±o desde el mango hasta la punta para igualar el diseÃ±o original
+                float segmentScale = MathHelper.Lerp(0.5f, 1.2f, (float)i / list.Count);
+                if (i == list.Count - 2) segmentScale = 1f; // La punta mantiene su tamaÃ±o original
+
+                Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, segmentScale, flip, 0);
                 pos += diff;
             }
 

@@ -1,14 +1,14 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Projectiles;
+using TerrariaWhipsBackport.Projectiles;
 
-namespace Whips145.Items
+namespace TerrariaWhipsBackport.Items
 {
     /// <summary>
     /// Electric Eel - Drop de Duke Fishron (25%).
-    /// Crea un aura eléctrica alrededor del enemigo marcado que daña a los cercanos.
-    /// Daño: 150 | Tag: +12 | Multi-hit penalty: 5%
+    /// Crea un aura elÃ©ctrica alrededor del enemigo marcado que daÃ±a a los cercanos.
+    /// DaÃ±o: 150 | Tag: +12 | Multi-hit penalty: 5%
     /// </summary>
     public class ElectricEel : ModItem
     {

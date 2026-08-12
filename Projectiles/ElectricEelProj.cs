@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Buffs;
+using TerrariaWhipsBackport.Buffs;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
-    // El Electric Eel genera un aura eléctrica que daña enemigos cercanos.
+    // El Electric Eel genera un aura elÃ©ctrica que daÃ±a enemigos cercanos.
     public class ElectricEelProj : ModProjectile
     {
         public override void SetStaticDefaults()
@@ -20,7 +20,7 @@ namespace Whips145.Projectiles
         {
             Projectile.DefaultToWhip();
             Projectile.WhipSettings.Segments = 40;
-            Projectile.WhipSettings.RangeMultiplier = 1.07f;
+            Projectile.WhipSettings.RangeMultiplier = 0.99f;
         }
 
         public override void AI()
@@ -35,10 +35,10 @@ namespace Whips145.Projectiles
             Projectile.FillWhipControlPoints(Projectile, list);
             Player player = Main.player[Projectile.owner];
 
-            // Partículas durante la animación de ataque (Densidad reducida)
+            // PartÃ­culas durante la animaciÃ³n de ataque (Densidad reducida)
             for (int i = 0; i < list.Count; i++)
             {
-                // Evitamos generar partículas si el látigo está encogido cerca del jugador
+                // Evitamos generar partÃ­culas si el lÃ¡tigo estÃ¡ encogido cerca del jugador
                 if (Vector2.Distance(list[i], player.MountedCenter) < 50f)
                     continue;
 
@@ -72,17 +72,17 @@ namespace Whips145.Projectiles
             target.buffImmune[ModContent.BuffType<ElectricEelTag>()] = false;
             target.AddBuff(ModContent.BuffType<ElectricEelTag>(), 240);
 
-            // Debuff eléctrico visual y de efecto (4 segundos)
+            // Debuff elÃ©ctrico visual y de efecto (4 segundos)
             target.buffImmune[ModContent.BuffType<ElectricEelDebuff>()] = false;
             target.AddBuff(ModContent.BuffType<ElectricEelDebuff>(), 240);
 
             // ==========================================
-            // MÓDULO 1: Partículas con transparencia
+            // MÃ“DULO 1: PartÃ­culas con transparencia
             // ==========================================
-            int cantidadParticulas1 = 2; // Cantidad de partículas a generar
+            int cantidadParticulas1 = 1; // Cantidad de partÃ­culas a generar
             int alphaParticulas1 = 50;  // Transparencia (0 es opaco, 255 es invisible, 127 es 50%)
-            float escalaParticulas1 = 0.5f; // Tamaño inicial de las partículas
-            float fadeInParticulas1 = 1.2f; // Tamaño máximo al que crecerán (hace el efecto de fade-in)
+            float escalaParticulas1 = 0.5f; // TamaÃ±o inicial de las partÃ­culas
+            float fadeInParticulas1 = 1f; // TamaÃ±o mÃ¡ximo al que crecerÃ¡n (hace el efecto de fade-in)
             
             for (int i = 0; i < cantidadParticulas1; i++)
             {
@@ -92,9 +92,9 @@ namespace Whips145.Projectiles
                 Main.dust[hitDust1].fadeIn = fadeInParticulas1;
             }
 
-            // Nota: En 1.4.5, el Electric Eel NO aplica el tag en área automáticamente con el látigo.
-            // Para marcar a múltiples enemigos, el jugador debe golpearlos individualmente o
-            // usar summons que extiendan el rango de daño. La mecánica de rayo en cadena ocurre
+            // Nota: En 1.4.5, el Electric Eel NO aplica el tag en Ã¡rea automÃ¡ticamente con el lÃ¡tigo.
+            // Para marcar a mÃºltiples enemigos, el jugador debe golpearlos individualmente o
+            // usar summons que extiendan el rango de daÃ±o. La mecÃ¡nica de rayo en cadena ocurre
             // pasivamente entre los enemigos ya marcados (gestionado en WhipTagGlobalNPC).
         }
     
@@ -135,7 +135,7 @@ namespace Whips145.Projectiles
                 float rotation = diff.ToRotation() - MathHelper.PiOver2;
                 Color color = Lighting.GetColor(element.ToTileCoordinates());
 
-                // Escala Y dinámica: solo estira si la distancia es mayor al tamaño efectivo del segmento
+                // Escala Y dinÃ¡mica: solo estira si la distancia es mayor al tamaÃ±o efectivo del segmento
                 // Usamos divisor menor (frameHeight - 6.5f) para cerrar la brecha de 1-2px al extenderse
                 float scaleY = 1f;
                 float divisor = frameHeight - 6.5f;

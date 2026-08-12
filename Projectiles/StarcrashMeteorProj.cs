@@ -1,17 +1,17 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class StarcrashMeteorProj : ModProjectile
     {
-        public override string Texture => "Whips145/Projectiles/StarcrashProj1";
+        public override string Texture => "TerrariaWhipsBackport/Projectiles/StarcrashProj1";
         
-        // Eliminadas variables de animación vanilla que causaban problemas
+        // Eliminadas variables de animaciÃ³n vanilla que causaban problemas
 
         public override void SetStaticDefaults()
         {
@@ -25,7 +25,7 @@ namespace Whips145.Projectiles
             Projectile.width = 40;
             Projectile.height = 40;
             Projectile.friendly = true;
-            Projectile.penetrate = 1; // ¡IMPORTANTE! 1 para que explote al chocar con un enemigo
+            Projectile.penetrate = 1; // Â¡IMPORTANTE! 1 para que explote al chocar con un enemigo
             Projectile.timeLeft = 600; 
             Projectile.DamageType = DamageClass.SummonMeleeSpeed;
             
@@ -40,13 +40,13 @@ namespace Whips145.Projectiles
             // Apuntar siempre hacia abajo
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            // ── ESTELA DE FUEGO (Idéntica al Meteor Staff real) ──
-            // El Meteor Staff original NO usa oldPos ni texturas, usa MUCHAS partículas de polvo (Dust).
+            // â”€â”€ ESTELA DE FUEGO (IdÃ©ntica al Meteor Staff real) â”€â”€
+            // El Meteor Staff original NO usa oldPos ni texturas, usa MUCHAS partÃ­culas de polvo (Dust).
             // Para que no queden huecos por la velocidad, generamos polvo interpolando la trayectoria.
             int dustSteps = 4; // Cantidad de puntos entre el frame anterior y el actual
             for (int j = 0; j < dustSteps; j++)
             {
-                // Interpolar posición entre el frame anterior y el actual
+                // Interpolar posiciÃ³n entre el frame anterior y el actual
                 Vector2 spawnPos = Vector2.Lerp(Projectile.oldPosition, Projectile.position, j / (float)dustSteps);
 
                 // Polvo de fuego intenso (naranja/rojo) como el meteorito vanilla
@@ -55,11 +55,11 @@ namespace Whips145.Projectiles
                     int d = Dust.NewDust(spawnPos, Projectile.width, Projectile.height, 270, 
                                          Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 1.25f);
                     Main.dust[d].noGravity = true;
-                    Main.dust[d].velocity *= 0.3f; // El polvo se queda atrás formando la cola
+                    Main.dust[d].velocity *= 0.3f; // El polvo se queda atrÃ¡s formando la cola
                 }
             }
 
-            // Solo empieza a chocar contra bloques cuando está a punto de llegar a la altura del enemigo
+            // Solo empieza a chocar contra bloques cuando estÃ¡ a punto de llegar a la altura del enemigo
             if (Projectile.ai[0] > 0f)
             {
                 if (Projectile.position.Y >= Projectile.ai[0] - 30f)
@@ -83,7 +83,7 @@ namespace Whips145.Projectiles
                 float progress = 1f - (i / (float)Projectile.oldPos.Length);
                 Color trailColor = Color.White * 0.5f * progress;
                 
-                // Calculamos la posición de dibujado desde el oldPos
+                // Calculamos la posiciÃ³n de dibujado desde el oldPos
                 Vector2 drawPos = Projectile.oldPos[i] + new Vector2(Projectile.width / 2f, Projectile.height / 2f) - Main.screenPosition;
                 
                 Main.EntitySpriteDraw(texture, drawPos, null, trailColor, Projectile.rotation, origin, Projectile.scale * progress, SpriteEffects.None, 0);
@@ -97,14 +97,14 @@ namespace Whips145.Projectiles
 
         public override bool PreKill(int timeLeft)
         {
-            // Al morir, generamos la explosión, polvo y sonido del meteorito vanilla
+            // Al morir, generamos la explosiÃ³n, polvo y sonido del meteorito vanilla
             Projectile.type = ProjectileID.Meteor1; 
             return true;
         }
 
         public override void OnKill(int timeLeft)
         {
-            // Daño en área (4x4 bloques = 64x64 pixeles)
+            // DaÃ±o en Ã¡rea (4x4 bloques = 64x64 pixeles)
             Projectile.position = Projectile.Center;
             Projectile.width = 64;
             Projectile.height = 64;

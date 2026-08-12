@@ -1,13 +1,13 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Whips145.Buffs;
+using TerrariaWhipsBackport.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Whips145.Projectiles
+namespace TerrariaWhipsBackport.Projectiles
 {
     public class SoulscourgeProj : ModProjectile
     {
@@ -27,10 +27,10 @@ namespace Whips145.Projectiles
         {
             Player player = Main.player[Projectile.owner];
             
-            // Actualizamos los segmentos según el multiplicador
+            // Actualizamos los segmentos segÃºn el multiplicador
             Projectile.WhipSettings.Segments = (int)(18 * player.whipRangeMultiplier);
 
-            // Recreamos la IA nativa del látigo para evitar que corra la original y ponga el sonido
+            // Recreamos la IA nativa del lÃ¡tigo para evitar que corra la original y ponga el sonido
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             Projectile.Center = Main.GetPlayerArmPosition(Projectile);
             Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
@@ -49,20 +49,20 @@ namespace Whips145.Projectiles
                 return false;
             }
 
-            // Reproducir el sonido nativo justo a la mitad de la extensión
+            // Reproducir el sonido nativo justo a la mitad de la extensiÃ³n
             if (Projectile.ai[0] == (int)(timeToFlyOut / 2f))
             {
                 SoundEngine.PlaySound(SoundID.NPCDeath1, Projectile.position);
             }
 
-            // Generar partículas a lo largo del látigo (restaurando lo que hacía la IA nativa)
+            // Generar partÃ­culas a lo largo del lÃ¡tigo (restaurando lo que hacÃ­a la IA nativa)
 
-            return false; // Retornamos false para evitar que corra la IA nativa del látigo
+            return false; // Retornamos false para evitar que corra la IA nativa del lÃ¡tigo
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            // Evitar efectos en muñecos de pruebas o animales
+            // Evitar efectos en muÃ±ecos de pruebas o animales
             if (target.friendly || target.type == NPCID.TargetDummy || target.lifeMax <= 5 || NPCID.Sets.CountsAsCritter[target.type])
                 return;
 
@@ -71,7 +71,7 @@ namespace Whips145.Projectiles
             target.buffImmune[ModContent.BuffType<SoulscourgeTag>()] = false;
             target.AddBuff(ModContent.BuffType<SoulscourgeTag>(), 300);
 
-            // Partículas verdes de corrupción (Verde claro como el Scourge of the Corruptor)
+            // PartÃ­culas verdes de corrupciÃ³n (Verde claro como el Scourge of the Corruptor)
 
         }
     
@@ -109,7 +109,7 @@ namespace Whips145.Projectiles
 
                 // 3 zonas de escala independientes:
                 // - Mango (i==0): escala propia
-                // - Cuerpo: progresión suave de pequeño a grande
+                // - Cuerpo: progresiÃ³n suave de pequeÃ±o a grande
                 // - Punta: escala propia
                 float finalScale;
                 if (i == 0)
@@ -130,8 +130,8 @@ namespace Whips145.Projectiles
                 // Los segmentos iniciales se estiran en Y para llenar huecos y dar
                 // el efecto visual de la wiki (ojos un poco ovalados cerca del mango).
                 // Ajusta estos valores a gusto:
-                int earlyStretchCount = 21;    // Cuántos segmentos del inicio se estiran
-                float earlyStretchMax  = 1.35f; // Máximo estiramiento (1.0 = nada, 1.5 = mucho)
+                int earlyStretchCount = 21;    // CuÃ¡ntos segmentos del inicio se estiran
+                float earlyStretchMax  = 1.35f; // MÃ¡ximo estiramiento (1.0 = nada, 1.5 = mucho)
 
                 float stretchY = 1.0f;
                 if (i > 0 && i <= earlyStretchCount)
@@ -147,7 +147,7 @@ namespace Whips145.Projectiles
                 if (Vector2.Distance(element, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(15)) 
                 {
                     int dust = Dust.NewDust(element - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, 18, 0f, 0f, 50, default, 0.7f);
-                    // Salen en la dirección del swing del látigo (diff apunta hacia donde ataca)
+                    // Salen en la direcciÃ³n del swing del lÃ¡tigo (diff apunta hacia donde ataca)
                     Vector2 dustDir = diff.SafeNormalize(Vector2.Zero);
                     Main.dust[dust].velocity = dustDir * Main.rand.NextFloat(1.5f, 3f)
                         + new Vector2(Main.rand.NextFloat(-0.4f, 0.4f), Main.rand.NextFloat(-0.2f, 0.2f));

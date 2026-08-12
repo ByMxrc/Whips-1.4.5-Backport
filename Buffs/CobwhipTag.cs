@@ -1,17 +1,17 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Whips145.Buffs
+namespace TerrariaWhipsBackport.Buffs
 {
     public class CobwhipTag : ModBuff
     {
-        public override string Texture => "Whips145/Buffs/Buff_TagAllWhips";
+        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_TagAllWhips";
 
         public override void SetStaticDefaults()
         {
-            // Tag que dejan las arañas del Cobwhip sobre los enemigos
+            // Tag que dejan las araÃ±as del Cobwhip sobre los enemigos
             Main.debuff[Type] = true;
             Main.pvpBuff[Type] = true;
             Main.buffNoSave[Type] = true;
@@ -21,7 +21,7 @@ namespace Whips145.Buffs
 
         public override void Update(NPC npc, ref int buffIndex)
         {
-            // WhipTagGlobalNPC maneja el daño extra
+            // WhipTagGlobalNPC maneja el daÃ±o extra
         }
     }
 }
