@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -41,7 +41,7 @@ namespace TerrariaWhipsBackport.Projectiles
             if (targetIndex >= 0 && targetIndex < Main.maxNPCs)
             {
                 NPC target = Main.npc[targetIndex];
-                if (target.active && target.life > 0)
+                if (target.active && target.life > 0 && !target.dontTakeDamage)
                 {
                     targetDead = false;
                     // Primer tick: Le damos una direcciÃ³n inicial perpendicular para forzar una curva amplia
