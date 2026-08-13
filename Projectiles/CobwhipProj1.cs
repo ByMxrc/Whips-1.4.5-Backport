@@ -33,7 +33,7 @@ namespace TerrariaWhipsBackport.Projectiles
             Projectile.localNPCHitCooldown = 20;
             
             // Empujar el sprite hacia abajo para que no flote
-            DrawOriginOffsetY = 8;
+            DrawOriginOffsetY = 6;
         }
 
         public override void AI()
@@ -162,6 +162,12 @@ namespace TerrariaWhipsBackport.Projectiles
                 Projectile.velocity.Y = 0f;
             }
             return false; 
+        }
+
+        public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
+        {
+            fallThrough = false;
+            return true;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
