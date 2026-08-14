@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -8,7 +8,7 @@ namespace TerrariaWhipsBackport.Buffs
     // florecen pÃ©talos que hacen daÃ±o adicional.
     public class VulgarDisplayTag : ModBuff
     {
-        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_TagAllWhips";
+        public override string Texture => "Terraria/Images/Buff_361";
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;

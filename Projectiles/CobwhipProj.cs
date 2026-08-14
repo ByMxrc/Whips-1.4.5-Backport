@@ -11,6 +11,8 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class CobwhipProj : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1028";
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.IsAWhip[Type] = true;

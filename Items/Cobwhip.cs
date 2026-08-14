@@ -12,6 +12,8 @@ namespace TerrariaWhipsBackport.Items
     /// </summary>
     public class Cobwhip : ModItem
     {
+        public override string Texture => "Terraria/Images/Item_5473";
+
         public override void SetDefaults()
         {
             // DefaultToWhip(proyectil, daÃ±o, golpe crÃ­tico %, velocidad de swing)

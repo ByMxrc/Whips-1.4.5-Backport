@@ -11,6 +11,8 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class ConstellationProj : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1034";
+
         private bool spawnedStars = false;
 
         public override void SetStaticDefaults()

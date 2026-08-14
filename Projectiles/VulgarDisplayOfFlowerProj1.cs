@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -9,6 +9,8 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class VulgarDisplayOfFlowerProj1 : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1038";
+
         public override void SetStaticDefaults()
         {
             // Ajusta este valor al nÃºmero real de frames de tu sprite.
@@ -186,7 +188,7 @@ namespace TerrariaWhipsBackport.Projectiles
             return false;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             // PartÃ­culas rosas que se desvanecen en el lugar donde el pÃ©talo desaparece
             for (int i = 0; i < 5; i++)

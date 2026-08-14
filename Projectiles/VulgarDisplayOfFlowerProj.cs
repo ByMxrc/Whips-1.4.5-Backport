@@ -10,6 +10,8 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class VulgarDisplayOfFlowerProj : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1032";
+
         private bool appliedEnergy = false;
 
         public override void SetStaticDefaults()

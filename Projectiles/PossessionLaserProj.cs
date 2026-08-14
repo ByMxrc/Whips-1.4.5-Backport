@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
@@ -8,7 +8,7 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class PossessionLaserProj : ModProjectile
     {
-        public override string Texture => "TerrariaWhipsBackport/Projectiles/PossessionLaser";
+        public override string Texture => "Terraria/Images/Projectile_1045";
 
         public override void SetDefaults()
         {

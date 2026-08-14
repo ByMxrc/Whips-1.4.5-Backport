@@ -13,6 +13,8 @@ namespace TerrariaWhipsBackport.Projectiles
     // que hace 1.33x el daÃ±o del minion en Ã¡rea pequeÃ±a.
     public class StarcrashProj : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1031";
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.IsAWhip[Type] = true;
@@ -40,6 +42,8 @@ namespace TerrariaWhipsBackport.Projectiles
                 // Aplicar tag - forzando ignorar inmunidad a debuffs
                 target.buffImmune[ModContent.BuffType<StarcrashTag>()] = false;
                 target.AddBuff(ModContent.BuffType<StarcrashTag>(), 300);
+                target.buffImmune[ModContent.BuffType<StarcrashEnergy>()] = false;
+                target.AddBuff(ModContent.BuffType<StarcrashEnergy>(), 300);
 
                 // Resetear el flag para que pueda caer un nuevo meteorito con esta marca
                 target.GetGlobalNPC<Common.WhipTagGlobalNPC>().starcrashMeteorDropped = false;

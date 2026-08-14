@@ -12,6 +12,8 @@ namespace TerrariaWhipsBackport.Items
     /// </summary>
     public class VulgarDisplayOfFlower : ModItem
     {
+        public override string Texture => "Terraria/Images/Item_5477";
+
         public override void SetDefaults()
         {
             Item.DefaultToWhip(ModContent.ProjectileType<VulgarDisplayOfFlowerProj>(), 75, 2f, 7.1f, 30);

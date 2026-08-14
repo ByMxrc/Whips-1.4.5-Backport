@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TerrariaWhipsBackport.Projectiles;
@@ -12,6 +12,8 @@ namespace TerrariaWhipsBackport.Items
     /// </summary>
     public class ElectricEel : ModItem
     {
+        public override string Texture => "Terraria/Images/Item_5478";
+
         public override void SetDefaults()
         {
             Item.DefaultToWhip(ModContent.ProjectileType<ElectricEelProj>(), 150, 3f, 8f, 30);

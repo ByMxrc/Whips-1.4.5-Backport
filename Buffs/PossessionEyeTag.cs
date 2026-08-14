@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 
@@ -6,7 +6,7 @@ namespace TerrariaWhipsBackport.Buffs
 {
     public class PossessionEyeTag : ModBuff
     {
-        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_TagAllWhips";
+        public override string Texture => "Terraria/Images/Buff_364";
 
         public override void SetStaticDefaults()
         {

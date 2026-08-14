@@ -2,6 +2,8 @@ Español:
 
 Añade los 9 nuevos látigos de la próxima actualización de Terraria 1.4.5 (Bigger & Boulder) a tModLoader 1.4.4.9.
 
+⚠️ IMPORTANTE: Este mod requiere Terraria 1.4.5 obligatoriamente. Para lograr la mayor fidelidad posible, el mod importa y utiliza las texturas y assets originales directamente desde los archivos del juego en lugar de incluirlos por separado.
+
 Este mod busca replicar fielmente las mecánicas, estadísticas y efectos visuales revelados en los imagenes oficiales de Re-Logic para que puedas probarlos desde ahora.
 
 Arsenal del Modo Normal:
@@ -24,6 +26,8 @@ No soy un expero en desarrollo de mods y mucho menos de Terraria pero hice mi ma
 English:
 
 Added the 9 new whips from Terraria's upcoming 1.4.5 update (Bigger & Boulder) to tModLoader 1.4.4.9.
+
+⚠️ IMPORTANT: Terraria 1.4.5 is strictly required to use this mod. To achieve the highest possible fidelity, this mod imports and uses the original textures and assets directly from the game's internal files rather than bundling custom ones.
 
 This mod aims to faithfully replicate the mechanics, stats, and visual effects revealed in Re-Logic's official images, so you can try them out right now.
 

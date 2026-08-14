@@ -1,11 +1,11 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace TerrariaWhipsBackport.Buffs
 {
     public class SlimeWhipDebuff : ModBuff
     {
-        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_SlimeWhip";
+        public override string Texture => "Terraria/Images/Buff_137";
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;

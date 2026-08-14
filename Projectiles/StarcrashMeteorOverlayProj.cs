@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -7,7 +7,8 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class StarcrashMeteorOverlayProj : ModProjectile
     {
-        public override string Texture => "TerrariaWhipsBackport/Projectiles/StarcrashProj1";
+        public override string Texture => "Terraria/Images/Projectile_1037";
+
 
         public override void SetDefaults()
         {

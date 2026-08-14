@@ -22,6 +22,7 @@ namespace TerrariaWhipsBackport.Common
     {
         // Variables de instancia para rastrear el estado del tag en cada NPC
         public bool hasStarcrashTag = false;
+        public bool hasStarcrashEnergy = false;
         public bool hasVulgarTag = false;
         public bool hasVulgarEnergy = false;
         public bool hasElectricEelTag = false;
@@ -41,6 +42,7 @@ namespace TerrariaWhipsBackport.Common
             if (npc.type == NPCID.TargetDummy)
             {
                 npc.buffImmune[ModContent.BuffType<StarcrashTag>()] = false;
+                npc.buffImmune[ModContent.BuffType<StarcrashEnergy>()] = false;
                 npc.buffImmune[ModContent.BuffType<VulgarDisplayTag>()] = false;
                 npc.buffImmune[ModContent.BuffType<VulgarDisplayEnergy>()] = false;
                 npc.buffImmune[ModContent.BuffType<ElectricEelTag>()] = false;
@@ -124,6 +126,7 @@ namespace TerrariaWhipsBackport.Common
             if (npc.active)
             {
                 hasStarcrashTag = npc.HasBuff(ModContent.BuffType<StarcrashTag>());
+                hasStarcrashEnergy = npc.HasBuff(ModContent.BuffType<StarcrashEnergy>());
                 hasVulgarTag = npc.HasBuff(ModContent.BuffType<VulgarDisplayTag>());
                 hasVulgarEnergy = npc.HasBuff(ModContent.BuffType<VulgarDisplayEnergy>());
                 hasElectricEelTag = npc.HasBuff(ModContent.BuffType<ElectricEelTag>());
@@ -258,7 +261,7 @@ namespace TerrariaWhipsBackport.Common
             WhipPlayer whipPlayer = owner.GetModPlayer<WhipPlayer>();
 
             // â”€â”€ STARCRASH: Invoca un meteorito (1.33x el daÃ±o del minion) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-            if (hasStarcrashTag && whipPlayer.starcrashCooldown == 0 && !starcrashMeteorDropped)
+            if (hasStarcrashEnergy && whipPlayer.starcrashCooldown == 0 && !starcrashMeteorDropped)
             {
                 whipPlayer.starcrashCooldown = 50; // Cooldown global en el jugador
                 starcrashMeteorDropped = true; // Bloqueo inmediato: solo 1 meteorito por marca
@@ -298,9 +301,9 @@ namespace TerrariaWhipsBackport.Common
                         DustID.Torch, 0f, -2f, 0, default, 1.5f);
                 }
 
-                // CONSUMIR LA MARCA: se quita el buff inmediatamente (marca de un solo uso)
-                npc.DelBuff(npc.FindBuffIndex(ModContent.BuffType<StarcrashTag>()));
-                hasStarcrashTag = false;
+                // CONSUMIR LA MARCA: se quita el buff de energÃ­a inmediatamente (marca de un solo uso)
+                npc.DelBuff(npc.FindBuffIndex(ModContent.BuffType<StarcrashEnergy>()));
+                hasStarcrashEnergy = false;
             }
 
             // â”€â”€ POSSESSION: Invoca 3 ojos que disparan lÃ¡seres curvos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -422,6 +425,7 @@ namespace TerrariaWhipsBackport.Common
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             bitWriter.WriteBit(hasStarcrashTag);
+            bitWriter.WriteBit(hasStarcrashEnergy);
             bitWriter.WriteBit(hasVulgarTag);
             bitWriter.WriteBit(hasVulgarEnergy);
             bitWriter.WriteBit(hasElectricEelTag);
@@ -433,6 +437,7 @@ namespace TerrariaWhipsBackport.Common
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
             hasStarcrashTag = bitReader.ReadBit();
+            hasStarcrashEnergy = bitReader.ReadBit();
             hasVulgarTag = bitReader.ReadBit();
             hasVulgarEnergy = bitReader.ReadBit();
             hasElectricEelTag = bitReader.ReadBit();

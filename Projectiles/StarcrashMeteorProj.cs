@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
@@ -9,7 +9,7 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class StarcrashMeteorProj : ModProjectile
     {
-        public override string Texture => "TerrariaWhipsBackport/Projectiles/StarcrashProj1";
+        public override string Texture => "Terraria/Images/Projectile_1037";
         
         // Eliminadas variables de animaciÃ³n vanilla que causaban problemas
 

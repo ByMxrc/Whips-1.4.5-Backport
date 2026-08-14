@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace TerrariaWhipsBackport.Buffs
@@ -10,7 +10,7 @@ namespace TerrariaWhipsBackport.Buffs
     /// </summary>
     public class PossessionTag : ModBuff
     {
-        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_TagAllWhips";
+        public override string Texture => "Terraria/Images/Buff_364";
 
         public override void SetStaticDefaults()
         {

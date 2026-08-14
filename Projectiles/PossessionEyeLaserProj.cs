@@ -8,7 +8,7 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class PossessionEyeLaserProj : ModProjectile
     {
-        public override string Texture => "TerrariaWhipsBackport/Projectiles/PossessionLaser";
+        public override string Texture => "Terraria/Images/Projectile_1045";
 
         public override void SetStaticDefaults()
         {
@@ -136,7 +136,7 @@ namespace TerrariaWhipsBackport.Projectiles
             // El proyectil muere al impactar, activando Kill()
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             // PequeÃ±a explosiÃ³n de partÃ­culas de Phantasmal Eye (Vortex)
             for (int i = 0; i < 15; i++)

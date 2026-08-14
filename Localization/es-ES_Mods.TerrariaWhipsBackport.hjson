@@ -73,6 +73,11 @@ Buffs: {
 		DisplayName: Marca del Ojo de Posesión
 		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionEyeTag.Description
 	}
+
+	StarcrashEnergy: {
+		// DisplayName: Starcrash Energy
+		// Description: Mods.TerrariaWhipsBackport.Buffs.StarcrashEnergy.Description
+	}
 }
 
 Items: {
@@ -198,4 +203,39 @@ Projectiles: {
 	PossessionLaserProj.DisplayName: Láser de Posesión
 	ElectricParticle.DisplayName: Partícula Eléctrica
 	PossessionEyeLaserProj.DisplayName: Láser Curvo de Posesión
+}
+
+Configs: {
+	WhipsBackportConfig: {
+		// DisplayName: Whips Backport Config
+
+		Headers: {
+			// VanillaAssetBackport: Vanilla Asset Backport Header
+			// Info: Info Header
+		}
+
+		Terraria145Path: {
+			// Label: Ruta de Terraria 1.4.5
+			/* Tooltip:
+				'''
+				Opcional: ruta a la carpeta raíz de tu instalación de Terraria 1.4.5
+				(la carpeta que contiene la subcarpeta 'Content').
+				Ejemplo: C:\Program Files (x86)\Steam\steamapps\common\Terraria
+
+				Si se configura, los látigos usarán los sprites oficiales de 1.4.5
+				leyéndolos localmente. El mod NO redistribuye ningún asset del juego.
+				''' */
+		}
+
+		ShowInfo: {
+			// Label: Nota
+			/* Tooltip:
+				'''
+				Este mod carga los sprites de los látigos directamente desde
+				tu instalación local de Terraria — no redistribuye ningún asset.
+
+				La detección es automática. No necesitas configurar nada.
+				''' */
+		}
+	}
 }

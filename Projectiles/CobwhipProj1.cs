@@ -7,6 +7,8 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class CobwhipProj1 : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1036";
+
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 4; // 4 frames de animaciÃ³n de la araÃ±a (24x14 cada uno)
@@ -32,8 +34,8 @@ namespace TerrariaWhipsBackport.Projectiles
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 20;
             
-            // Empujar el sprite hacia abajo para que no flote
-            DrawOriginOffsetY = 6;
+            // Empujar el sprite hacia abajo para que no flote (negativo empuja hacia abajo)
+            DrawOriginOffsetY = -3;
         }
 
         public override void AI()
@@ -179,6 +181,29 @@ namespace TerrariaWhipsBackport.Projectiles
             // Aplica el buff (el tag de 3 de daÃ±o) como indica la wiki - forzando inmunidad
             target.buffImmune[ModContent.BuffType<Buffs.CobwhipTag>()] = false;
             target.AddBuff(ModContent.BuffType<Buffs.CobwhipTag>(), 180);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Microsoft.Xna.Framework.Graphics.Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Type].Value;
+            int frameHeight = texture.Height / Main.projFrames[Type];
+            Rectangle frameRect = new Rectangle(0, frameHeight * Projectile.frame, texture.Width, frameHeight);
+            
+            Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
+            origin.Y += DrawOriginOffsetY;
+
+            Microsoft.Xna.Framework.Graphics.SpriteEffects effects = Projectile.spriteDirection == -1 ? Microsoft.Xna.Framework.Graphics.SpriteEffects.FlipHorizontally : Microsoft.Xna.Framework.Graphics.SpriteEffects.None;
+
+            Main.EntitySpriteDraw(texture,
+                Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+                frameRect,
+                lightColor * ((255f - Projectile.alpha) / 255f),
+                Projectile.rotation,
+                origin,
+                Projectile.scale,
+                effects,
+                0);
+
+            return false;
         }
     }
 }

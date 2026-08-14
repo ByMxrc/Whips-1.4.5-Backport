@@ -11,6 +11,8 @@ namespace TerrariaWhipsBackport.Projectiles
     // El Electric Eel genera un aura elÃ©ctrica que daÃ±a enemigos cercanos.
     public class ElectricEelProj : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1033";
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.IsAWhip[Type] = true;

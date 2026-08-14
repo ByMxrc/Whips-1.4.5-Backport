@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,6 +11,8 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class VasculashProj : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1030";
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.IsAWhip[Type] = true;

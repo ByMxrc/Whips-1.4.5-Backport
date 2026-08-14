@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -6,9 +6,7 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class PossessionManager : ModProjectile
     {
-        // Usamos una textura existente para evitar AssetLoadException,
-        // aunque nunca se dibujarÃ¡ porque PreDraw retorna false.
-        public override string Texture => "TerrariaWhipsBackport/Projectiles/PossessionProj";
+        public override string Texture => "Terraria/Images/Projectile_1035";
 
         public override void SetDefaults()
         {

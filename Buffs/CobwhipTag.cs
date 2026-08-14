@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -7,7 +7,7 @@ namespace TerrariaWhipsBackport.Buffs
 {
     public class CobwhipTag : ModBuff
     {
-        public override string Texture => "TerrariaWhipsBackport/Buffs/Buff_TagAllWhips";
+        public override string Texture => "Terraria/Images/Buff_357";
 
         public override void SetStaticDefaults()
         {

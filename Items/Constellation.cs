@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TerrariaWhipsBackport.Projectiles;
@@ -13,6 +13,8 @@ namespace TerrariaWhipsBackport.Items
     /// </summary>
     public class Constellation : ModItem
     {
+        public override string Texture => "Terraria/Images/Item_5479";
+
         public override void SetDefaults()
         {
             Item.DefaultToWhip(ModContent.ProjectileType<ConstellationProj>(), 130, 4f, 8f, 30);

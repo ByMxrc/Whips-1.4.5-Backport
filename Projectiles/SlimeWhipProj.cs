@@ -6,14 +6,20 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
+
 namespace TerrariaWhipsBackport.Projectiles
 {
     public class SlimeWhipProj : ModProjectile
     {
+        // Redirige a la textura vanilla de la cadena — sin .png propio en el mod.
+        // Projectile ID 1104 en Terraria 1.4.5.
+        public override string Texture => "Terraria/Images/Projectile_1104";
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.IsAWhip[Type] = true;
         }
+
 
         public override void SetDefaults()
         {
@@ -88,9 +94,11 @@ namespace TerrariaWhipsBackport.Projectiles
             List<Vector2> list = new List<Vector2>();
             Projectile.FillWhipControlPoints(Projectile, list);
 
+            // La textura vanilla ya fue cargada por tModLoader via el override Texture.
             Terraria.Main.instance.LoadProjectile(Type);
             Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Type].Value;
             SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
 
             int totalFrames = 5;
             int frameWidth = texture.Width;

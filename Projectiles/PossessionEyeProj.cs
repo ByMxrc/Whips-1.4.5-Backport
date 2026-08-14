@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
@@ -7,6 +7,8 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class PossessionEyeProj : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Extra_270";
+
         public override void SetDefaults()
         {
             Projectile.width = 32;

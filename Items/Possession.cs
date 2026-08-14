@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria;
 using Terraria.ID;
@@ -14,6 +14,8 @@ namespace TerrariaWhipsBackport.Items
     /// </summary>
     public class Possession : ModItem
     {
+        public override string Texture => "Terraria/Images/Item_5480";
+
         public override void SetDefaults()
         {
             // DefaultToWhip configura useTime, useAnimation, shoot, shootSpeed, damage, knockback, etc.

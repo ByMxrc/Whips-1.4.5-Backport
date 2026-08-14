@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -15,6 +15,8 @@ namespace TerrariaWhipsBackport.Projectiles
     /// </summary>
     public class PossessionProj : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1035";
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.IsAWhip[Type] = true;
@@ -402,13 +404,11 @@ namespace TerrariaWhipsBackport.Projectiles
 
             Main.instance.LoadProjectile(Type);
             Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Type].Value;
-            Texture2D glowTexture = ModContent.Request<Texture2D>("TerrariaWhipsBackport/Projectiles/PossessionProj_1").Value;
             
             SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-
             int totalFrames = 7;
-            int frameWidth = texture.Width; 
+            int frameWidth = texture.Width / 4; 
             int frameHeight = texture.Height / totalFrames;
 
             // (la punta), el punto de partida del siguiente segmento sigue
@@ -461,7 +461,19 @@ namespace TerrariaWhipsBackport.Projectiles
                     currentFrameHeight = frameContentHeight[frameIndex];
                 }
 
-                Rectangle frame = new Rectangle(0, frameHeight * frameIndex, frameWidth, currentFrameHeight);
+                int baseX = 0;
+                int glowX = frameWidth;
+
+                if (frameIndex >= 4)
+                {
+                    baseX = frameWidth * 2;
+                    // La 4ta columna es una mÃ¡scara blanca de tintes, asÃ­ que usamos la 3ra columna 
+                    // tambiÃ©n para el glow (brillo) y asÃ­ dibujamos el ojo a color iluminado.
+                    glowX = frameWidth * 2;
+                }
+
+                Rectangle frame = new Rectangle(baseX, frameHeight * frameIndex, frameWidth, currentFrameHeight);
+                Rectangle glowFrame = new Rectangle(glowX, frameHeight * frameIndex, frameWidth, currentFrameHeight);
 
                 Vector2 element = list[i];
                 Vector2 rawDiff = list[i + 1] - element;
@@ -544,7 +556,7 @@ namespace TerrariaWhipsBackport.Projectiles
                 // que el cuerpo se vuelva un manchÃ³n blanco al superponerse.
                 if (frameIndex >= 4)
                 {
-                    Main.EntitySpriteDraw(glowTexture, pos - Main.screenPosition, frame, Color.White, rotation, origin, scale, flip, 0);
+                    Main.EntitySpriteDraw(texture, pos - Main.screenPosition, glowFrame, Color.White, rotation, origin, scale, flip, 0);
                 }
                 
                 pos += diff;

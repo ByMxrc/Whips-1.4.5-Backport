@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -10,6 +10,8 @@ namespace TerrariaWhipsBackport.Projectiles
 {
     public class ConstellationProj1 : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Projectile_1039";
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
@@ -157,7 +159,7 @@ namespace TerrariaWhipsBackport.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             // Usar la textura original del lÃ¡tigo (ConstellationProj) para que el color sea exactamente idÃ©ntico
-            Texture2D texture = ModContent.Request<Texture2D>("TerrariaWhipsBackport/Projectiles/ConstellationProj").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("Terraria/Images/Projectile_1034").Value;
             
             // El sprite del lÃ¡tigo tiene 6 frames. Debemos recortar solo el frame de la estrella grande (Frame 3)
             int frameHeight = texture.Height / 6;
@@ -223,7 +225,7 @@ namespace TerrariaWhipsBackport.Projectiles
             return false;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             // Puf con un rastro de humo y chispas al desaparecer
             for (int i = 0; i < 6; i++)

@@ -12,6 +12,8 @@ namespace TerrariaWhipsBackport.Items
     /// </summary>
     public class Starcrash : ModItem
     {
+        public override string Texture => "Terraria/Images/Item_5476";
+
         public override void SetDefaults()
         {
             Item.DefaultToWhip(ModContent.ProjectileType<StarcrashProj>(), 18, 1.5f, 4.3f, 30);
