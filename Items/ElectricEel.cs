@@ -24,6 +24,8 @@ namespace TerrariaWhipsBackport.Items
             Item.UseSound = SoundID.Item152;
         }
 
+        public override bool MeleePrefix() => true;
+
         // Se obtiene como drop de Duke Fishron (ver WhipDropGlobalNPC)
     }
 }

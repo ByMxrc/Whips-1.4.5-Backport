@@ -16,14 +16,16 @@ namespace TerrariaWhipsBackport.Items
 
         public override void SetDefaults()
         {
-            // DefaultToWhip(proyectil, daÃ±o, golpe crÃ­tico %, velocidad de swing)
+            // DefaultToWhip(proyectil, daño, golpe crítico %, velocidad de swing)
             Item.DefaultToWhip(ModContent.ProjectileType<CobwhipProj>(), 9, 0.7f, 2f, 35);
             Item.width = 28;
             Item.height = 28;
             Item.value = Item.sellPrice(silver: 54);
             Item.rare = ItemRarityID.White; // Sin rareza (gris)
-            Item.UseSound = SoundID.Item152; // Sonido de lÃ¡tigo vanilla
+            Item.UseSound = SoundID.Item152; // Sonido de látigo vanilla
         }
+
+        public override bool MeleePrefix() => true;
 
         public override void AddRecipes()
         {

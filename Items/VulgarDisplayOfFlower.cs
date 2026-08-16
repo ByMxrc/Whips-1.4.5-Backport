@@ -24,6 +24,8 @@ namespace TerrariaWhipsBackport.Items
             Item.UseSound = SoundID.Item152;
         }
 
+        public override bool MeleePrefix() => true;
+
         // Esta arma se obtiene como drop de Plantera, no tiene receta de crafteo.
         // El drop se configura en WhipTagGlobalNPC usando GlobalNPC.NPCLoot
     }

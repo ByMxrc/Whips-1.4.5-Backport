@@ -139,7 +139,7 @@ namespace TerrariaWhipsBackport.Projectiles
 
                 Main.EntitySpriteDraw(texture, element - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
 
-                if (Vector2.Distance(element, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(30)) 
+                if (Vector2.Distance(element, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(40)) 
                 {
                     // Aumentamos la escala de 1.0f a 1.6f para que la sangre tarde mÃ¡s en desaparecer
                     int dust = Dust.NewDust(element - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, DustID.Blood, 0f, 0f, 0, default, 1.25f);
@@ -148,7 +148,7 @@ namespace TerrariaWhipsBackport.Projectiles
                         + new Vector2(Main.rand.NextFloat(-0.4f, 0.4f), Main.rand.NextFloat(-0.2f, 0.2f));
                 }
 
-                if (Vector2.Distance(element, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(25)) 
+                if (Vector2.Distance(element, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(33)) 
                 {
                     int dust = Dust.NewDust(element - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, 115, 0f, 0f, 0, default, 1.0f);
                     // Salen en la direcciÃ³n del swing del lÃ¡tigo (diff apunta hacia donde ataca)

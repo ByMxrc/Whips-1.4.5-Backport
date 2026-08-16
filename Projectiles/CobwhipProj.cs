@@ -144,7 +144,7 @@ namespace TerrariaWhipsBackport.Projectiles
                 Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
 
                 // PartÃ­culas al usar el lÃ¡tigo
-                if (Main.rand.NextBool(25)) 
+                if (Vector2.Distance(pos, Main.player[Projectile.owner].Center) > 40f && Main.rand.NextBool(25)) 
                 {
                     int dust = Dust.NewDust(pos - new Vector2(frameWidth / 2f, frameHeight / 2f), frameWidth, frameHeight, DustID.Web, 0f, 0f, 150, default, 1f);
                     Main.dust[dust].noGravity = true;

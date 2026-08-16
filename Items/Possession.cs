@@ -41,6 +41,8 @@ namespace TerrariaWhipsBackport.Items
             Item.shoot = ModContent.ProjectileType<PossessionManager>();
         }
 
+        public override bool MeleePrefix() => true;
+
         public override bool CanUseItem(Player player)
         {
             // Prevenir spam de clicks que cree mÃºltiples managers simultÃ¡neos
