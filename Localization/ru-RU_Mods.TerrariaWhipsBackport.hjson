@@ -1,0 +1,241 @@
+Buffs: {
+	CobwhipTag: {
+		DisplayName: Метка паутинного хлыста
+		Description: Mods.TerrariaWhipsBackport.Buffs.CobwhipTag.Description
+	}
+
+	ConstellationTag: {
+		DisplayName: Метка созвездия
+		Description: Mods.TerrariaWhipsBackport.Buffs.ConstellationTag.Description
+	}
+
+	ElectricEelTag: {
+		DisplayName: Метка электрического угря
+		Description: Mods.TerrariaWhipsBackport.Buffs.ElectricEelTag.Description
+	}
+
+	PossessionTag: {
+		DisplayName: Метка одержимости
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionTag.Description
+	}
+
+	SlimeWhipTag: {
+		DisplayName: Метка слизневого хлыста
+		Description: Mods.TerrariaWhipsBackport.Buffs.SlimeWhipTag.Description
+	}
+
+	SoulscourgeTag: {
+		DisplayName: Метка бича душ
+		Description: Mods.TerrariaWhipsBackport.Buffs.SoulscourgeTag.Description
+	}
+
+	StarcrashTag: {
+		DisplayName: Метка звездопада
+		Description: Mods.TerrariaWhipsBackport.Buffs.StarcrashTag.Description
+	}
+
+	VasculashTag: {
+		DisplayName: Метка кровеносного хлыста
+		Description: Mods.TerrariaWhipsBackport.Buffs.VasculashTag.Description
+	}
+
+	VulgarDisplayTag: {
+		DisplayName: Метка вульгарного проявления
+		Description: Mods.TerrariaWhipsBackport.Buffs.VulgarDisplayTag.Description
+	}
+
+	VulgarDisplayEnergy: {
+		DisplayName: Энергия вульгарного проявления
+		Description: Mods.TerrariaWhipsBackport.Buffs.VulgarDisplayEnergy.Description
+	}
+
+	PossessionEnergy: {
+		DisplayName: Энергия одержимости
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionEnergy.Description
+	}
+
+	CobwhipPlayerBuff: {
+		DisplayName: Бафф игрока паутинного хлыста
+		Description: Mods.TerrariaWhipsBackport.Buffs.CobwhipPlayerBuff.Description
+	}
+
+	ElectricEelDebuff: {
+		DisplayName: Дебафф электрического угря
+		Description: Mods.TerrariaWhipsBackport.Buffs.ElectricEelDebuff.Description
+	}
+
+	SlimeWhipDebuff: {
+		DisplayName: Дебафф слизневого хлыста
+		Description: Mods.TerrariaWhipsBackport.Buffs.SlimeWhipDebuff.Description
+	}
+
+	PossessionEyeTag: {
+		DisplayName: Метка глаза одержимости
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionEyeTag.Description
+	}
+
+	StarcrashEnergy: {
+		DisplayName: Энергия звездопада
+		Description: Mods.TerrariaWhipsBackport.Buffs.StarcrashEnergy.Description
+	}
+}
+
+Items: {
+	Cobwhip: {
+		DisplayName: Паутинный хлыст
+		Tooltip:
+			'''
+			3 ед. урона от метки для призывателей
+			Ваши миньоны сфокусируют атаки на пораженных врагах
+			Поразите врагов, чтобы призвать крошечного паука
+			'''
+	}
+
+	Constellation: {
+		DisplayName: Созвездие
+		Tooltip:
+			'''
+			15 ед. урона от метки для призывателей
+			15% шанс критического удара от метки
+			Ваши миньоны сфокусируют атаки на пораженных врагах
+			Поразите врагов, чтобы рассыпать дружественные звезды
+			'''
+	}
+
+	ElectricEel: {
+		DisplayName: Электрический угорь
+		Tooltip:
+			'''
+			12 ед. урона от метки для призывателей
+			5% шанс критического удара от метки
+			Ваши миньоны сфокусируют атаки на пораженных врагах
+			Поразите врагов электрической энергией
+			Электрическая энергия резонирует между врагами
+			'''
+	}
+
+	Possession: {
+		DisplayName: Одержимость
+		Tooltip:
+			'''
+			25 ед. урона от метки для призывателей
+			10% шанс критического удара от метки
+			Ваши миньоны сфокусируют атаки на пораженных врагах
+			Поразите врагов пророческой энергией
+			Видения поражают врагов, получивших урон от миньонов
+			'''
+	}
+
+	SlimeWhip: {
+		DisplayName: Слизневый хлыст
+		Tooltip:
+			'''
+			3 ед. урона от метки для призывателей
+			Удар хлыстом может поджечь врагов
+			'''
+	}
+
+	Soulscourge: {
+		DisplayName: Бич душ
+		Tooltip:
+			'''
+			5 ед. урона от метки для призывателей
+			Ваши миньоны сфокусируют атаки на пораженных врагах
+			'Стегайте врагов остатками воплощенного зла'
+			'''
+	}
+
+	Starcrash: {
+		DisplayName: Звездопад
+		Tooltip:
+			'''
+			2 ед. урона от метки для призывателей
+			Ваши миньоны сфокусируют атаки на пораженных врагах
+			Поразите врагов заряженной энергией
+			Метеориты падают на заряженных врагов, получивших урон от миньонов
+			'''
+	}
+
+	Vasculash: {
+		DisplayName: Кровеносный хлыст
+		Tooltip:
+			'''
+			5 ед. урона от метки для призывателей
+			Ваши миньоны сфокусируют атаки на пораженных врагах
+			'Артерии, вены и сухожилия!'
+			'''
+	}
+
+	VulgarDisplayOfFlower: {
+		DisplayName: Вульгарное проявление цветка
+		Tooltip:
+			'''
+			9 ед. урона от метки для призывателей
+			Ваши миньоны сфокусируют атаки на пораженных врагах
+			Поразите врагов нестабильной энергией
+			Яростные лепестки распускаются из врагов, пораженных миньонами
+			'Шипастый хлыст, вырванный из самой Королевы джунглей? Металл!'
+			'''
+	}
+}
+
+Projectiles: {
+	CobwhipProj.DisplayName: Снаряд паутинного хлыста
+	ConstellationProj.DisplayName: Снаряд созвездия
+	ElectricEelProj.DisplayName: Снаряд электрического угря
+	PossessionProj.DisplayName: Снаряд одержимости
+	SlimeWhipProj.DisplayName: Снаряд слизневого хлыста
+	SoulscourgeProj.DisplayName: Снаряд бича душ
+	StarcrashProj.DisplayName: Снаряд звездопада
+	VasculashProj.DisplayName: Снаряд кровеносного хлыста
+	VulgarDisplayOfFlowerProj.DisplayName: Снаряд вульгарного проявления цветка
+	PossessionProj1.DisplayName: Снаряд одержимости 1
+	PossessionProj2.DisplayName: Снаряд одержимости 2
+	PossessionProjSecondary.DisplayName: Вторичный снаряд одержимости
+	CobwhipProj1.DisplayName: Снаряд паутинного хлыста 1
+	StarcrashProj1.DisplayName: Снаряд звездопада 1
+	StarcrashMeteorProj.DisplayName: Снаряд метеорита звездопада
+	StarcrashMeteorOverlayProj.DisplayName: Наложенный снаряд метеорита звездопада
+	VulgarDisplayOfFlowerProj1.DisplayName: Снаряд вульгарного проявления цветка 1
+	ConstellationProj1.DisplayName: Снаряд созвездия 1
+	PossessionManager.DisplayName: Управляющий одержимостью
+	PossessionEyeProj.DisplayName: Снаряд глаза одержимости
+	PossessionLaserProj.DisplayName: Снаряд лазера одержимости
+	ElectricParticle.DisplayName: Электрическая частица
+	PossessionEyeLaserProj.DisplayName: Снаряд лазера глаза одержимости
+}
+
+Configs: {
+	WhipsBackportConfig: {
+		DisplayName: Конфигурация переноса хлыстов
+
+		Headers: {
+			VanillaAssetBackport: Заголовок переноса оригинальных ресурсов
+			Info: Заголовок информации
+		}
+
+		Terraria145Path: {
+			Label: Путь к Terraria 1.4.5
+			Tooltip:
+				'''
+				Необязательно: путь к корневой папке вашей установки Terraria 1.4.5
+				(папка, содержащая подпапку 'Content').
+				Пример: C:\Program Files (x86)\Steam\steamapps\common\Terraria
+
+				Если настроено, хлысты будут использовать официальные спрайты из 1.4.5,
+				считывая их локально. Мод НЕ распространяет никакие игровые ресурсы.
+				'''
+		}
+
+		ShowInfo: {
+			Label: Примечание
+			Tooltip:
+				'''
+				Этот мод загружает спрайты хлыстов непосредственно из
+				вашей локальной установки Terraria — он не распространяет никакие ресурсы.
+
+				Обнаружение происходит автоматически. Вам ничего не нужно настраивать.
+				'''
+		}
+	}
+}

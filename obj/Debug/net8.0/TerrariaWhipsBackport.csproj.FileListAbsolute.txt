@@ -1,0 +1,13 @@
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\bin\Debug\net8.0\TerrariaWhipsBackport.deps.json
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\bin\Debug\net8.0\TerrariaWhipsBackport.dll
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\bin\Debug\net8.0\TerrariaWhipsBackport.pdb
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\TerrariaWhipsBackport.csproj.AssemblyReference.cache
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\TerrariaWhipsBackport.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\TerrariaWhipsBackport.AssemblyInfoInputs.cache
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\TerrariaWhipsBackport.AssemblyInfo.cs
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\TerrariaWhipsBackport.csproj.CoreCompileInputs.cache
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\TerrariaWhipsBackport.sourcelink.json
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\TerrariaWhipsBackport.dll
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\refint\TerrariaWhipsBackport.dll
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\TerrariaWhipsBackport.pdb
+C:\Users\ADRIAN\Documents\My Games\Terraria\tModLoader\ModSources\TerrariaWhipsBackport\obj\Debug\net8.0\ref\TerrariaWhipsBackport.dll

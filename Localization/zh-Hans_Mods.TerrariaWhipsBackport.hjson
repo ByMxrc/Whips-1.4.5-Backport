@@ -1,0 +1,241 @@
+Buffs: {
+	CobwhipTag: {
+		DisplayName: 蛛丝鞭标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.CobwhipTag.Description
+	}
+
+	ConstellationTag: {
+		DisplayName: 星座标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.ConstellationTag.Description
+	}
+
+	ElectricEelTag: {
+		DisplayName: 电鳗标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.ElectricEelTag.Description
+	}
+
+	PossessionTag: {
+		DisplayName: 占有标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionTag.Description
+	}
+
+	SlimeWhipTag: {
+		DisplayName: 史莱姆鞭标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.SlimeWhipTag.Description
+	}
+
+	SoulscourgeTag: {
+		DisplayName: 灵魂鞭挞标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.SoulscourgeTag.Description
+	}
+
+	StarcrashTag: {
+		DisplayName: 星际坠落标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.StarcrashTag.Description
+	}
+
+	VasculashTag: {
+		DisplayName: 血管鞭标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.VasculashTag.Description
+	}
+
+	VulgarDisplayTag: {
+		DisplayName: 粗俗展示标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.VulgarDisplayTag.Description
+	}
+
+	VulgarDisplayEnergy: {
+		DisplayName: 粗俗展示能量
+		Description: Mods.TerrariaWhipsBackport.Buffs.VulgarDisplayEnergy.Description
+	}
+
+	PossessionEnergy: {
+		DisplayName: 占有能量
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionEnergy.Description
+	}
+
+	CobwhipPlayerBuff: {
+		DisplayName: 蛛丝鞭玩家增益
+		Description: Mods.TerrariaWhipsBackport.Buffs.CobwhipPlayerBuff.Description
+	}
+
+	ElectricEelDebuff: {
+		DisplayName: 电鳗减益
+		Description: Mods.TerrariaWhipsBackport.Buffs.ElectricEelDebuff.Description
+	}
+
+	SlimeWhipDebuff: {
+		DisplayName: 史莱姆鞭减益
+		Description: Mods.TerrariaWhipsBackport.Buffs.SlimeWhipDebuff.Description
+	}
+
+	PossessionEyeTag: {
+		DisplayName: 占有之眼标记
+		Description: Mods.TerrariaWhipsBackport.Buffs.PossessionEyeTag.Description
+	}
+
+	StarcrashEnergy: {
+		DisplayName: 星际坠落能量
+		Description: Mods.TerrariaWhipsBackport.Buffs.StarcrashEnergy.Description
+	}
+}
+
+Items: {
+	Cobwhip: {
+		DisplayName: 蛛丝鞭
+		Tooltip:
+			'''
+			3 召唤标记伤害
+			你的召唤物将集中攻击被击中的敌人
+			击中敌人以召唤一只小蜘蛛
+			'''
+	}
+
+	Constellation: {
+		DisplayName: 星座
+		Tooltip:
+			'''
+			15 召唤标记伤害
+			15% 召唤标记暴击率
+			你的召唤物将集中攻击被击中的敌人
+			击中敌人以散落友方星星
+			'''
+	}
+
+	ElectricEel: {
+		DisplayName: 电鳗
+		Tooltip:
+			'''
+			12 召唤标记伤害
+			5% 召唤标记暴击率
+			你的召唤物将集中攻击被击中的敌人
+			用电能打击敌人
+			电能在敌人之间共鸣
+			'''
+	}
+
+	Possession: {
+		DisplayName: 占有
+		Tooltip:
+			'''
+			25 召唤标记伤害
+			10% 召唤标记暴击率
+			你的召唤物将集中攻击被击中的敌人
+			用预言能量打击敌人
+			幻象会打击被召唤物击中的敌人
+			'''
+	}
+
+	SlimeWhip: {
+		DisplayName: 史莱姆鞭
+		Tooltip:
+			'''
+			3 召唤标记伤害
+			鞭打可以点燃敌人
+			'''
+	}
+
+	Soulscourge: {
+		DisplayName: 灵魂鞭挞
+		Tooltip:
+			'''
+			5 召唤标记伤害
+			你的召唤物将集中攻击被击中的敌人
+			'用邪恶化身的残骸鞭打你的敌人'
+			'''
+	}
+
+	Starcrash: {
+		DisplayName: 星际坠落
+		Tooltip:
+			'''
+			2 召唤标记伤害
+			你的召唤物将集中攻击被击中的敌人
+			用充沛能量打击敌人
+			陨石落在被召唤物击中的充能敌人身上
+			'''
+	}
+
+	Vasculash: {
+		DisplayName: 血管鞭
+		Tooltip:
+			'''
+			5 召唤标记伤害
+			你的召唤物将集中攻击被击中的敌人
+			'动脉、静脉和肌腱！'
+			'''
+	}
+
+	VulgarDisplayOfFlower: {
+		DisplayName: 粗俗的花之展示
+		Tooltip:
+			'''
+			9 召唤标记伤害
+			你的召唤物将集中攻击被击中的敌人
+			用不稳定能量打击敌人
+			狂暴的花瓣从被召唤物击中的敌人身上绽放
+			'一条从丛林女王身上扯下的带刺长鞭？太硬核了！'
+			'''
+	}
+}
+
+Projectiles: {
+	CobwhipProj.DisplayName: 蛛丝鞭弹幕
+	ConstellationProj.DisplayName: 星座弹幕
+	ElectricEelProj.DisplayName: 电鳗弹幕
+	PossessionProj.DisplayName: 占有弹幕
+	SlimeWhipProj.DisplayName: 史莱姆鞭弹幕
+	SoulscourgeProj.DisplayName: 灵魂鞭挞弹幕
+	StarcrashProj.DisplayName: 星际坠落弹幕
+	VasculashProj.DisplayName: 血管鞭弹幕
+	VulgarDisplayOfFlowerProj.DisplayName: 粗俗的花之展示弹幕
+	PossessionProj1.DisplayName: 占有弹幕1
+	PossessionProj2.DisplayName: 占有弹幕2
+	PossessionProjSecondary.DisplayName: 占有次要弹幕
+	CobwhipProj1.DisplayName: 蛛丝鞭弹幕1
+	StarcrashProj1.DisplayName: 星际坠落弹幕1
+	StarcrashMeteorProj.DisplayName: 星际坠落陨石弹幕
+	StarcrashMeteorOverlayProj.DisplayName: 星际坠落陨石覆盖弹幕
+	VulgarDisplayOfFlowerProj1.DisplayName: 粗俗的花之展示弹幕1
+	ConstellationProj1.DisplayName: 星座弹幕1
+	PossessionManager.DisplayName: 占有管理器
+	PossessionEyeProj.DisplayName: 占有之眼弹幕
+	PossessionLaserProj.DisplayName: 占有激光弹幕
+	ElectricParticle.DisplayName: 电子颗粒
+	PossessionEyeLaserProj.DisplayName: 占有之眼激光弹幕
+}
+
+Configs: {
+	WhipsBackportConfig: {
+		DisplayName: 鞭子反向移植配置
+
+		Headers: {
+			VanillaAssetBackport: 原版资产反向移植标题
+			Info: 信息标题
+		}
+
+		Terraria145Path: {
+			Label: 泰拉瑞亚 1.4.5 路径
+			Tooltip:
+				'''
+				可选：你的泰拉瑞亚 1.4.5 安装的根文件夹路径
+				（包含 'Content' 子文件夹的文件夹）。
+				例如：C:\Program Files (x86)\Steam\steamapps\common\Terraria
+
+				如果已配置，鞭子将通过本地读取
+				使用 1.4.5 的官方精灵图。该模组不重新分发任何游戏资产。
+				'''
+		}
+
+		ShowInfo: {
+			Label: 注意
+			Tooltip:
+				'''
+				该模组直接从你的本地泰拉瑞亚安装加载鞭子的精灵图
+				——不重新分发任何资产。
+
+				检测是自动的。你无需配置任何内容。
+				'''
+		}
+	}
+}

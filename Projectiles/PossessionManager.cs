@@ -127,7 +127,7 @@ namespace TerrariaWhipsBackport.Projectiles
                         activeWhips++;
                 }
 
-                if (activeWhips < 30 && finishingCombo == 0f) // LÃ­mite seguro y no spawnea si estÃ¡ terminando
+                if (activeWhips < 30) // Límite seguro y completamos las 3 olas aunque se suelte el click
                 {
                     if (stepTimer == 0)
                     {

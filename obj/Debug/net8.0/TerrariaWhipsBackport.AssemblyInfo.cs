@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TerrariaWhipsBackport")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f595c5db607622a097ed026a318b92459bfc74b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de22744dca9c9bfc8dc94b4b9692858d21c08b01")]
 [assembly: System.Reflection.AssemblyProductAttribute("TerrariaWhipsBackport")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TerrariaWhipsBackport")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
